@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_main"
+        android:icon="@drawable/ic_screen_main"
+        android:title="@string/screen_main"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_tracking"
+        android:icon="@drawable/ic_screen_tracking"
+        android:title="@string/screen_tracking"
+        app:showAsAction="ifRoom" />
+</menu>

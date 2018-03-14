@@ -1,3 +1,11 @@
 <resources>
+    <!-- System-wide strings -->
     <string name="app_name">Location Tracker</string>
+    
+    <!-- Screen names -->
+    <string name="screen_main">Home</string>
+    <string name="screen_tracking">Location tracking</string>
+    <string name="screen_sms">SMS configuration</string>
+    <string name="screen_localize">Find device</string>
+    <string name="screen_history">Location history</string>
 </resources>
