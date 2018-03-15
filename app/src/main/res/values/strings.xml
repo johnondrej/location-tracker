@@ -4,8 +4,13 @@
     
     <!-- Screen names -->
     <string name="screen_main">Home</string>
+    <string name="screen_main_short">@string/screen_main</string>
     <string name="screen_tracking">Location tracking</string>
+    <string name="screen_tracking_short">Tracking</string>
     <string name="screen_sms">SMS configuration</string>
-    <string name="screen_localize">Find device</string>
+    <string name="screen_sms_short">SMS</string>
+    <string name="screen_find">Find device</string>
+    <string name="screen_find_short">Localize</string>
     <string name="screen_history">Location history</string>
+    <string name="screen_history_short">History</string>
 </resources>

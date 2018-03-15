@@ -2,13 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_main"
+        android:id="@+id/action_screen_main"
         android:icon="@drawable/ic_screen_main"
-        android:title="@string/screen_main"
+        android:title="@string/screen_main_short"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_tracking"
+        android:id="@+id/action_screen_tracking"
         android:icon="@drawable/ic_screen_tracking"
-        android:title="@string/screen_tracking"
+        android:title="@string/screen_tracking_short"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_screen_find"
+        android:icon="@drawable/ic_screen_find"
+        android:title="@string/screen_find_short"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_screen_history"
+        android:icon="@drawable/ic_screen_history"
+        android:title="@string/screen_history_short"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_screen_sms"
+        android:icon="@drawable/ic_screen_sms"
+        android:title="@string/screen_sms_short"
         app:showAsAction="ifRoom" />
 </menu>
