@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- Base colors -->
+    <color name="colorPrimary">#039be5</color>
+    <color name="colorPrimaryDark">#006db3</color>
+    <color name="colorAccent">#fb8c00</color>
+
+    <!-- Status colors -->
+    <color name="colorStatusOk">#1faa00</color>
+    <color name="colorStatusWarning">#ff6d00</color>
+    <color name="colorStatusError">#dd2c00</color>
 </resources>
