@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/menu_notice_height">
+
+    <ImageView
+        android:id="@+id/imgNotice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_gap"
+        android:layout_marginStart="@dimen/small_gap"
+        android:contentDescription="@string/accessibility_notice"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_warning"
+        tools:tint="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/txtNotice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_gap"
+        android:layout_marginStart="@dimen/small_gap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/imgNotice"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Missing some permissions"
+        tools:textColor="@color/colorStatusWarning" />
+
+    <Button
+        android:id="@+id/btnNotice"
+        style="@style/NoticeButton"
+        android:layout_width="@dimen/menu_notice_button_width"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/small_gap"
+        android:layout_marginRight="@dimen/small_gap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Grant" />
+
+</android.support.constraint.ConstraintLayout>

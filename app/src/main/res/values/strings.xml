@@ -13,4 +13,7 @@
     <string name="screen_find_short">Localize</string>
     <string name="screen_history">Location history</string>
     <string name="screen_history_short">History</string>
+
+    <!-- Accessibility image descriptions -->
+    <string name="accessibility_notice">Notice icon</string>
 </resources>
