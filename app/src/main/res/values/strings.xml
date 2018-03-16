@@ -1,6 +1,8 @@
 <resources>
     <!-- System-wide strings -->
     <string name="app_name">Location Tracker</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
     
     <!-- Screen names -->
     <string name="screen_main">Home</string>
@@ -14,6 +16,11 @@
     <string name="screen_history">Location history</string>
     <string name="screen_history_short">History</string>
 
+    <!-- Menu item strings -->
+    <string name="menu_status">Status: %1$s</string>
+
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
+    <string name="accessibility_menu_control">Control item icon</string>
+    <string name="accessibility_menu_control_status">Status icon</string>
 </resources>

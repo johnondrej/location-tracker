@@ -2,6 +2,11 @@
 <resources>
     <!-- System-wide strings -->
     <string name="app_name">Location Tracker</string>
+    <string name="enabled">Zapnuto</string>
+    <string name="disabled">Vypnuto</string>
+
+    <!-- Menu item strings -->|
+    <string name="menu_status">Stav: %1$s</string>
 
     <!-- Screen names -->
     <string name="screen_main">Hlavní nabídka</string>
@@ -14,4 +19,9 @@
     <string name="screen_find_short">Lokalizovat</string>
     <string name="screen_history">Historie polohy</string>
     <string name="screen_history_short">@string/screen_history</string>
+
+    <!-- Accessibility image descriptions -->
+    <string name="accessibility_notice">Ikona oznámení</string>
+    <string name="accessibility_menu_control">Ikona ovládacího prvku</string>
+    <string name="accessibility_menu_control_status">Ikona stavu</string>
 </resources>

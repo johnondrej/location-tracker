@@ -6,4 +6,6 @@
     <!-- Main menu and its items -->
     <dimen name="menu_notice_height">50dp</dimen>
     <dimen name="menu_notice_button_width">100dp</dimen>
+    <dimen name="menu_control_height">210dp</dimen>
+    <dimen name="menu_control_caption_txt">20sp</dimen>
 </resources>

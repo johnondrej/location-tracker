@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/menu_control_height">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <ImageView
+        android:id="@+id/imgControl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/accessibility_menu_control"
+        app:layout_constraintBottom_toTopOf="@id/guidelineImage"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="#33FF88" />
+
+    <TextView
+        android:id="@+id/txtControlName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_gap"
+        android:layout_marginStart="@dimen/small_gap"
+        android:layout_marginTop="@dimen/small_gap"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/menu_control_caption_txt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        tools:text="@string/screen_tracking" />
+
+    <TextView
+        android:id="@+id/txtControlStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_gap"
+        android:layout_marginStart="@dimen/small_gap"
+        android:layout_marginTop="@dimen/small_gap"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtControlName"
+        tools:text="@string/menu_status"
+        tools:textColor="@color/colorStatusOk" />
+
+    <ImageView
+        android:id="@+id/imgControlStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_gap"
+        android:layout_marginStart="@dimen/small_gap"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/accessibility_menu_control_status"
+        app:layout_constraintLeft_toRightOf="@id/txtControlStatus"
+        app:layout_constraintTop_toBottomOf="@id/txtControlName"
+        tools:src="@drawable/ic_status_ok"
+        tools:tint="@color/colorStatusOk" />
+
+</android.support.constraint.ConstraintLayout>
