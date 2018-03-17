@@ -5,6 +5,22 @@
     <string name="enabled">Zapnuto</string>
     <string name="disabled">Vypnuto</string>
 
+    <!-- Units -->
+    <string name="unit_min">m</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_m">m</string>
+    <string name="unit_km">km</string>
+
+    <string-array name="units_time">
+        <item>@string/unit_min</item>
+        <item>@string/unit_hour</item>
+    </string-array>
+
+    <string-array name="units_distance">
+        <item>@string/unit_m</item>
+        <item>@string/unit_km</item>
+    </string-array>
+
     <!-- Menu item strings -->|
     <string name="menu_status">Stav: %1$s</string>
 
@@ -19,6 +35,16 @@
     <string name="screen_find_short">Lokalizovat</string>
     <string name="screen_history">Historie polohy</string>
     <string name="screen_history_short">@string/screen_history</string>
+
+    <!-- Location tracking screen -->
+    <string name="tracking_frequency">Frekvence:</string>
+    <string name="tracking_radius">Přesnost:</string>
+    <string name="tracking_constantly">Sledovat neustále</string>
+    <string name="tracking_false_alarm_reduction">Prevence falešných poplachů</string>
+    <string name="tracking_low_battery_notification">Notifikovat při nízké baterii</string>
+    <string name="tracking_low_battery_auto_off">Vypnout sledování při nízké baterii</string>
+    <string name="tracking_charger_detect">Notifikovat při odpojení nabíječky</string>
+    <string name="tracking_start">Začít sledovat</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Ikona oznámení</string>

@@ -8,9 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="NoticeButton" parent="Base.TextAppearance.AppCompat.Button">
+    <style name="Button" parent="Base.TextAppearance.AppCompat.Button">
         <item name="backgroundTint">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="DescriptionText" parent="Base.TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
 </resources>

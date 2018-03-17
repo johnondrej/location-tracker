@@ -2,6 +2,7 @@
 <resources>
     <!-- Base dimensions -->
     <dimen name="small_gap">8dp</dimen>
+    <dimen name="medium_gap">16dp</dimen>
 
     <!-- Main menu and its items -->
     <dimen name="menu_notice_height">50dp</dimen>

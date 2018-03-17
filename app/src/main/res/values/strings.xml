@@ -3,6 +3,22 @@
     <string name="app_name">Location Tracker</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
+
+    <!-- Units -->
+    <string name="unit_min">m</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_m">m</string>
+    <string name="unit_km">km</string>
+
+    <string-array name="units_time">
+        <item>@string/unit_min</item>
+        <item>@string/unit_hour</item>
+    </string-array>
+
+    <string-array name="units_distance">
+        <item>@string/unit_m</item>
+        <item>@string/unit_km</item>
+    </string-array>
     
     <!-- Screen names -->
     <string name="screen_main">Home</string>
@@ -18,6 +34,16 @@
 
     <!-- Menu item strings -->
     <string name="menu_status">Status: %1$s</string>
+    
+    <!-- Location tracking screen -->
+    <string name="tracking_frequency">Tracking frequency:</string>
+    <string name="tracking_radius">Location accuracy:</string>
+    <string name="tracking_constantly">Track constantly</string>
+    <string name="tracking_false_alarm_reduction">Reduce false alarms</string>
+    <string name="tracking_low_battery_notification">Notify when battery is low</string>
+    <string name="tracking_low_battery_auto_off">Turn tracking off when battery is low</string>
+    <string name="tracking_charger_detect">Notify when charger is disconnected</string>
+    <string name="tracking_start">Start tracking</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
