@@ -39,6 +39,7 @@
     <!-- Location tracking screen -->
     <string name="tracking_frequency">Frekvence:</string>
     <string name="tracking_radius">Přesnost:</string>
+    <string name="tracking_phone">Telefonní číslo alarmů:</string>
     <string name="tracking_constantly">Sledovat neustále</string>
     <string name="tracking_false_alarm_reduction">Prevence falešných poplachů</string>
     <string name="tracking_low_battery_notification">Notifikovat při nízké baterii</string>

@@ -38,6 +38,7 @@
     <!-- Location tracking screen -->
     <string name="tracking_frequency">Tracking frequency:</string>
     <string name="tracking_radius">Location accuracy:</string>
+    <string name="tracking_phone">Alarm phone number:</string>
     <string name="tracking_constantly">Track constantly</string>
     <string name="tracking_false_alarm_reduction">Reduce false alarms</string>
     <string name="tracking_low_battery_notification">Notify when battery is low</string>

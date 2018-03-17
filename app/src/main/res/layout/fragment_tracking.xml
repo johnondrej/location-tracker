@@ -103,12 +103,43 @@
                 app:layout_constraintLeft_toRightOf="@id/editRadius"
                 app:layout_constraintRight_toRightOf="parent" />
 
+            <TextView
+                android:id="@+id/txtPhone"
+                style="@style/DescriptionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tracking_phone"
+                app:layout_constraintBaseline_toBaselineOf="@id/editPhone"
+                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
+
+            <EditText
+                android:id="@+id/editPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/small_gap"
+                android:layout_marginStart="@dimen/small_gap"
+                android:layout_marginTop="@dimen/small_gap"
+                android:inputType="phone"
+                app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
+                app:layout_constraintRight_toLeftOf="@id/space"
+                app:layout_constraintTop_toBottomOf="@id/editRadius" />
+
+            <Space
+                android:id="@+id/space"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/small_gap"
+                android:layout_marginStart="@dimen/small_gap"
+                app:layout_constraintBottom_toBottomOf="@id/editPhone"
+                app:layout_constraintLeft_toRightOf="@id/editPhone"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <android.support.constraint.Barrier
                 android:id="@+id/barrierTextDescriptions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="right"
-                app:constraint_referenced_ids="txtFrequency,txtRadius" />
+                app:constraint_referenced_ids="txtFrequency,txtRadius,txtPhone" />
 
             <CheckBox
                 android:id="@+id/checkTrackConstantly"
@@ -117,7 +148,7 @@
                 android:layout_marginTop="@dimen/medium_gap"
                 android:text="@string/tracking_constantly"
                 app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-                app:layout_constraintTop_toBottomOf="@id/editRadius" />
+                app:layout_constraintTop_toBottomOf="@id/editPhone" />
 
             <CheckBox
                 android:id="@+id/checkFalseAlarms"
