@@ -55,8 +55,21 @@
     <string name="history_disable">Disable history</string>
     <string name="history_clear">Clear history</string>
 
+    <!-- Message configuration screen -->
+    <string name="sms_example">Alarm message example</string>
+    <string name="sms_config_description">Info included in alarms:</string>
+    <string name="sms_config_coords">GPS coordinates</string>
+    <string name="sms_config_accuracy">Location accuracy</string>
+    <string name="sms_config_time">Location time</string>
+    <string name="sms_config_source">Location source</string>
+    <string name="sms_config_wifi">WiFi name</string>
+    <string name="sms_config_wifi_nearby">WiFi networks nearby</string>
+    <string name="sms_config_loc_name">Location name</string>
+    <string name="sms_config_battery">Battery status</string>
+
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
     <string name="accessibility_menu_control">Control item icon</string>
     <string name="accessibility_menu_control_status">Status icon</string>
+    <string name="accessibility_message_icon">Message icon</string>
 </resources>

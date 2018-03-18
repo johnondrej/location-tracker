@@ -9,4 +9,9 @@
     <dimen name="menu_notice_button_width">100dp</dimen>
     <dimen name="menu_control_height">210dp</dimen>
     <dimen name="menu_control_caption_txt">20sp</dimen>
+
+    <!-- Message configuration screen -->
+    <dimen name="sms_message_width">300dp</dimen>
+    <dimen name="sms_message_height">200dp</dimen>
+    <dimen name="sms_message_padding_text">32dp</dimen>
 </resources>
