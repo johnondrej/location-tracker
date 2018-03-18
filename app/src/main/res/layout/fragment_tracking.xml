@@ -1,206 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/fragmentMap"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="2:1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/small_gap">
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentMap">
+        <fragment
+            android:id="@+id/fragmentMap"
+            android:name="cz.ojohn.locationtracker.view.ScrollMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineLeftMargin"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/small_gap">
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/medium_gap" />
 
-            <android.support.constraint.Guideline
-                android:id="@+id/guidelineLeftMargin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/medium_gap" />
+        <TextView
+            android:id="@+id/txtFrequency"
+            style="@style/DescriptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tracking_frequency"
+            app:layout_constraintBaseline_toBaselineOf="@id/editFrequency"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
 
-            <TextView
-                android:id="@+id/txtFrequency"
-                style="@style/DescriptionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tracking_frequency"
-                app:layout_constraintBaseline_toBaselineOf="@id/editFrequency"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
+        <EditText
+            android:id="@+id/editFrequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            android:layout_marginTop="@dimen/small_gap"
+            android:inputType="number"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
+            app:layout_constraintRight_toLeftOf="@id/spinnerFrequency"
+            app:layout_constraintTop_toBottomOf="@id/fragmentMap" />
 
-            <EditText
-                android:id="@+id/editFrequency"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/small_gap"
-                android:layout_marginStart="@dimen/small_gap"
-                android:layout_marginTop="@dimen/small_gap"
-                android:inputType="number"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
-                app:layout_constraintRight_toLeftOf="@id/spinnerFrequency"
-                app:layout_constraintTop_toTopOf="parent" />
+        <Spinner
+            android:id="@+id/spinnerFrequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_gap"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            app:layout_constraintBottom_toBottomOf="@id/editFrequency"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/editFrequency"
+            app:layout_constraintRight_toRightOf="parent" />
 
-            <Spinner
-                android:id="@+id/spinnerFrequency"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/small_gap"
-                android:layout_marginLeft="@dimen/small_gap"
-                android:layout_marginStart="@dimen/small_gap"
-                app:layout_constraintBottom_toBottomOf="@id/editFrequency"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@id/editFrequency"
-                app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:id="@+id/txtRadius"
+            style="@style/DescriptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tracking_radius"
+            app:layout_constraintBaseline_toBaselineOf="@id/editRadius"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
 
-            <TextView
-                android:id="@+id/txtRadius"
-                style="@style/DescriptionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tracking_radius"
-                app:layout_constraintBaseline_toBaselineOf="@id/editRadius"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
+        <EditText
+            android:id="@+id/editRadius"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            android:layout_marginTop="@dimen/small_gap"
+            android:inputType="number"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
+            app:layout_constraintRight_toLeftOf="@id/spinnerRadius"
+            app:layout_constraintTop_toBottomOf="@id/editFrequency" />
 
-            <EditText
-                android:id="@+id/editRadius"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/small_gap"
-                android:layout_marginStart="@dimen/small_gap"
-                android:layout_marginTop="@dimen/small_gap"
-                android:inputType="number"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
-                app:layout_constraintRight_toLeftOf="@id/spinnerRadius"
-                app:layout_constraintTop_toBottomOf="@id/editFrequency" />
+        <Spinner
+            android:id="@+id/spinnerRadius"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_gap"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            app:layout_constraintBottom_toBottomOf="@id/editRadius"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/editRadius"
+            app:layout_constraintRight_toRightOf="parent" />
 
-            <Spinner
-                android:id="@+id/spinnerRadius"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/small_gap"
-                android:layout_marginLeft="@dimen/small_gap"
-                android:layout_marginStart="@dimen/small_gap"
-                app:layout_constraintBottom_toBottomOf="@id/editRadius"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@id/editRadius"
-                app:layout_constraintRight_toRightOf="parent" />
+        <TextView
+            android:id="@+id/txtPhone"
+            style="@style/DescriptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tracking_phone"
+            app:layout_constraintBaseline_toBaselineOf="@id/editPhone"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
 
-            <TextView
-                android:id="@+id/txtPhone"
-                style="@style/DescriptionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tracking_phone"
-                app:layout_constraintBaseline_toBaselineOf="@id/editPhone"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
+        <EditText
+            android:id="@+id/editPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            android:layout_marginTop="@dimen/small_gap"
+            android:inputType="phone"
+            app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
+            app:layout_constraintRight_toLeftOf="@id/space"
+            app:layout_constraintTop_toBottomOf="@id/editRadius" />
 
-            <EditText
-                android:id="@+id/editPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/small_gap"
-                android:layout_marginStart="@dimen/small_gap"
-                android:layout_marginTop="@dimen/small_gap"
-                android:inputType="phone"
-                app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
-                app:layout_constraintRight_toLeftOf="@id/space"
-                app:layout_constraintTop_toBottomOf="@id/editRadius" />
+        <Space
+            android:id="@+id/space"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            app:layout_constraintBottom_toBottomOf="@id/editPhone"
+            app:layout_constraintLeft_toRightOf="@id/editPhone"
+            app:layout_constraintRight_toRightOf="parent" />
 
-            <Space
-                android:id="@+id/space"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/small_gap"
-                android:layout_marginStart="@dimen/small_gap"
-                app:layout_constraintBottom_toBottomOf="@id/editPhone"
-                app:layout_constraintLeft_toRightOf="@id/editPhone"
-                app:layout_constraintRight_toRightOf="parent" />
+        <android.support.constraint.Barrier
+            android:id="@+id/barrierTextDescriptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="right"
+            app:constraint_referenced_ids="txtFrequency,txtRadius,txtPhone" />
 
-            <android.support.constraint.Barrier
-                android:id="@+id/barrierTextDescriptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="right"
-                app:constraint_referenced_ids="txtFrequency,txtRadius,txtPhone" />
+        <CheckBox
+            android:id="@+id/checkTrackConstantly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_gap"
+            android:text="@string/tracking_constantly"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
+            app:layout_constraintTop_toBottomOf="@id/editPhone" />
 
-            <CheckBox
-                android:id="@+id/checkTrackConstantly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_gap"
-                android:text="@string/tracking_constantly"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-                app:layout_constraintTop_toBottomOf="@id/editPhone" />
+        <CheckBox
+            android:id="@+id/checkFalseAlarms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_gap"
+            android:text="@string/tracking_false_alarm_reduction"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
+            app:layout_constraintTop_toBottomOf="@id/checkTrackConstantly" />
 
-            <CheckBox
-                android:id="@+id/checkFalseAlarms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_gap"
-                android:text="@string/tracking_false_alarm_reduction"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-                app:layout_constraintTop_toBottomOf="@id/checkTrackConstantly" />
+        <CheckBox
+            android:id="@+id/checkBatteryNotify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_gap"
+            android:text="@string/tracking_low_battery_notification"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
+            app:layout_constraintTop_toBottomOf="@id/checkFalseAlarms" />
 
-            <CheckBox
-                android:id="@+id/checkBatteryNotify"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_gap"
-                android:text="@string/tracking_low_battery_notification"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-                app:layout_constraintTop_toBottomOf="@id/checkFalseAlarms" />
+        <CheckBox
+            android:id="@+id/checkBatteryAutoOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_gap"
+            android:text="@string/tracking_low_battery_auto_off"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
+            app:layout_constraintTop_toBottomOf="@id/checkBatteryNotify" />
 
-            <CheckBox
-                android:id="@+id/checkBatteryAutoOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_gap"
-                android:text="@string/tracking_low_battery_auto_off"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-                app:layout_constraintTop_toBottomOf="@id/checkBatteryNotify" />
+        <CheckBox
+            android:id="@+id/checkChargerDetect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_gap"
+            android:text="@string/tracking_charger_detect"
+            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
+            app:layout_constraintTop_toBottomOf="@id/checkBatteryAutoOff" />
 
-            <CheckBox
-                android:id="@+id/checkChargerDetect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_gap"
-                android:text="@string/tracking_charger_detect"
-                app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-                app:layout_constraintTop_toBottomOf="@id/checkBatteryAutoOff" />
+        <Button
+            android:id="@+id/btnStartTracking"
+            style="@style/Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/medium_gap"
+            android:layout_marginRight="@dimen/medium_gap"
+            android:layout_marginTop="@dimen/small_gap"
+            android:text="@string/tracking_start"
+            app:layout_constraintLeft_toRightOf="@id/guidelineLeftMargin"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkChargerDetect" />
 
-            <Button
-                android:id="@+id/btnStartTracking"
-                style="@style/Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/medium_gap"
-                android:layout_marginRight="@dimen/medium_gap"
-                android:layout_marginTop="@dimen/small_gap"
-                android:text="@string/tracking_start"
-                app:layout_constraintLeft_toRightOf="@id/guidelineLeftMargin"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/checkChargerDetect" />
+    </android.support.constraint.ConstraintLayout>
 
-        </android.support.constraint.ConstraintLayout>
-
-    </ScrollView>
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>
