@@ -63,7 +63,7 @@
     <string name="sms_config_time">Location time</string>
     <string name="sms_config_source">Location source</string>
     <string name="sms_config_wifi">WiFi name</string>
-    <string name="sms_config_wifi_nearby">WiFi networks nearby</string>
+    <string name="sms_config_wifi_nearby">Networks nearby</string>
     <string name="sms_config_loc_name">Location name</string>
     <string name="sms_config_battery">Battery status</string>
 
