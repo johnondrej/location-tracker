@@ -54,6 +54,7 @@
     <string name="history_enable">Enable history</string>
     <string name="history_disable">Disable history</string>
     <string name="history_clear">Clear history</string>
+    <string name="history_item_time">Device location at %1$s</string>
 
     <!-- Message configuration screen -->
     <string name="sms_example">Alarm message example</string>
