@@ -22,7 +22,7 @@
 
     <!-- Menu item strings -->
     <string name="menu_status">Status: %1$s</string>
-    
+
     <!-- Screen names -->
     <string name="screen_main">Home</string>
     <string name="screen_main_short">@string/screen_main</string>
@@ -34,7 +34,7 @@
     <string name="screen_find_short">Localize</string>
     <string name="screen_history">Location history</string>
     <string name="screen_history_short">History</string>
-    
+
     <!-- Location tracking screen -->
     <string name="tracking_frequency">Tracking frequency:</string>
     <string name="tracking_radius">Location accuracy:</string>
@@ -49,6 +49,11 @@
     <!-- Find device screen -->
     <string name="find_phone">Target phone number:</string>
     <string name="find_btn">Find device</string>
+
+    <!-- Location history screen -->
+    <string name="history_enable">Enable history</string>
+    <string name="history_disable">Disable history</string>
+    <string name="history_clear">Clear history</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
