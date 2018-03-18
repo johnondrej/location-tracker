@@ -3,6 +3,8 @@ package cz.ojohn.locationtracker.screen.main
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
 import cz.ojohn.locationtracker.screen.history.LocationHistoryFragment
@@ -29,6 +31,33 @@ class MainActivity : AppCompatActivity() {
             onScreenSelected(it.itemId)
             true
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> onSettingsSelected()
+            R.id.action_help -> onHelpSelected()
+            R.id.action_about_app -> onAboutAppSelected()
+            else -> return false
+        }
+        return true
+    }
+
+    private fun onSettingsSelected() {
+
+    }
+
+    private fun onHelpSelected() {
+
+    }
+
+    private fun onAboutAppSelected() {
+
     }
 
     private fun onScreenSelected(screenId: Int) {
