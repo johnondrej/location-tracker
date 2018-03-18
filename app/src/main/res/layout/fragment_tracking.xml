@@ -183,11 +183,13 @@
             style="@style/Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/medium_gap"
-            android:layout_marginRight="@dimen/medium_gap"
+            android:layout_marginEnd="@dimen/small_gap"
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginRight="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
             android:layout_marginTop="@dimen/small_gap"
             android:text="@string/tracking_start"
-            app:layout_constraintLeft_toRightOf="@id/guidelineLeftMargin"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/checkChargerDetect" />
 
