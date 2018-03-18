@@ -19,6 +19,9 @@
         <item>@string/unit_m</item>
         <item>@string/unit_km</item>
     </string-array>
+
+    <!-- Menu item strings -->
+    <string name="menu_status">Status: %1$s</string>
     
     <!-- Screen names -->
     <string name="screen_main">Home</string>
@@ -31,9 +34,6 @@
     <string name="screen_find_short">Localize</string>
     <string name="screen_history">Location history</string>
     <string name="screen_history_short">History</string>
-
-    <!-- Menu item strings -->
-    <string name="menu_status">Status: %1$s</string>
     
     <!-- Location tracking screen -->
     <string name="tracking_frequency">Tracking frequency:</string>
@@ -45,6 +45,10 @@
     <string name="tracking_low_battery_auto_off">Turn tracking off when battery is low</string>
     <string name="tracking_charger_detect">Notify when charger is disconnected</string>
     <string name="tracking_start">Start tracking</string>
+
+    <!-- Find device screen -->
+    <string name="find_phone">Target phone number:</string>
+    <string name="find_btn">Find device</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
