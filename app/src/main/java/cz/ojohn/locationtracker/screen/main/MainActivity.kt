@@ -1,5 +1,6 @@
 package cz.ojohn.locationtracker.screen.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -7,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
+import cz.ojohn.locationtracker.screen.help.HelpActivity
+import cz.ojohn.locationtracker.screen.help.HelpFragment
 import cz.ojohn.locationtracker.screen.history.LocationHistoryFragment
 import cz.ojohn.locationtracker.screen.sms.SmsFragment
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
@@ -25,6 +28,12 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                     .add(R.id.fragmentContainer, MainFragment.newInstance())
                     .commit()
+
+            if (isInTabletMode()) {
+                supportFragmentManager.beginTransaction()
+                        .add(R.id.helpFragmentContainer, HelpFragment.newInstance())
+                        .commit()
+            }
         }
 
         bottomNavigation.setOnNavigationItemSelectedListener {
@@ -35,6 +44,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        if (isInTabletMode()) {
+            menu.removeItem(R.id.action_help)
+        }
         return true
     }
 
@@ -53,7 +66,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onHelpSelected() {
-
+        Intent(this, HelpActivity::class.java).let {
+            startActivity(it)
+        }
     }
 
     private fun onAboutAppSelected() {
@@ -77,4 +92,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragmentContainer, screenFragment)
                 .commit()
     }
+
+    private fun isInTabletMode(): Boolean = helpFragmentContainer != null
 }
