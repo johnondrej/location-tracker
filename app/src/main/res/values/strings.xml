@@ -48,6 +48,7 @@
     <string name="tracking_low_battery_auto_off">Turn tracking off when battery is low</string>
     <string name="tracking_charger_detect">Notify when charger is disconnected</string>
     <string name="tracking_start">Start tracking</string>
+    <string name="tracking_stop">Stop tracking</string>
 
     <!-- Find device screen -->
     <string name="find_phone">Target phone number:</string>
@@ -70,6 +71,11 @@
     <string name="sms_config_wifi_nearby">Networks nearby</string>
     <string name="sms_config_loc_name">Location name</string>
     <string name="sms_config_battery">Battery status</string>
+
+    <!-- Notifications -->
+    <string name="channel_tracking_name">Location tracking</string>
+    <string name="channel_tracking_description">Information about location tracking</string>
+    <string name="notification_tracking_content">Location tracking is running!</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
