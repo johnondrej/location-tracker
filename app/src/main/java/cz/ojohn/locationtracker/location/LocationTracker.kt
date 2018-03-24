@@ -29,7 +29,11 @@ class LocationTracker(private val appContext: Context,
 
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle?) {
         if (provider == locationController.locationSource.androidProvider) {
-            if (status != LocationProvider.AVAILABLE) {
+            if (status == LocationProvider.AVAILABLE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
+                if (statusSubject.value == TrackingStatus.NOT_AVAILABLE) {
+                    statusSubject.onNext(TrackingStatus.RUNNING)
+                }
+            } else {
                 statusSubject.onNext(TrackingStatus.NOT_AVAILABLE)
             }
         }
