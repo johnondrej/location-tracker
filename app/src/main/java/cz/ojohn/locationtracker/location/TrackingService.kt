@@ -1,6 +1,7 @@
 package cz.ojohn.locationtracker.location
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import cz.ojohn.locationtracker.App
@@ -11,6 +12,10 @@ import javax.inject.Inject
  * Android service managing location tracking
  */
 class TrackingService : Service() {
+
+    companion object {
+        fun getIntent(context: Context) = Intent(context, TrackingService::class.java)
+    }
 
     @Inject
     lateinit var locationTracker: LocationTracker
@@ -32,7 +37,6 @@ class TrackingService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(NotificationController.TRACKING_NOTIFICATION_ID,
                 notificationController.getLocationTrackingNotification())
-        locationTracker.enableTracking()
         return START_STICKY
     }
 }

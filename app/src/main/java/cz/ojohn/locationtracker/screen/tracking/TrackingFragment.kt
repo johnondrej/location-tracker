@@ -1,17 +1,18 @@
 package cz.ojohn.locationtracker.screen.tracking
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
+import cz.ojohn.locationtracker.data.TrackingFrequency
+import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.location.LocationTracker
-import cz.ojohn.locationtracker.location.TrackingService
 import cz.ojohn.locationtracker.util.areAllPermissionsGranted
 import cz.ojohn.locationtracker.util.isPermissionGranted
 import cz.ojohn.locationtracker.view.ScrollMapFragment
@@ -31,12 +32,11 @@ class TrackingFragment : Fragment() {
         const val REQUEST_ENABLE_TRACKING = 1
     }
 
-    private val trackingServiceIntent: Intent
-        get() = Intent(context, TrackingService::class.java)
-
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    private lateinit var frequencySpinnerAdapter: ArrayAdapter<CharSequence>
+    private lateinit var radiusSpinnerAdapter: ArrayAdapter<CharSequence>
     private lateinit var viewModel: TrackingViewModel
     private lateinit var disposables: CompositeDisposable
     private lateinit var trackingStatus: LocationTracker.TrackingStatus
@@ -50,17 +50,36 @@ class TrackingFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_tracking, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as ScrollMapFragment
         mapFragment.touchListener = { scrollView.requestDisallowInterceptTouchEvent(true) }
+        frequencySpinnerAdapter = ArrayAdapter.createFromResource(context,
+                R.array.units_time, android.R.layout.simple_spinner_item).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        radiusSpinnerAdapter = ArrayAdapter.createFromResource(context,
+                R.array.units_distance, android.R.layout.simple_spinner_item).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        spinnerFrequency.adapter = frequencySpinnerAdapter
+        spinnerRadius.adapter = radiusSpinnerAdapter
         btnStartTracking.setOnClickListener { onStartTrackingButtonSelected() }
+        checkTrackConstantly.setOnCheckedChangeListener { _, isChecked ->
+            editFrequency.isEnabled = !isChecked
+            spinnerFrequency.isEnabled = !isChecked
+        }
+
+        initForm()
     }
 
     override fun onResume() {
         super.onResume()
         disposables.add(viewModel.observeTrackingStatus()
                 .subscribe { onTrackingStatusChanged(it) })
+        disposables.add(viewModel.observeFormState()
+                .subscribe { onFormStateChanged(it) })
     }
 
     override fun onPause() {
@@ -73,7 +92,7 @@ class TrackingFragment : Fragment() {
         when (requestCode) {
             REQUEST_ENABLE_TRACKING -> {
                 if (grantResults.areAllPermissionsGranted()) {
-                    onTrackingEnabled()
+                    viewModel.onEnableTracking()
                 } else {
                     view?.let {
                         Snackbar.make(it, R.string.tracking_permissions_denied, Snackbar.LENGTH_LONG).show()
@@ -81,6 +100,35 @@ class TrackingFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun initForm() {
+        val trackingSettings = viewModel.getTrackingSettings()
+
+        editFrequency.setText(trackingSettings.frequency.value.toString())
+        spinnerFrequency.setSelection(frequencySpinnerAdapter.getPosition(trackingSettings.frequency.selectedUnit))
+        editRadius.setText(trackingSettings.radius.value.toString())
+        spinnerRadius.setSelection(radiusSpinnerAdapter.getPosition(trackingSettings.radius.selectedUnit))
+        editPhone.setText(trackingSettings.phone)
+        checkTrackConstantly.isChecked = trackingSettings.trackConstantly
+        checkFalseAlarms.isChecked = trackingSettings.reduceFalseAlarms
+        checkBatteryNotify.isChecked = trackingSettings.lowBatteryNotify
+        checkBatteryAutoOff.isChecked = trackingSettings.lowBatteryTurnOff
+        checkChargerDetect.isChecked = trackingSettings.chargerNotify
+    }
+
+    private fun setFormEnabled(enabled: Boolean) {
+        val frequencyEnabled = enabled && !checkTrackConstantly.isChecked
+        editFrequency.isEnabled = frequencyEnabled
+        spinnerFrequency.isEnabled = frequencyEnabled
+        editRadius.isEnabled = enabled
+        spinnerRadius.isEnabled = enabled
+        editPhone.isEnabled = enabled
+        checkTrackConstantly.isEnabled = enabled
+        checkFalseAlarms.isEnabled = enabled
+        checkBatteryNotify.isEnabled = enabled
+        checkBatteryAutoOff.isEnabled = enabled
+        checkChargerDetect.isEnabled = enabled
     }
 
     private fun onTrackingStatusChanged(status: LocationTracker.TrackingStatus) {
@@ -96,12 +144,39 @@ class TrackingFragment : Fragment() {
                 Snackbar.make(it, R.string.tracking_not_available, Snackbar.LENGTH_LONG).show()
             }
         }
+        setFormEnabled(status == LocationTracker.TrackingStatus.DISABLED)
     }
 
     private fun onStartTrackingButtonSelected() {
         when (trackingStatus) {
-            LocationTracker.TrackingStatus.DISABLED -> onEnableTracking()
-            else -> onDisableTracking()
+            LocationTracker.TrackingStatus.DISABLED -> {
+                val frequency = if (editFrequency.text.isNotEmpty()) editFrequency.text.toString().toInt() else 0
+                val radius = if (editRadius.text.isNotEmpty()) editRadius.text.toString().toInt() else 0
+
+                viewModel.onCheckFormValues(LocationTracker.Settings(
+                        TrackingFrequency(frequency, spinnerFrequency.selectedItem as String),
+                        TrackingRadius(radius, spinnerRadius.selectedItem as String),
+                        editPhone.text.toString(),
+                        checkTrackConstantly.isChecked,
+                        checkFalseAlarms.isChecked,
+                        checkBatteryNotify.isChecked,
+                        checkBatteryAutoOff.isChecked,
+                        checkChargerDetect.isChecked
+                ))
+            }
+            else -> viewModel.onDisableTracking()
+        }
+    }
+
+    private fun onFormStateChanged(formState: TrackingViewModel.FormState) {
+        when (formState) {
+            is TrackingViewModel.FormState.Valid -> onEnableTracking()
+            is TrackingViewModel.FormState.Error -> {
+                val message = requireContext().getString(formState.messageRes, *formState.params)
+                view?.let {
+                    Snackbar.make(it, message, Snackbar.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
@@ -109,18 +184,10 @@ class TrackingFragment : Fragment() {
         val ctx = requireContext()
         if (ctx.isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 && ctx.isPermissionGranted(android.Manifest.permission.SEND_SMS)) {
-            onTrackingEnabled()
+            viewModel.onEnableTracking()
         } else {
             requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.SEND_SMS), REQUEST_ENABLE_TRACKING)
         }
-    }
-
-    private fun onDisableTracking() {
-        requireContext().stopService(trackingServiceIntent)
-    }
-
-    private fun onTrackingEnabled() {
-        requireContext().startService(trackingServiceIntent)
     }
 }
