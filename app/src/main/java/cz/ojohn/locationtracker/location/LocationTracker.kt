@@ -33,7 +33,7 @@ class LocationTracker(private val appContext: Context,
         if (provider == locationController.locationSource.androidProvider) {
             if (status == LocationProvider.AVAILABLE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
                 if (statusSubject.value == TrackingStatus.NOT_AVAILABLE) {
-                    enableTracking()
+                    startTrackingService()
                     statusSubject.onNext(TrackingStatus.RUNNING)
                 }
             } else {
@@ -50,17 +50,21 @@ class LocationTracker(private val appContext: Context,
         }
     }
 
-    fun enableTracking() {
+    fun startTrackingService() {
         if (statusSubject.value != TrackingStatus.RUNNING) {
-            try {
-                appContext.startService(TrackingService.getIntent(appContext))
-                appContext.locationManager.requestLocationUpdates(locationController.locationSource.androidProvider,
-                        0, 0f, this)
-                statusSubject.onNext(TrackingStatus.RUNNING)
-            } catch (ex: SecurityException) {
-                throw IllegalStateException("Tried to launch enable tracking without permissions")
-            }
+            appContext.startService(TrackingService.getIntent(appContext))
         }
+    }
+
+    fun enableTracking() {
+        try {
+            appContext.locationManager.requestLocationUpdates(locationController.locationSource.androidProvider,
+                    0, 0f, this)
+            statusSubject.onNext(TrackingStatus.RUNNING)
+        } catch (ex: SecurityException) {
+            throw IllegalStateException("Tried to launch enable tracking without permissions")
+        }
+
     }
 
     fun disableTracking() {

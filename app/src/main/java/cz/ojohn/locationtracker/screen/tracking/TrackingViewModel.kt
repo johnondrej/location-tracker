@@ -56,7 +56,7 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
     }
 
     fun onEnableTracking() {
-        locationTracker.enableTracking()
+        locationTracker.startTrackingService()
     }
 
     fun onDisableTracking() {

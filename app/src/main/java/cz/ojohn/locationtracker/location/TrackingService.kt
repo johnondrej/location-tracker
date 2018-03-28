@@ -27,6 +27,8 @@ class TrackingService : Service() {
     override fun onCreate() {
         super.onCreate()
         App.instance.appComponent.inject(this)
+        startForeground(NotificationController.TRACKING_NOTIFICATION_ID,
+                notificationController.getLocationTrackingNotification())
     }
 
     override fun onDestroy() {
@@ -35,8 +37,7 @@ class TrackingService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(NotificationController.TRACKING_NOTIFICATION_ID,
-                notificationController.getLocationTrackingNotification())
+        locationTracker.enableTracking()
         return START_STICKY
     }
 }
