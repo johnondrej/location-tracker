@@ -51,7 +51,11 @@ class TrackingService : Service() {
             acquire()
         }
 
-        locationTracker.enableTracking()
+        val trackingEnabled = locationTracker.enableTracking()
+        if (!trackingEnabled) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
         return START_STICKY
     }
 

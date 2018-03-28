@@ -10,6 +10,7 @@ import cz.ojohn.locationtracker.data.TrackingFrequency
 import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.util.locationManager
+import cz.ojohn.locationtracker.util.startForegroundServiceCompat
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -34,10 +35,10 @@ class LocationTracker(private val appContext: Context,
             if (status == LocationProvider.AVAILABLE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
                 if (statusSubject.value == TrackingStatus.NOT_AVAILABLE) {
                     startTrackingService()
-                    statusSubject.onNext(TrackingStatus.RUNNING)
+                    changeStatus(TrackingStatus.RUNNING)
                 }
             } else {
-                statusSubject.onNext(TrackingStatus.NOT_AVAILABLE)
+                changeStatus(TrackingStatus.NOT_AVAILABLE)
             }
         }
     }
@@ -46,31 +47,41 @@ class LocationTracker(private val appContext: Context,
 
     override fun onProviderDisabled(provider: String?) {
         if (provider == locationController.locationSource.androidProvider) {
-            statusSubject.onNext(TrackingStatus.NOT_AVAILABLE)
+            changeStatus(TrackingStatus.NOT_AVAILABLE)
         }
     }
 
     fun startTrackingService() {
         if (statusSubject.value != TrackingStatus.RUNNING) {
-            appContext.startService(TrackingService.getIntent(appContext))
+            appContext.startForegroundServiceCompat(TrackingService.getIntent(appContext))
         }
     }
 
-    fun enableTracking() {
+    fun restartTracking() {
+        val lastStatus = TrackingStatus.valueOf(
+                userPreferences.getString(UserPreferences.KEY_TRACKING_LAST_STATUS, TrackingStatus.DISABLED.toString()))
+
+        if (lastStatus != TrackingStatus.DISABLED) {
+            startTrackingService()
+        }
+    }
+
+    fun enableTracking(): Boolean {
         try {
             appContext.locationManager.requestLocationUpdates(locationController.locationSource.androidProvider,
                     0, 0f, this)
-            statusSubject.onNext(TrackingStatus.RUNNING)
+            changeStatus(TrackingStatus.RUNNING)
         } catch (ex: SecurityException) {
-            throw IllegalStateException("Tried to launch enable tracking without permissions")
+            changeStatus(TrackingStatus.DISABLED)
+            return false
         }
-
+        return true
     }
 
     fun disableTracking() {
         appContext.locationManager.removeUpdates(this)
         appContext.stopService(TrackingService.getIntent(appContext))
-        statusSubject.onNext(TrackingStatus.DISABLED)
+        changeStatus(TrackingStatus.DISABLED)
     }
 
     fun getSettings(): LocationTracker.Settings {
@@ -84,6 +95,13 @@ class LocationTracker(private val appContext: Context,
     fun observeLocationUpdates(): Observable<LocationEntry> = locationSubject
 
     fun observeTrackingStatus(): Observable<TrackingStatus> = statusSubject
+
+    private fun changeStatus(status: TrackingStatus) {
+        statusSubject.onNext(status)
+        userPreferences.edit()
+                .put(UserPreferences.KEY_TRACKING_LAST_STATUS, status.toString())
+                .apply()
+    }
 
     enum class TrackingStatus {
         RUNNING, // Location tracking is running

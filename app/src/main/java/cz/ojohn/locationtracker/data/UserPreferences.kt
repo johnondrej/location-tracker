@@ -15,6 +15,7 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val TRACKING_MIN_RADIUS = 50
         const val TRACKING_MAX_RADIUS = 10000
 
+        const val KEY_TRACKING_LAST_STATUS = "tracking_last_status"
         const val KEY_TRACKING_FREQUENCY = "tracking_frequency"
         const val KEY_TRACKING_FREQUENCY_UNIT = "tracking_frequency_unit"
         const val KEY_TRACKING_RADIUS = "tracking_radius"

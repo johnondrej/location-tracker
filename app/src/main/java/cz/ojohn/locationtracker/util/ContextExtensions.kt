@@ -2,7 +2,9 @@ package cz.ojohn.locationtracker.util
 
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.location.LocationManager
+import android.os.Build
 import android.os.PowerManager
 
 /**
@@ -16,3 +18,11 @@ val Context.notificationManager: NotificationManager
 
 val Context.powerManager: PowerManager
     get() = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+fun Context.startForegroundServiceCompat(intent: Intent) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        startForegroundService(intent)
+    } else {
+        startService(intent)
+    }
+}
