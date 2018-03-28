@@ -1,11 +1,14 @@
 package cz.ojohn.locationtracker.location
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.os.PowerManager
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.util.NotificationController
+import cz.ojohn.locationtracker.util.powerManager
 import javax.inject.Inject
 
 /**
@@ -14,8 +17,12 @@ import javax.inject.Inject
 class TrackingService : Service() {
 
     companion object {
+        private const val TAG_WAKELOCK = "tracking_wl"
+
         fun getIntent(context: Context) = Intent(context, TrackingService::class.java)
     }
+
+    var wakeLock: PowerManager.WakeLock? = null
 
     @Inject
     lateinit var locationTracker: LocationTracker
@@ -34,10 +41,23 @@ class TrackingService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         locationTracker.disableTracking()
+        releaseWakeLock()
     }
 
+    @SuppressLint("WakelockTimeout")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        releaseWakeLock()
+        wakeLock = applicationContext.powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG_WAKELOCK).apply {
+            acquire()
+        }
+
         locationTracker.enableTracking()
         return START_STICKY
+    }
+
+    private fun releaseWakeLock() {
+        if (wakeLock?.isHeld == true) {
+            wakeLock?.release()
+        }
     }
 }

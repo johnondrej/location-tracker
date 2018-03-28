@@ -3,6 +3,7 @@ package cz.ojohn.locationtracker.util
 import android.app.NotificationManager
 import android.content.Context
 import android.location.LocationManager
+import android.os.PowerManager
 
 /**
  * File with various extension functions for Android Context
@@ -12,3 +13,6 @@ val Context.locationManager: LocationManager
 
 val Context.notificationManager: NotificationManager
     get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+val Context.powerManager: PowerManager
+    get() = getSystemService(Context.POWER_SERVICE) as PowerManager
