@@ -19,6 +19,8 @@ import javax.inject.Inject
  */
 class TrackingViewModel @Inject constructor(private val locationTracker: LocationTracker) : ViewModel() {
 
+    var askingForPermissions: Boolean = false
+
     private val disposables: CompositeDisposable = CompositeDisposable()
     private val statusSubject: BehaviorSubject<LocationTracker.TrackingStatus> = BehaviorSubject.create()
     private val formStateSubject: PublishSubject<FormState> = PublishSubject.create()
@@ -53,6 +55,10 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
 
         locationTracker.updateSettings(settings)
         formStateSubject.onNext(FormState.Valid())
+    }
+
+    fun onEnableMapLocation() {
+
     }
 
     fun onEnableTracking() {

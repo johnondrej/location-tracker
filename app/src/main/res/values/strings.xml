@@ -49,8 +49,8 @@
     <string name="tracking_charger_detect">Notify when charger is disconnected</string>
     <string name="tracking_start">Start tracking</string>
     <string name="tracking_stop">Stop tracking</string>
-    <string name="tracking_permissions_denied">Please enable permissions needed to enable location tracking</string>
-    <string name="tracking_not_available">Location services are not available</string>
+    <string name="tracking_error_permissions_denied">Please enable permissions needed to enable location tracking</string>
+    <string name="tracking_error_not_available">Location services are not available</string>
     <string name="tracking_error_frequency">Allowed frequency: %1$d - %2$d m</string>
     <string name="tracking_error_radius">Allowed radius: %1$d - %2$d m</string>
     <string name="tracking_error_phone">Invalid phone number</string>

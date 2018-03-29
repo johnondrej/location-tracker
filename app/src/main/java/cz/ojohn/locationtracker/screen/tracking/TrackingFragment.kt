@@ -1,6 +1,7 @@
 package cz.ojohn.locationtracker.screen.tracking
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -15,6 +16,7 @@ import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.location.LocationTracker
 import cz.ojohn.locationtracker.util.areAllPermissionsGranted
 import cz.ojohn.locationtracker.util.isPermissionGranted
+import cz.ojohn.locationtracker.util.showSnackbar
 import cz.ojohn.locationtracker.view.ScrollMapFragment
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
@@ -29,7 +31,8 @@ class TrackingFragment : Fragment() {
     companion object {
         fun newInstance(): TrackingFragment = TrackingFragment()
 
-        const val REQUEST_ENABLE_TRACKING = 1
+        const val REQUEST_INITIAL = 1
+        const val REQUEST_ENABLE_TRACKING = 2
     }
 
     @Inject
@@ -49,7 +52,6 @@ class TrackingFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(TrackingViewModel::class.java)
         return inflater.inflate(R.layout.fragment_tracking, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,6 +74,10 @@ class TrackingFragment : Fragment() {
         }
 
         initForm()
+
+        if (savedInstanceState == null) {
+            onEnableMapLocation()
+        }
     }
 
     override fun onResume() {
@@ -89,14 +95,21 @@ class TrackingFragment : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        viewModel.askingForPermissions = false
+
         when (requestCode) {
+            REQUEST_INITIAL -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    viewModel.onEnableMapLocation()
+                } else {
+                    showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
+                }
+            }
             REQUEST_ENABLE_TRACKING -> {
                 if (grantResults.areAllPermissionsGranted()) {
                     viewModel.onEnableTracking()
                 } else {
-                    view?.let {
-                        Snackbar.make(it, R.string.tracking_permissions_denied, Snackbar.LENGTH_LONG).show()
-                    }
+                    showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
                 }
             }
         }
@@ -140,9 +153,7 @@ class TrackingFragment : Fragment() {
         btnStartTracking.text = buttonText
 
         if (status == LocationTracker.TrackingStatus.NOT_AVAILABLE) {
-            view?.let {
-                Snackbar.make(it, R.string.tracking_not_available, Snackbar.LENGTH_LONG).show()
-            }
+            showSnackbar(R.string.tracking_error_not_available, Snackbar.LENGTH_LONG)
         }
         setFormEnabled(status == LocationTracker.TrackingStatus.DISABLED)
     }
@@ -173,9 +184,7 @@ class TrackingFragment : Fragment() {
             is TrackingViewModel.FormState.Valid -> onEnableTracking()
             is TrackingViewModel.FormState.Error -> {
                 val message = requireContext().getString(formState.messageRes, *formState.params)
-                view?.let {
-                    Snackbar.make(it, message, Snackbar.LENGTH_LONG).show()
-                }
+                showSnackbar(message, Snackbar.LENGTH_LONG)
             }
         }
     }
@@ -186,8 +195,24 @@ class TrackingFragment : Fragment() {
                 && ctx.isPermissionGranted(android.Manifest.permission.SEND_SMS)) {
             viewModel.onEnableTracking()
         } else {
-            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+            askForPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.SEND_SMS), REQUEST_ENABLE_TRACKING)
+        }
+    }
+
+    private fun onEnableMapLocation() {
+        val ctx = requireContext()
+        if (ctx.isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            viewModel.onEnableMapLocation()
+        } else {
+            askForPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_INITIAL)
+        }
+    }
+
+    private fun askForPermissions(permissions: Array<String>, requestCode: Int) {
+        if (!viewModel.askingForPermissions) {
+            viewModel.askingForPermissions = true
+            requestPermissions(permissions, requestCode)
         }
     }
 }
