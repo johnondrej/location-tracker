@@ -23,6 +23,8 @@ class LocationTracker(private val appContext: Context,
                       private val userPreferences: UserPreferences,
                       private val locationController: LocationController) : LocationListener {
 
+    private var listenerCount: Int = 0
+
     private val locationSubject: PublishSubject<LocationEntry> = PublishSubject.create()
     private val statusSubject: BehaviorSubject<TrackingStatus> = BehaviorSubject.createDefault(TrackingStatus.DISABLED)
 
@@ -68,8 +70,7 @@ class LocationTracker(private val appContext: Context,
 
     fun enableTracking(): Boolean {
         try {
-            appContext.locationManager.requestLocationUpdates(locationController.locationSource.androidProvider,
-                    0, 0f, this)
+            enableLocationUpdates()
             changeStatus(TrackingStatus.RUNNING)
         } catch (ex: SecurityException) {
             changeStatus(TrackingStatus.DISABLED)
@@ -79,9 +80,31 @@ class LocationTracker(private val appContext: Context,
     }
 
     fun disableTracking() {
-        appContext.locationManager.removeUpdates(this)
+        disableLocationUpdates()
         appContext.stopService(TrackingService.getIntent(appContext))
         changeStatus(TrackingStatus.DISABLED)
+    }
+
+    fun enableLocationUpdates(): Boolean {
+        if (listenerCount == 0) {
+            try {
+                appContext.locationManager.requestLocationUpdates(locationController.locationSource.androidProvider,
+                        0, 0f, this)
+                listenerCount++
+            } catch (ex: SecurityException) {
+                return false
+            }
+        } else {
+            listenerCount++
+        }
+        return true
+    }
+
+    fun disableLocationUpdates() {
+        if (listenerCount == 1) {
+            appContext.locationManager.removeUpdates(this)
+        }
+        listenerCount--
     }
 
     fun getSettings(): LocationTracker.Settings {
@@ -90,6 +113,20 @@ class LocationTracker(private val appContext: Context,
 
     fun updateSettings(settings: Settings) {
         userPreferences.setTrackingSettings(settings)
+    }
+
+    fun getLastKnownLocation(): LocationEntry? {
+        try {
+            val gpsLastPos = appContext.locationManager.getLastKnownLocation(LocationController.LocationSource.GPS.androidProvider)
+            if (gpsLastPos != null) {
+                return gpsLastPos.toLocationEntry()
+            }
+            return appContext.locationManager
+                    .getLastKnownLocation(LocationController.LocationSource.NETWORK.androidProvider)
+                    ?.toLocationEntry()
+        } catch (ex: SecurityException) {
+            return null
+        }
     }
 
     fun observeLocationUpdates(): Observable<LocationEntry> = locationSubject

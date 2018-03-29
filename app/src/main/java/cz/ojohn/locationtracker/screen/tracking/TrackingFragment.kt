@@ -9,6 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.TrackingFrequency
@@ -35,6 +41,8 @@ class TrackingFragment : Fragment() {
         const val REQUEST_ENABLE_TRACKING = 2
     }
 
+    private var map: Map? = null
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -55,8 +63,11 @@ class TrackingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.preserveMarkerPos = false
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as ScrollMapFragment
         mapFragment.touchListener = { scrollView.requestDisallowInterceptTouchEvent(true) }
+        mapFragment.getMapAsync { it?.let { map = Map(it, null) } }
+
         frequencySpinnerAdapter = ArrayAdapter.createFromResource(context,
                 R.array.units_time, android.R.layout.simple_spinner_item).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -74,9 +85,8 @@ class TrackingFragment : Fragment() {
         }
 
         initForm()
-
         if (savedInstanceState == null) {
-            onEnableMapLocation()
+            askForLocationPermission()
         }
     }
 
@@ -86,10 +96,15 @@ class TrackingFragment : Fragment() {
                 .subscribe { onTrackingStatusChanged(it) })
         disposables.add(viewModel.observeFormState()
                 .subscribe { onFormStateChanged(it) })
+        disposables.add(viewModel.observeMapState()
+                .subscribe { onMapStateChanged(it) })
+
+        onEnableMapLocation()
     }
 
     override fun onPause() {
         super.onPause()
+        viewModel.onDisableMapLocation()
         disposables.clear()
     }
 
@@ -99,9 +114,7 @@ class TrackingFragment : Fragment() {
 
         when (requestCode) {
             REQUEST_INITIAL -> {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    viewModel.onEnableMapLocation()
-                } else {
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
                 }
             }
@@ -189,6 +202,26 @@ class TrackingFragment : Fragment() {
         }
     }
 
+    private fun onMapStateChanged(mapState: TrackingViewModel.MapState) {
+        val coords = LatLng(mapState.locationEntry.lat, mapState.locationEntry.lon)
+        when (mapState) {
+            is TrackingViewModel.MapState.WithoutPosition -> {
+                map?.googleMap?.let {
+                    viewModel.preserveMarkerPos = true
+                    it.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coords, 14f)))
+                    val locationMarker = it.addMarker(MarkerOptions()
+                            .position(coords))
+                    map = map?.copy(marker = locationMarker)
+                }
+            }
+            is TrackingViewModel.MapState.PositionAligned -> {
+                map?.let {
+                    it.marker?.position = coords
+                }
+            }
+        }
+    }
+
     private fun onEnableTracking() {
         val ctx = requireContext()
         if (ctx.isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -201,10 +234,13 @@ class TrackingFragment : Fragment() {
     }
 
     private fun onEnableMapLocation() {
-        val ctx = requireContext()
-        if (ctx.isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (requireContext().isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             viewModel.onEnableMapLocation()
-        } else {
+        }
+    }
+
+    private fun askForLocationPermission() {
+        if (!requireContext().isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             askForPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_INITIAL)
         }
     }
@@ -215,4 +251,6 @@ class TrackingFragment : Fragment() {
             requestPermissions(permissions, requestCode)
         }
     }
+
+    private data class Map(val googleMap: GoogleMap, val marker: Marker?)
 }
