@@ -11,6 +11,7 @@ import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.util.locationManager
 import cz.ojohn.locationtracker.util.startForegroundServiceCompat
+import cz.ojohn.locationtracker.util.toLocationEntry
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -26,8 +27,7 @@ class LocationTracker(private val appContext: Context,
     private val statusSubject: BehaviorSubject<TrackingStatus> = BehaviorSubject.createDefault(TrackingStatus.DISABLED)
 
     override fun onLocationChanged(location: Location) {
-        locationSubject.onNext(LocationEntry(location.latitude, location.longitude,
-                location.altitude, location.accuracy, location.time))
+        locationSubject.onNext(location.toLocationEntry())
     }
 
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle?) {
