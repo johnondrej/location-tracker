@@ -40,7 +40,9 @@ class LocationTracker(private val appContext: Context,
                     changeStatus(TrackingStatus.RUNNING)
                 }
             } else {
-                changeStatus(TrackingStatus.NOT_AVAILABLE)
+                if (statusSubject.value != TrackingStatus.DISABLED) {
+                    changeStatus(TrackingStatus.NOT_AVAILABLE)
+                }
             }
         }
     }
@@ -48,7 +50,7 @@ class LocationTracker(private val appContext: Context,
     override fun onProviderEnabled(provider: String?) {}
 
     override fun onProviderDisabled(provider: String?) {
-        if (provider == locationController.locationSource.androidProvider) {
+        if (provider == locationController.locationSource.androidProvider && statusSubject.value != TrackingStatus.DISABLED) {
             changeStatus(TrackingStatus.NOT_AVAILABLE)
         }
     }
@@ -80,9 +82,11 @@ class LocationTracker(private val appContext: Context,
     }
 
     fun disableTracking() {
-        disableLocationUpdates()
-        appContext.stopService(TrackingService.getIntent(appContext))
-        changeStatus(TrackingStatus.DISABLED)
+        if (statusSubject.value != TrackingStatus.DISABLED) {
+            disableLocationUpdates()
+            appContext.stopService(TrackingService.getIntent(appContext))
+            changeStatus(TrackingStatus.DISABLED)
+        }
     }
 
     fun enableLocationUpdates(): Boolean {
