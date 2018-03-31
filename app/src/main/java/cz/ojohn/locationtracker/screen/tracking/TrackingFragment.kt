@@ -2,6 +2,7 @@ package cz.ojohn.locationtracker.screen.tracking
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -11,10 +12,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.TrackingFrequency
@@ -26,6 +24,7 @@ import cz.ojohn.locationtracker.util.showSnackbar
 import cz.ojohn.locationtracker.view.ScrollMapFragment
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_tracking.*
 import javax.inject.Inject
 
@@ -41,7 +40,8 @@ class TrackingFragment : Fragment() {
         const val REQUEST_ENABLE_TRACKING = 2
     }
 
-    private var map: Map? = null
+    private var map: TrackingMap? = null
+    private var mapStateObservable: Disposable? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -66,7 +66,12 @@ class TrackingFragment : Fragment() {
         viewModel.preserveMarkerPos = false
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as ScrollMapFragment
         mapFragment.touchListener = { scrollView.requestDisallowInterceptTouchEvent(true) }
-        mapFragment.getMapAsync { it?.let { map = Map(it, null) } }
+        mapFragment.getMapAsync {
+            it?.let {
+                map = initMap(it)
+                observeMapState()
+            }
+        }
 
         frequencySpinnerAdapter = ArrayAdapter.createFromResource(context,
                 R.array.units_time, android.R.layout.simple_spinner_item).apply {
@@ -96,16 +101,15 @@ class TrackingFragment : Fragment() {
                 .subscribe { onTrackingStatusChanged(it) })
         disposables.add(viewModel.observeFormState()
                 .subscribe { onFormStateChanged(it) })
-        disposables.add(viewModel.observeMapState()
-                .subscribe { onMapStateChanged(it) })
 
+        observeMapState()
         onEnableMapLocation()
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.onDisableMapLocation()
-        disposables.clear()
+        unsubscribeObservables()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -157,6 +161,24 @@ class TrackingFragment : Fragment() {
         checkChargerDetect.isEnabled = enabled
     }
 
+    private fun initMap(googleMap: GoogleMap): TrackingMap {
+        val locationMarker = googleMap.addMarker(MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_position))
+                .anchor(0.5f, 0.5f)
+                .position(LatLng(0.0, 0.0)))
+        val trackingMarker = googleMap.addMarker(MarkerOptions()
+                .position(LatLng(0.0, 0.0)))
+        val trackingCircle = googleMap.addCircle(CircleOptions()
+                .center(LatLng(0.0, 0.0))
+                .clickable(false)
+                .fillColor(Color.argb(100, 251, 140, 0))
+                .strokeColor(Color.argb(200, 251, 140, 0))
+                .strokeWidth(4f)
+                .radius(100.0))
+
+        return TrackingMap(googleMap, locationMarker, trackingMarker, trackingCircle)
+    }
+
     private fun onTrackingStatusChanged(status: LocationTracker.TrackingStatus) {
         trackingStatus = status
         val buttonText = when (status) {
@@ -203,23 +225,18 @@ class TrackingFragment : Fragment() {
     }
 
     private fun onMapStateChanged(mapState: TrackingViewModel.MapState) {
-        val coords = LatLng(mapState.locationEntry.lat, mapState.locationEntry.lon)
-        when (mapState) {
-            is TrackingViewModel.MapState.WithoutPosition -> {
-                map?.googleMap?.let {
-                    viewModel.preserveMarkerPos = true
-                    it.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coords, 14f)))
-                    val locationMarker = it.addMarker(MarkerOptions()
-                            .position(coords))
-                    map = map?.copy(marker = locationMarker)
-                }
-            }
-            is TrackingViewModel.MapState.PositionAligned -> {
+        val coordinates = LatLng(mapState.locationEntry.lat, mapState.locationEntry.lon)
+        if (mapState is TrackingViewModel.MapState.WithoutPosition) {
+            map?.googleMap?.let {
+                viewModel.preserveMarkerPos = true
+                it.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 14f)))
                 map?.let {
-                    it.marker?.position = coords
+                    it.trackingMarker.position = coordinates
+                    it.trackingCircle.center = coordinates
                 }
             }
         }
+        map?.locationMarker?.position = coordinates
     }
 
     private fun onEnableTracking() {
@@ -252,5 +269,20 @@ class TrackingFragment : Fragment() {
         }
     }
 
-    private data class Map(val googleMap: GoogleMap, val marker: Marker?)
+    private fun observeMapState() {
+        if ((mapStateObservable == null || mapStateObservable?.isDisposed == true) && map != null) {
+            mapStateObservable = viewModel.observeMapState()
+                    .subscribe { onMapStateChanged(it) }
+        }
+    }
+
+    private fun unsubscribeObservables() {
+        mapStateObservable?.dispose()
+        disposables.clear()
+    }
+
+    private class TrackingMap(val googleMap: GoogleMap,
+                              val locationMarker: Marker,
+                              val trackingMarker: Marker,
+                              val trackingCircle: Circle)
 }
