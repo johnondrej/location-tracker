@@ -17,6 +17,8 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val TRACKING_DEFAULT_RADIUS = 300
 
         const val KEY_TRACKING_LAST_STATUS = "tracking_last_status"
+        const val KEY_TRACKING_LATITUDE = "tracking_latitude"
+        const val KEY_TRACKING_LONGITUDE = "tracking_longitude"
         const val KEY_TRACKING_FREQUENCY = "tracking_frequency"
         const val KEY_TRACKING_FREQUENCY_UNIT = "tracking_frequency_unit"
         const val KEY_TRACKING_RADIUS = "tracking_radius"
@@ -40,7 +42,9 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
     }
 
     fun getTrackingSettings(): LocationTracker.Settings {
-        return LocationTracker.Settings(getTrackingFrequency(),
+        return LocationTracker.Settings(getFloat(KEY_TRACKING_LATITUDE, 0f).toDouble(),
+                getFloat(KEY_TRACKING_LONGITUDE, 0f).toDouble(),
+                getTrackingFrequency(),
                 getTrackingRadius(),
                 getString(KEY_TRACKING_PHONE, ""),
                 getBoolean(KEY_TRACKING_CONSTANT, true),

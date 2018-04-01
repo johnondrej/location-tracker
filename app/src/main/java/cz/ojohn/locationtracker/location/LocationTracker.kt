@@ -150,7 +150,9 @@ class LocationTracker(private val appContext: Context,
         NOT_AVAILABLE; // Location tracking should be enabled, but it is not available because of permissions or system settings
     }
 
-    data class Settings(val frequency: TrackingFrequency,
+    data class Settings(val lat: Double,
+                        val lon: Double,
+                        val frequency: TrackingFrequency,
                         val radius: TrackingRadius,
                         val phone: String,
                         val trackConstantly: Boolean,

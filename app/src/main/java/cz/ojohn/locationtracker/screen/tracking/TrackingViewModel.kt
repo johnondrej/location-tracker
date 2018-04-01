@@ -1,6 +1,7 @@
 package cz.ojohn.locationtracker.screen.tracking
 
 import android.arch.lifecycle.ViewModel
+import android.location.Location
 import android.telephony.PhoneNumberUtils
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
@@ -54,6 +55,16 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
             formStateSubject.onNext(FormState.Error(R.string.tracking_error_radius,
                     arrayOf(TRACKING_MIN_RADIUS, TRACKING_MAX_RADIUS)))
             return
+        }
+        if (mapSubject.hasValue()) {
+            val distance = floatArrayOf(0f, 0f)
+            val userLocation = mapSubject.value.locationEntry
+            Location.distanceBetween(settings.lat, settings.lon, userLocation.lat, userLocation.lon, distance)
+
+            if (distance[0] > settings.radius.inMeters) {
+                formStateSubject.onNext(FormState.Error(R.string.tracking_error_location_outside))
+                return
+            }
         }
         if (!PhoneNumberUtils.isGlobalPhoneNumber(settings.phone)) {
             formStateSubject.onNext(FormState.Error(R.string.tracking_error_phone))

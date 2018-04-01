@@ -214,10 +214,14 @@ class TrackingFragment : Fragment() {
     private fun onStartTrackingButtonSelected() {
         when (trackingStatus) {
             LocationTracker.TrackingStatus.DISABLED -> {
+                val latitude = map!!.trackingMarker.position.latitude
+                val longitude = map!!.trackingMarker.position.longitude
                 val frequency = if (editFrequency.text.isNotEmpty()) editFrequency.text.toString().toInt() else 0
                 val radius = if (editRadius.text.isNotEmpty()) editRadius.text.toString().toInt() else 0
 
                 viewModel.onCheckFormValues(LocationTracker.Settings(
+                        latitude,
+                        longitude,
                         TrackingFrequency(frequency, spinnerFrequency.selectedItem as String),
                         TrackingRadius(radius, spinnerRadius.selectedItem as String),
                         editPhone.text.toString(),

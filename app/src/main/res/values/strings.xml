@@ -54,6 +54,7 @@
     <string name="tracking_error_frequency">Allowed frequency: %1$d - %2$d m</string>
     <string name="tracking_error_radius">Allowed radius: %1$d - %2$d m</string>
     <string name="tracking_error_phone">Invalid phone number</string>
+    <string name="tracking_error_location_outside">Your location is outside of tracking radius!</string>
 
     <!-- Find device screen -->
     <string name="find_phone">Target phone number:</string>
