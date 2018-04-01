@@ -74,6 +74,7 @@ class TrackingFragment : Fragment() {
             it?.let {
                 map = initMap(it)
                 observeMapState()
+                it.setOnMapLongClickListener { newPosition -> onTrackingPositionChange(newPosition) }
             }
         }
 
@@ -241,6 +242,13 @@ class TrackingFragment : Fragment() {
                 else -> radiusMeters
             }
             map?.trackingCircle?.radius = mapRadius.toDouble()
+        }
+    }
+
+    private fun onTrackingPositionChange(newPosition: LatLng) {
+        map?.let {
+            it.trackingMarker.position = newPosition
+            it.trackingCircle.center = newPosition
         }
     }
 
