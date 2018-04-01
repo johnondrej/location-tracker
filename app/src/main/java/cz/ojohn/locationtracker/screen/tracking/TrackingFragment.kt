@@ -180,14 +180,15 @@ class TrackingFragment : Fragment() {
     }
 
     private fun initMap(googleMap: GoogleMap): TrackingMap {
+        val trackingPosition = LatLng(viewModel.getTrackingSettings().latitude, viewModel.getTrackingSettings().longitude)
         val locationMarker = googleMap.addMarker(MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_position))
                 .anchor(0.5f, 0.5f)
                 .position(LatLng(0.0, 0.0)))
         val trackingMarker = googleMap.addMarker(MarkerOptions()
-                .position(LatLng(0.0, 0.0)))
+                .position(trackingPosition))
         val trackingCircle = googleMap.addCircle(CircleOptions()
-                .center(LatLng(0.0, 0.0))
+                .center(trackingPosition)
                 .clickable(false)
                 .fillColor(Color.argb(100, 251, 140, 0))
                 .strokeColor(Color.argb(200, 251, 140, 0))
@@ -250,9 +251,12 @@ class TrackingFragment : Fragment() {
     }
 
     private fun onTrackingPositionChange(newPosition: LatLng) {
-        map?.let {
-            it.trackingMarker.position = newPosition
-            it.trackingCircle.center = newPosition
+        val changed = viewModel.onTrackingPositionChange(newPosition.latitude, newPosition.longitude)
+        if (changed) {
+            map?.let {
+                it.trackingMarker.position = newPosition
+                it.trackingCircle.center = newPosition
+            }
         }
     }
 
@@ -272,9 +276,11 @@ class TrackingFragment : Fragment() {
             map?.googleMap?.let {
                 viewModel.preserveMarkerPos = true
                 it.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 14f)))
-                map?.let {
-                    it.trackingMarker.position = coordinates
-                    it.trackingCircle.center = coordinates
+                if (mapState.adjustTracking) {
+                    map?.let {
+                        it.trackingMarker.position = coordinates
+                        it.trackingCircle.center = coordinates
+                    }
                 }
             }
         }

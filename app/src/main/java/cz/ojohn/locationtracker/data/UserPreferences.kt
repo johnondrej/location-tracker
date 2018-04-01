@@ -56,6 +56,8 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
 
     fun setTrackingSettings(trackingSettings: LocationTracker.Settings) {
         sharedPreferences.edit()
+                .putFloat(KEY_TRACKING_LATITUDE, trackingSettings.latitude.toFloat())
+                .putFloat(KEY_TRACKING_LONGITUDE, trackingSettings.longitude.toFloat())
                 .putInt(KEY_TRACKING_FREQUENCY, trackingSettings.frequency.value)
                 .putString(KEY_TRACKING_FREQUENCY_UNIT, trackingSettings.frequency.selectedUnit)
                 .putInt(KEY_TRACKING_RADIUS, trackingSettings.radius.value)

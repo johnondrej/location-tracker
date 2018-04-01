@@ -1,7 +1,6 @@
 package cz.ojohn.locationtracker.screen.tracking
 
 import android.arch.lifecycle.ViewModel
-import android.location.Location
 import android.telephony.PhoneNumberUtils
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
@@ -57,11 +56,9 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
             return
         }
         if (mapSubject.hasValue()) {
-            val distance = floatArrayOf(0f, 0f)
             val userLocation = mapSubject.value.locationEntry
-            Location.distanceBetween(settings.lat, settings.lon, userLocation.lat, userLocation.lon, distance)
-
-            if (distance[0] > settings.radius.inMeters) {
+            if (locationTracker.distanceBetween(settings.latitude, settings.longitude,
+                            userLocation.lat, userLocation.lon) > settings.radius.inMeters) {
                 formStateSubject.onNext(FormState.Error(R.string.tracking_error_location_outside))
                 return
             }
@@ -99,6 +96,15 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
         locationTracker.disableTracking()
     }
 
+    fun onTrackingPositionChange(latitude: Double, longitude: Double): Boolean {
+        val trackingDisabled = statusSubject.value == LocationTracker.TrackingStatus.DISABLED
+        if (trackingDisabled) {
+            val settings = locationTracker.getSettings()
+            locationTracker.updateSettings(settings.copy(latitude = latitude, longitude = longitude))
+        }
+        return trackingDisabled
+    }
+
     fun getTrackingSettings(): LocationTracker.Settings {
         return locationTracker.getSettings()
     }
@@ -112,7 +118,7 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
     private fun onLocationUpdated(locationEntry: LocationEntry) {
         val mapState = when (preserveMarkerPos) {
             true -> MapState.PositionAligned(locationEntry)
-            false -> MapState.WithoutPosition(locationEntry)
+            false -> MapState.WithoutPosition(locationEntry, statusSubject.value == LocationTracker.TrackingStatus.DISABLED)
         }
         mapSubject.onNext(mapState)
     }
@@ -123,7 +129,7 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
     }
 
     sealed class MapState(val locationEntry: LocationEntry) {
-        class WithoutPosition(locationEntry: LocationEntry) : MapState(locationEntry)
+        class WithoutPosition(locationEntry: LocationEntry, val adjustTracking: Boolean) : MapState(locationEntry)
         class PositionAligned(locationEntry: LocationEntry) : MapState(locationEntry)
     }
 }

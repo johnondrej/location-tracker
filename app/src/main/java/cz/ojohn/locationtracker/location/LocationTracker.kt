@@ -133,6 +133,13 @@ class LocationTracker(private val appContext: Context,
         }
     }
 
+    fun distanceBetween(startLatitude: Double, startLongitude: Double,
+                        endLatitude: Double, endLongitude: Double): Float {
+        val distance = floatArrayOf(0f, 0f)
+        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, distance)
+        return distance[0]
+    }
+
     fun observeLocationUpdates(): Observable<LocationEntry> = locationSubject
 
     fun observeTrackingStatus(): Observable<TrackingStatus> = statusSubject
@@ -150,8 +157,8 @@ class LocationTracker(private val appContext: Context,
         NOT_AVAILABLE; // Location tracking should be enabled, but it is not available because of permissions or system settings
     }
 
-    data class Settings(val lat: Double,
-                        val lon: Double,
+    data class Settings(val latitude: Double,
+                        val longitude: Double,
                         val frequency: TrackingFrequency,
                         val radius: TrackingRadius,
                         val phone: String,
