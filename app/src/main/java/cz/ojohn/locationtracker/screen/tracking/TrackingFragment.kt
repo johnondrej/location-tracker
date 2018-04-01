@@ -6,9 +6,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -17,6 +20,7 @@ import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.TrackingFrequency
 import cz.ojohn.locationtracker.data.TrackingRadius
+import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
 import cz.ojohn.locationtracker.util.areAllPermissionsGranted
 import cz.ojohn.locationtracker.util.isPermissionGranted
@@ -83,7 +87,20 @@ class TrackingFragment : Fragment() {
         }
         spinnerFrequency.adapter = frequencySpinnerAdapter
         spinnerRadius.adapter = radiusSpinnerAdapter
+        spinnerRadius.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                onTrackingRadiusChanged()
+            }
+        }
         btnStartTracking.setOnClickListener { onStartTrackingButtonSelected() }
+        editRadius.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                onTrackingRadiusChanged()
+            }
+        })
         checkTrackConstantly.setOnCheckedChangeListener { _, isChecked ->
             editFrequency.isEnabled = !isChecked
             spinnerFrequency.isEnabled = !isChecked
@@ -211,6 +228,19 @@ class TrackingFragment : Fragment() {
                 ))
             }
             else -> viewModel.onDisableTracking()
+        }
+    }
+
+    private fun onTrackingRadiusChanged() {
+        val radiusInput = editRadius.text.toString()
+        if (!radiusInput.isBlank()) {
+            val radiusMeters = TrackingRadius(radiusInput.toInt(), spinnerRadius.selectedItem as String).inMeters
+            val mapRadius = when {
+                radiusMeters < UserPreferences.TRACKING_MIN_RADIUS -> UserPreferences.TRACKING_MIN_RADIUS
+                radiusMeters > UserPreferences.TRACKING_MAX_RADIUS -> UserPreferences.TRACKING_MAX_RADIUS
+                else -> radiusMeters
+            }
+            map?.trackingCircle?.radius = mapRadius.toDouble()
         }
     }
 

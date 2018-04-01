@@ -12,8 +12,9 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
     companion object {
         const val TRACKING_MIN_FREQUENCY = 5
         const val TRACKING_MAX_FREQUENCY = 300
-        const val TRACKING_MIN_RADIUS = 50
+        const val TRACKING_MIN_RADIUS = 100
         const val TRACKING_MAX_RADIUS = 10000
+        const val TRACKING_DEFAULT_RADIUS = 300
 
         const val KEY_TRACKING_LAST_STATUS = "tracking_last_status"
         const val KEY_TRACKING_FREQUENCY = "tracking_frequency"
@@ -34,7 +35,7 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
     }
 
     fun getTrackingRadius(): TrackingRadius {
-        return TrackingRadius(sharedPreferences.getInt(KEY_TRACKING_RADIUS, TRACKING_MIN_RADIUS),
+        return TrackingRadius(sharedPreferences.getInt(KEY_TRACKING_RADIUS, TRACKING_DEFAULT_RADIUS),
                 sharedPreferences.getString(KEY_TRACKING_RADIUS_UNIT, Constants.UNIT_METERS))
     }
 
