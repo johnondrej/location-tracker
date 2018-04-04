@@ -67,7 +67,6 @@ class TrackingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.preserveMarkerPos = false
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as ScrollMapFragment
         mapFragment.touchListener = { scrollView.requestDisallowInterceptTouchEvent(true) }
         mapFragment.getMapAsync {
@@ -75,6 +74,7 @@ class TrackingFragment : Fragment() {
                 map = initMap(it)
                 observeMapState()
                 it.setOnMapLongClickListener { newPosition -> onTrackingPositionChange(newPosition) }
+                disposables.add(viewModel.observeMapProperties().subscribe { onMapPropertiesChanged(it) })
             }
         }
 
@@ -180,7 +180,8 @@ class TrackingFragment : Fragment() {
     }
 
     private fun initMap(googleMap: GoogleMap): TrackingMap {
-        val trackingPosition = LatLng(viewModel.getTrackingSettings().latitude, viewModel.getTrackingSettings().longitude)
+        val trackingSettings = viewModel.getTrackingSettings()
+        val trackingPosition = LatLng(trackingSettings.latitude, trackingSettings.longitude)
         val locationMarker = googleMap.addMarker(MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_position))
                 .anchor(0.5f, 0.5f)
@@ -193,8 +194,7 @@ class TrackingFragment : Fragment() {
                 .fillColor(Color.argb(100, 251, 140, 0))
                 .strokeColor(Color.argb(200, 251, 140, 0))
                 .strokeWidth(4f)
-                .radius(100.0))
-
+                .radius(trackingSettings.radius.inMeters.toDouble()))
         return TrackingMap(googleMap, locationMarker, trackingMarker, trackingCircle)
     }
 
@@ -246,18 +246,12 @@ class TrackingFragment : Fragment() {
                 radiusMeters > UserPreferences.TRACKING_MAX_RADIUS -> UserPreferences.TRACKING_MAX_RADIUS
                 else -> radiusMeters
             }
-            map?.trackingCircle?.radius = mapRadius.toDouble()
+            viewModel.onTrackingRadiusChange(mapRadius)
         }
     }
 
     private fun onTrackingPositionChange(newPosition: LatLng) {
-        val changed = viewModel.onTrackingPositionChange(newPosition.latitude, newPosition.longitude)
-        if (changed) {
-            map?.let {
-                it.trackingMarker.position = newPosition
-                it.trackingCircle.center = newPosition
-            }
-        }
+        viewModel.onTrackingPositionChange(newPosition)
     }
 
     private fun onFormStateChanged(formState: TrackingViewModel.FormState) {
@@ -277,14 +271,21 @@ class TrackingFragment : Fragment() {
                 viewModel.preserveMarkerPos = true
                 it.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 14f)))
                 if (mapState.adjustTracking) {
-                    map?.let {
-                        it.trackingMarker.position = coordinates
-                        it.trackingCircle.center = coordinates
-                    }
+                    viewModel.onTrackingPositionChange(coordinates)
                 }
             }
         }
-        map?.locationMarker?.position = coordinates
+        viewModel.onUserLocationChange(coordinates)
+    }
+
+    private fun onMapPropertiesChanged(properties: TrackingViewModel.MapProperties) {
+
+        map?.let {
+            it.locationMarker.position = properties.userLocation
+            it.trackingMarker.position = properties.trackingPosition
+            it.trackingCircle.center = properties.trackingPosition
+            it.trackingCircle.radius = properties.trackingRadius.toDouble()
+        }
     }
 
     private fun onEnableTracking() {

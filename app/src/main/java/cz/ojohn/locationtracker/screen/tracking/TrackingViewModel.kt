@@ -2,6 +2,7 @@ package cz.ojohn.locationtracker.screen.tracking
 
 import android.arch.lifecycle.ViewModel
 import android.telephony.PhoneNumberUtils
+import com.google.android.gms.maps.model.LatLng
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.data.UserPreferences.Companion.TRACKING_MAX_FREQUENCY
@@ -29,6 +30,7 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
     private val statusSubject: BehaviorSubject<LocationTracker.TrackingStatus> = BehaviorSubject.create()
     private val formStateSubject: PublishSubject<FormState> = PublishSubject.create()
     private val mapSubject: BehaviorSubject<MapState> = BehaviorSubject.create()
+    private val mapPropertiesSubject: BehaviorSubject<MapProperties> = BehaviorSubject.createDefault(getDefaultMapProperties())
 
     init {
         disposables.add(locationTracker.observeTrackingStatus()
@@ -96,13 +98,22 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
         locationTracker.disableTracking()
     }
 
-    fun onTrackingPositionChange(latitude: Double, longitude: Double): Boolean {
+    fun onUserLocationChange(newLocation: LatLng) {
+        mapPropertiesSubject.onNext(mapPropertiesSubject.value.copy(userLocation = newLocation))
+    }
+
+    fun onTrackingPositionChange(newPosition: LatLng): Boolean {
         val trackingDisabled = statusSubject.value == LocationTracker.TrackingStatus.DISABLED
         if (trackingDisabled) {
             val settings = locationTracker.getSettings()
-            locationTracker.updateSettings(settings.copy(latitude = latitude, longitude = longitude))
+            locationTracker.updateSettings(settings.copy(latitude = newPosition.latitude, longitude = newPosition.longitude))
+            mapPropertiesSubject.onNext(mapPropertiesSubject.value.copy(trackingPosition = newPosition))
         }
         return trackingDisabled
+    }
+
+    fun onTrackingRadiusChange(newRadius: Int) {
+        mapPropertiesSubject.onNext(mapPropertiesSubject.value.copy(trackingRadius = newRadius))
     }
 
     fun getTrackingSettings(): LocationTracker.Settings {
@@ -115,6 +126,8 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
 
     fun observeMapState(): Observable<MapState> = mapSubject
 
+    fun observeMapProperties(): Observable<MapProperties> = mapPropertiesSubject
+
     private fun onLocationUpdated(locationEntry: LocationEntry) {
         val mapState = when (preserveMarkerPos) {
             true -> MapState.PositionAligned(locationEntry)
@@ -122,6 +135,17 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
         }
         mapSubject.onNext(mapState)
     }
+
+    private fun getDefaultMapProperties(): MapProperties {
+        val trackingSettings = getTrackingSettings()
+        return MapProperties(
+                LatLng(0.0, 0.0),
+                LatLng(trackingSettings.latitude, trackingSettings.longitude),
+                trackingSettings.radius.inMeters
+        )
+    }
+
+    data class MapProperties(val userLocation: LatLng?, val trackingPosition: LatLng?, val trackingRadius: Int)
 
     sealed class FormState {
         class Valid : FormState()
