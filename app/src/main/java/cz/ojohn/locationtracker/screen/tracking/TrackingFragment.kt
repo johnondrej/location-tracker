@@ -74,7 +74,6 @@ class TrackingFragment : Fragment() {
                 map = initMap(it)
                 observeMapState()
                 it.setOnMapLongClickListener { newPosition -> onTrackingPositionChange(newPosition) }
-                disposables.add(viewModel.observeMapProperties().subscribe { onMapPropertiesChanged(it) })
             }
         }
 
@@ -119,6 +118,7 @@ class TrackingFragment : Fragment() {
                 .subscribe { onTrackingStatusChanged(it) })
         disposables.add(viewModel.observeFormState()
                 .subscribe { onFormStateChanged(it) })
+        disposables.add(viewModel.observeMapProperties().subscribe { onMapPropertiesChanged(it) })
 
         observeMapState()
         onEnableMapLocation()
@@ -279,7 +279,6 @@ class TrackingFragment : Fragment() {
     }
 
     private fun onMapPropertiesChanged(properties: TrackingViewModel.MapProperties) {
-
         map?.let {
             it.locationMarker.position = properties.userLocation
             it.trackingMarker.position = properties.trackingPosition
