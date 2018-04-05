@@ -83,6 +83,9 @@
     <string name="channel_tracking_description">Information about location tracking</string>
     <string name="notification_tracking_content">Location tracking is running!</string>
 
+    <!-- SMS strings -->
+    <string name="sms_alarm">Your device is outside of defined location!</string>
+
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
     <string name="accessibility_menu_control">Control item icon</string>

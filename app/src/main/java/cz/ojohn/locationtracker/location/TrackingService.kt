@@ -7,8 +7,11 @@ import android.content.Intent
 import android.os.IBinder
 import android.os.PowerManager
 import cz.ojohn.locationtracker.App
+import cz.ojohn.locationtracker.data.LocationEntry
+import cz.ojohn.locationtracker.sms.SmsController
 import cz.ojohn.locationtracker.util.NotificationController
 import cz.ojohn.locationtracker.util.powerManager
+import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 /**
@@ -23,9 +26,12 @@ class TrackingService : Service() {
     }
 
     var wakeLock: PowerManager.WakeLock? = null
+    var locationDisposable: Disposable? = null
 
     @Inject
     lateinit var locationTracker: LocationTracker
+    @Inject
+    lateinit var smsController: SmsController
     @Inject
     lateinit var notificationController: NotificationController
 
@@ -40,7 +46,9 @@ class TrackingService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+
         locationTracker.disableTracking()
+        locationDisposable?.dispose()
         releaseWakeLock()
     }
 
@@ -56,7 +64,18 @@ class TrackingService : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
+        locationDisposable = locationTracker.observeLocationUpdates()
+                .subscribe { onLocationChanged(it) }
         return START_STICKY
+    }
+
+    private fun onLocationChanged(location: LocationEntry) {
+        val trackingSettings = locationTracker.getSettings()
+        if (locationTracker.distanceBetween(trackingSettings.latitude, trackingSettings.longitude,
+                        location.lat, location.lon) > trackingSettings.radius.inMeters) {
+            smsController.sendSmsAlarm(trackingSettings.phone)
+            stopSelf()
+        }
     }
 
     private fun releaseWakeLock() {

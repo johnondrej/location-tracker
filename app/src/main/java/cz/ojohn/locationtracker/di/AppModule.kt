@@ -6,6 +6,7 @@ import cz.ojohn.locationtracker.Constants
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationController
 import cz.ojohn.locationtracker.location.LocationTracker
+import cz.ojohn.locationtracker.sms.SmsController
 import cz.ojohn.locationtracker.util.NotificationController
 import dagger.Module
 import dagger.Provides
@@ -38,6 +39,12 @@ class AppModule {
     @Singleton
     fun provideLocationController(context: Context, sharedPreferences: SharedPreferences): LocationController {
         return LocationController(context, sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSmsController(context: Context, userPreferences: UserPreferences): SmsController {
+        return SmsController(context, userPreferences)
     }
 
     @Provides
