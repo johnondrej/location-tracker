@@ -4,6 +4,7 @@ import android.content.Context
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.location.TrackingService
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
+import cz.ojohn.locationtracker.sms.SmsReceiver
 import cz.ojohn.locationtracker.util.BootReceiver
 import dagger.BindsInstance
 import dagger.Component
@@ -18,6 +19,7 @@ interface AppComponent {
 
     fun inject(app: App)
     fun inject(bootReceiver: BootReceiver)
+    fun inject(smsReceiver: SmsReceiver)
     fun inject(trackingFragment: TrackingFragment)
     fun inject(trackingService: TrackingService)
 

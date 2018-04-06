@@ -85,6 +85,15 @@
 
     <!-- SMS strings -->
     <string name="sms_alarm">Your device is outside of defined location!</string>
+    <string name="sms_response_name_unknown">Unknown location name</string>
+    <string name="sms_response_accuracy_unknown">Unknown accuracy</string>
+    <string name="sms_response_src_unknown">Unknown location source</string>
+    <string name="sms_response_battery_unknown">Unknown battery level</string>
+    <string name="sms_response_wifi_unknown">Unknown WiFi</string>
+    <string name="sms_response_wifi_off">WiFi off</string>
+    <string name="sms_response_wifi_disconnected">WiFi disconnected</string>
+    <string name="sms_response_wifi_nearby_unknown">Unknown WiFi nearby</string>
+    <string name="sms_response_wifi_no_nearby">No nearby WiFi networks</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>

@@ -3,6 +3,7 @@ package cz.ojohn.locationtracker.data
 import android.content.SharedPreferences
 import cz.ojohn.locationtracker.Constants
 import cz.ojohn.locationtracker.location.LocationTracker
+import cz.ojohn.locationtracker.sms.SmsController
 
 /**
  * Class for controlling user preferences and providing access to SharedPreferences
@@ -29,6 +30,15 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val KEY_TRACKING_BATTERY_NOTIFY = "tracking_low_battery_notify"
         const val KEY_TRACKING_BATTERY_OFF = "tracking_low_battery_off"
         const val KEY_TRACKING_CHARGER = "tracking_charger_detect"
+
+        const val KEY_SMS_GPS = "sms_gps"
+        const val KEY_SMS_LOC_NAME = "sms_location_name"
+        const val KEY_SMS_LOC_TIME = "sms_location_time"
+        const val KEY_SMS_LOC_ACCURACY = "sms_location_acc"
+        const val KEY_SMS_LOC_SOURCE = "sms_location_src"
+        const val KEY_SMS_BATTERY = "sms_battery"
+        const val KEY_SMS_WIFI = "sms_wifi"
+        const val KEY_SMS_WIFI_NEARBY = "sms_wifi_nearby"
     }
 
     fun getTrackingFrequency(): TrackingFrequency {
@@ -68,6 +78,30 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
                 .putBoolean(KEY_TRACKING_BATTERY_NOTIFY, trackingSettings.lowBatteryNotify)
                 .putBoolean(KEY_TRACKING_BATTERY_OFF, trackingSettings.lowBatteryTurnOff)
                 .putBoolean(KEY_TRACKING_CHARGER, trackingSettings.chargerNotify)
+                .apply()
+    }
+
+    fun getSmsSettings(): SmsController.Settings {
+        return SmsController.Settings(getBoolean(KEY_SMS_GPS, true),
+                getBoolean(KEY_SMS_LOC_NAME, true),
+                getBoolean(KEY_SMS_LOC_TIME, true),
+                getBoolean(KEY_SMS_LOC_ACCURACY, true),
+                getBoolean(KEY_SMS_LOC_SOURCE, false),
+                getBoolean(KEY_SMS_BATTERY, false),
+                getBoolean(KEY_SMS_WIFI, false),
+                getBoolean(KEY_SMS_WIFI_NEARBY, false))
+    }
+
+    fun setSmsSettings(smsSettings: SmsController.Settings) {
+        sharedPreferences.edit()
+                .putBoolean(KEY_SMS_GPS, smsSettings.sendGps)
+                .putBoolean(KEY_SMS_LOC_NAME, smsSettings.sendLocationName)
+                .putBoolean(KEY_SMS_LOC_TIME, smsSettings.sendLocationTime)
+                .putBoolean(KEY_SMS_LOC_ACCURACY, smsSettings.sendLocationAccuracy)
+                .putBoolean(KEY_SMS_LOC_SOURCE, smsSettings.sendLocationSource)
+                .putBoolean(KEY_SMS_BATTERY, smsSettings.sendBattery)
+                .putBoolean(KEY_SMS_WIFI, smsSettings.sendWiFi)
+                .putBoolean(KEY_SMS_WIFI_NEARBY, smsSettings.sendWiFiNearby)
                 .apply()
     }
 
