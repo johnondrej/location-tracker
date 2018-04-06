@@ -16,12 +16,14 @@ import cz.ojohn.locationtracker.sms.SmsController
 import cz.ojohn.locationtracker.util.NotificationController
 import cz.ojohn.locationtracker.util.powerManager
 import cz.ojohn.locationtracker.util.wifiManager
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -86,6 +88,9 @@ class FetchLocationService : Service() {
         disposables.add(locationTracker.observeLocationUpdates()
                 .take(1)
                 .subscribe { onLocationChanged(it) })
+        disposables.add(Completable.timer(TIMEOUT_SECONDS, TimeUnit.SECONDS, Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { onTimeoutPassed() })
         return START_STICKY
     }
 
@@ -102,6 +107,16 @@ class FetchLocationService : Service() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { response -> onLocationResponseBuilt(response) })
+    }
+
+    private fun onTimeoutPassed() {
+        val lastKnownLocation = locationTracker.getLastKnownLocation()
+        if (lastKnownLocation != null) {
+            onLocationChanged(lastKnownLocation)
+        } else {
+            smsController.sendDeviceLocation(phone, null)
+            stopSelf()
+        }
     }
 
     private fun onLocationResponseBuilt(locationResponse: LocationTracker.LocationResponse) {

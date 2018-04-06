@@ -96,6 +96,7 @@
     <string name="sms_response_wifi_disconnected">WiFi disconnected</string>
     <string name="sms_response_wifi_nearby_unknown">Unknown WiFi nearby</string>
     <string name="sms_response_wifi_no_nearby">No nearby WiFi networks</string>
+    <string name="sms_response_error_no_location">Unable to find device location</string>
     <string name="sms_response_location_format">%1$s, %2$s</string>
     <string name="sms_response_location_short_format">%1$s</string>
 

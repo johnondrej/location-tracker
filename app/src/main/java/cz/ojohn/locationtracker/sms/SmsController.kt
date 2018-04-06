@@ -36,9 +36,13 @@ class SmsController(private val appContext: Context,
         sendSms(phone, appContext.getString(R.string.sms_alarm))
     }
 
-    fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse) {
-        val formatLocationInfoSms = formatLocationInfoSms(locationResponse)
-        sendSms(phone, formatLocationInfoSms)
+    fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?) {
+        if (locationResponse != null) {
+            val formatLocationInfoSms = formatLocationInfoSms(locationResponse)
+            sendSms(phone, formatLocationInfoSms)
+        } else {
+            sendSms(phone, appContext.getString(R.string.sms_response_error_no_location))
+        }
     }
 
     fun processIncomingSms(sender: String, sms: String): SmsAction {
