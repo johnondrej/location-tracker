@@ -290,10 +290,14 @@ class TrackingFragment : Fragment() {
     private fun onEnableTracking() {
         val ctx = requireContext()
         if (ctx.isPermissionGranted(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                && ctx.isPermissionGranted(android.Manifest.permission.RECEIVE_SMS)
+                && ctx.isPermissionGranted(android.Manifest.permission.READ_SMS)
                 && ctx.isPermissionGranted(android.Manifest.permission.SEND_SMS)) {
             viewModel.onEnableTracking()
         } else {
             askForPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.RECEIVE_SMS,
+                    android.Manifest.permission.READ_SMS,
                     android.Manifest.permission.SEND_SMS), REQUEST_ENABLE_TRACKING)
         }
     }
