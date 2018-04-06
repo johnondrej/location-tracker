@@ -2,8 +2,10 @@ package cz.ojohn.locationtracker.location
 
 import android.annotation.SuppressLint
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.IBinder
 import android.os.PowerManager
 import cz.ojohn.locationtracker.App
@@ -27,6 +29,8 @@ class TrackingService : Service() {
 
     private var wakeLock: PowerManager.WakeLock? = null
     private var locationDisposable: Disposable? = null
+    private var batteryBroadcastReceiver: BroadcastReceiver? = null
+    private var chargerBroadcastReceiver: BroadcastReceiver? = null
 
     @Inject
     lateinit var locationTracker: LocationTracker
@@ -58,6 +62,7 @@ class TrackingService : Service() {
         }
         locationDisposable = locationTracker.observeLocationUpdates()
                 .subscribe { onLocationChanged(it) }
+        initBatteryReceiver()
         return START_STICKY
     }
 
@@ -66,6 +71,8 @@ class TrackingService : Service() {
 
         locationTracker.disableTracking()
         locationDisposable?.dispose()
+        batteryBroadcastReceiver?.let { applicationContext.unregisterReceiver(it) }
+        chargerBroadcastReceiver?.let { applicationContext.unregisterReceiver(it) }
         releaseWakeLock()
     }
 
@@ -75,6 +82,28 @@ class TrackingService : Service() {
                         location.lat, location.lon, location.accuracy) > trackingSettings.radius.inMeters) {
             smsController.sendSmsAlarm(trackingSettings.phone)
             stopSelf()
+        }
+    }
+
+    private fun initBatteryReceiver() {
+        val trackingSettings = locationTracker.getSettings()
+        if (trackingSettings.lowBatteryNotify || trackingSettings.lowBatteryTurnOff) {
+            batteryBroadcastReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    intent?.let {
+                        if (it.action == Intent.ACTION_BATTERY_LOW) {
+                            smsController.sendLowBatteryNotification(trackingSettings.phone, trackingSettings.lowBatteryTurnOff)
+                            if (trackingSettings.lowBatteryTurnOff) {
+                                this@TrackingService.stopSelf()
+                            }
+                        }
+                    }
+                }
+            }
+            val intentFilter = IntentFilter().apply {
+                addAction(Intent.ACTION_BATTERY_LOW)
+            }
+            applicationContext.registerReceiver(batteryBroadcastReceiver, intentFilter)
         }
     }
 

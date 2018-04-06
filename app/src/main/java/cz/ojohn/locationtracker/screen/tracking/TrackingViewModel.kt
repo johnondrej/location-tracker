@@ -3,6 +3,7 @@ package cz.ojohn.locationtracker.screen.tracking
 import android.arch.lifecycle.ViewModel
 import android.telephony.PhoneNumberUtils
 import com.google.android.gms.maps.model.LatLng
+import cz.ojohn.locationtracker.Constants
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.data.UserPreferences.Companion.TRACKING_MAX_FREQUENCY
@@ -44,9 +45,13 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
         super.onCleared()
     }
 
-    fun onCheckFormValues(settings: LocationTracker.Settings) {
+    fun onCheckFormValues(settings: LocationTracker.Settings, batteryPercentage: Int, charging: Boolean) {
         val frequencyMinutes = settings.frequency.inMinutes
         val radiusMeters = settings.radius.inMeters
+        if (batteryPercentage <= Constants.BATTERY_LOW_PERCENT && !charging) {
+            formStateSubject.onNext(FormState.Error(R.string.sms_tracking_battery_low))
+            return
+        }
         if (!settings.trackConstantly && frequencyMinutes !in TRACKING_MIN_FREQUENCY..TRACKING_MAX_FREQUENCY) {
             formStateSubject.onNext(FormState.Error(R.string.tracking_error_frequency,
                     arrayOf(TRACKING_MIN_FREQUENCY, TRACKING_MAX_FREQUENCY)))

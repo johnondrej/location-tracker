@@ -22,9 +22,7 @@ import cz.ojohn.locationtracker.data.TrackingFrequency
 import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
-import cz.ojohn.locationtracker.util.areAllPermissionsGranted
-import cz.ojohn.locationtracker.util.isPermissionGranted
-import cz.ojohn.locationtracker.util.showSnackbar
+import cz.ojohn.locationtracker.util.*
 import cz.ojohn.locationtracker.view.ScrollMapFragment
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
@@ -231,7 +229,7 @@ class TrackingFragment : Fragment() {
                         checkBatteryNotify.isChecked,
                         checkBatteryAutoOff.isChecked,
                         checkChargerDetect.isChecked
-                ))
+                ), requireContext().getBatteryPercentage(), requireContext().isBatteryChargingOrFull())
             }
             else -> viewModel.onDisableTracking()
         }

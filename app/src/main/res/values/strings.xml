@@ -99,6 +99,8 @@
     <string name="sms_response_error_no_location">Unable to find device location</string>
     <string name="sms_response_location_format">%1$s, %2$s</string>
     <string name="sms_response_location_short_format">%1$s</string>
+    <string name="sms_tracking_battery_off">Device battery is low, turning off location tracking</string>
+    <string name="sms_tracking_battery_low">Device battery is low</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>

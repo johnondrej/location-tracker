@@ -36,6 +36,14 @@ class SmsController(private val appContext: Context,
         sendSms(phone, appContext.getString(R.string.sms_alarm))
     }
 
+    fun sendLowBatteryNotification(phone: String, turningOff: Boolean) {
+        val notificationText = when (turningOff) {
+            true -> appContext.getString(R.string.sms_tracking_battery_off)
+            false -> appContext.getString(R.string.sms_tracking_battery_low)
+        }
+        sendSms(phone, notificationText)
+    }
+
     fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?) {
         if (locationResponse != null) {
             val formatLocationInfoSms = formatLocationInfoSms(locationResponse)

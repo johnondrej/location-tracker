@@ -3,10 +3,8 @@ package cz.ojohn.locationtracker.location
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.location.Address
 import android.location.Geocoder
-import android.os.BatteryManager
 import android.os.IBinder
 import android.os.PowerManager
 import cz.ojohn.locationtracker.App
@@ -14,6 +12,7 @@ import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.sms.SmsController
 import cz.ojohn.locationtracker.util.NotificationController
+import cz.ojohn.locationtracker.util.getBatteryPercentage
 import cz.ojohn.locationtracker.util.powerManager
 import cz.ojohn.locationtracker.util.wifiManager
 import io.reactivex.Completable
@@ -127,7 +126,7 @@ class FetchLocationService : Service() {
     private fun getLocationResponse(locationEntry: LocationEntry): LocationTracker.LocationResponse {
         val smsSettings = smsController.smsSettings
         val locationName = if (smsSettings.sendLocationName) getLocationName(locationEntry) else null
-        val batteryStatus = if (smsSettings.sendBattery) getBatteryStatus() else null
+        val batteryStatus = if (smsSettings.sendBattery) applicationContext.getBatteryPercentage() else null
         val wifiName = if (smsSettings.sendWiFi) getWifiName() else null
         val wifiNearby = if (smsSettings.sendWiFiNearby) getWifiNearby() else null
 
@@ -174,22 +173,6 @@ class FetchLocationService : Service() {
             firstEntry == null && secondEntry != null -> applicationContext.getString(R.string.sms_response_location_short_format, secondEntry)
             else -> null
         }
-    }
-
-    private fun getBatteryStatus(): Int? {
-        val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        val status = applicationContext.registerReceiver(null, intentFilter)
-
-        if (status != null) {
-            val batteryLevel = status.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-            val batteryScale = status.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-
-            if (batteryLevel != -1 && batteryScale != -1) {
-                return (batteryLevel / batteryScale.toFloat()).toInt()
-            }
-            return null
-        }
-        return null
     }
 
     private fun getWifiName(): String? {
