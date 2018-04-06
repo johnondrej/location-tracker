@@ -133,10 +133,15 @@ class LocationTracker(private val appContext: Context,
     }
 
     fun distanceBetween(startLatitude: Double, startLongitude: Double,
-                        endLatitude: Double, endLongitude: Double): Float {
+                        endLatitude: Double, endLongitude: Double, accuracy: Float? = null): Float {
         val distance = floatArrayOf(0f, 0f)
         Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, distance)
-        return distance[0]
+        if (getSettings().reduceFalseAlarms && accuracy != null) {
+            val reducedDistance = distance[0] - accuracy
+            return if (reducedDistance > 0) reducedDistance else distance[0]
+        } else {
+            return distance[0]
+        }
     }
 
     fun observeLocationUpdates(): Observable<LocationEntry> = locationSubject

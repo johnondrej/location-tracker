@@ -72,7 +72,7 @@ class TrackingService : Service() {
     private fun onLocationChanged(location: LocationEntry) {
         val trackingSettings = locationTracker.getSettings()
         if (locationTracker.distanceBetween(trackingSettings.latitude, trackingSettings.longitude,
-                        location.lat, location.lon) > trackingSettings.radius.inMeters) {
+                        location.lat, location.lon, location.accuracy) > trackingSettings.radius.inMeters) {
             smsController.sendSmsAlarm(trackingSettings.phone)
             stopSelf()
         }
