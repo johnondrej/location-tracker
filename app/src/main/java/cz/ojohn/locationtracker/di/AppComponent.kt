@@ -2,6 +2,7 @@ package cz.ojohn.locationtracker.di
 
 import android.content.Context
 import cz.ojohn.locationtracker.App
+import cz.ojohn.locationtracker.location.FetchLocationService
 import cz.ojohn.locationtracker.location.TrackingService
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
 import cz.ojohn.locationtracker.sms.SmsReceiver
@@ -22,6 +23,7 @@ interface AppComponent {
     fun inject(smsReceiver: SmsReceiver)
     fun inject(trackingFragment: TrackingFragment)
     fun inject(trackingService: TrackingService)
+    fun inject(fetchLocationService: FetchLocationService)
 
     @Component.Builder
     interface Builder {

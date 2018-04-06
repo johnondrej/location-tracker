@@ -82,6 +82,8 @@
     <string name="channel_tracking_name">Location tracking</string>
     <string name="channel_tracking_description">Information about location tracking</string>
     <string name="notification_tracking_content">Location tracking is running!</string>
+    <string name="notification_location_fetching">Finding location</string>
+    <string name="notification_location_fetching_content">Getting device location</string>
 
     <!-- SMS strings -->
     <string name="sms_alarm">Your device is outside of defined location!</string>
@@ -94,6 +96,8 @@
     <string name="sms_response_wifi_disconnected">WiFi disconnected</string>
     <string name="sms_response_wifi_nearby_unknown">Unknown WiFi nearby</string>
     <string name="sms_response_wifi_no_nearby">No nearby WiFi networks</string>
+    <string name="sms_response_location_format">%1$s, %2$s</string>
+    <string name="sms_response_location_short_format">%1$s</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>

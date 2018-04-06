@@ -18,6 +18,7 @@ class NotificationController(private val context: Context) {
         const val TRACKING_CHANNEL_ID = "tracking_channel"
 
         const val TRACKING_NOTIFICATION_ID = 1
+        const val FETCHING_NOTIFICATION_ID = 2
     }
 
     @SuppressLint("NewApi")
@@ -37,6 +38,14 @@ class NotificationController(private val context: Context) {
                 .setSmallIcon(R.drawable.ic_notification_tracking)
                 .setContentTitle(context.getString(R.string.channel_tracking_name))
                 .setContentText(context.getString(R.string.notification_tracking_content))
+                .build()
+    }
+
+    fun getLocationFetchingNotification(): Notification {
+        return NotificationCompat.Builder(context, TRACKING_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification_location_fetching)
+                .setContentTitle(context.getString(R.string.notification_location_fetching))
+                .setContentText(context.getString(R.string.notification_location_fetching_content))
                 .build()
     }
 }

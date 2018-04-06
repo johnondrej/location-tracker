@@ -28,15 +28,17 @@ class SmsController(private val appContext: Context,
 
     private val smsManager: SmsManager
         get() = SmsManager.getDefault()
-    private val smsSettings: Settings
+
+    val smsSettings: Settings
         get() = userPreferences.getSmsSettings()
 
     fun sendSmsAlarm(phone: String) {
-        smsManager.sendTextMessage(phone, null, appContext.getString(R.string.sms_alarm), null, null)
+        sendSms(phone, appContext.getString(R.string.sms_alarm))
     }
 
     fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse) {
-        smsManager.sendTextMessage(phone, null, formatLocationInfoSms(locationResponse), null, null)
+        val formatLocationInfoSms = formatLocationInfoSms(locationResponse)
+        sendSms(phone, formatLocationInfoSms)
     }
 
     fun processIncomingSms(sender: String, sms: String): SmsAction {
@@ -109,6 +111,15 @@ class SmsController(private val appContext: Context,
             }
         }
         return stringBuilder.toString()
+    }
+
+    private fun sendSms(phone: String, text: String) {
+        val textDivided = smsManager.divideMessage(text)
+        if (textDivided.size > 1) {
+            smsManager.sendMultipartTextMessage(phone, null, textDivided, null, null)
+        } else {
+            smsManager.sendTextMessage(phone, null, text, null, null)
+        }
     }
 
     data class Settings(val sendGps: Boolean,

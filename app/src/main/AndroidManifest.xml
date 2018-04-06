@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cz.ojohn.locationtracker">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -30,6 +31,9 @@
 
         <service
             android:name=".location.TrackingService"
+            android:exported="false" />
+        <service
+            android:name=".location.FetchLocationService"
             android:exported="false" />
 
         <receiver android:name=".util.BootReceiver">

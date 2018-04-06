@@ -71,14 +71,13 @@ class LocationTracker(private val appContext: Context,
     }
 
     fun enableTracking(): Boolean {
-        try {
-            enableLocationUpdates()
+        val updatesEnabled = enableLocationUpdates()
+        if (updatesEnabled) {
             changeStatus(TrackingStatus.RUNNING)
-        } catch (ex: SecurityException) {
+        } else {
             changeStatus(TrackingStatus.DISABLED)
-            return false
         }
-        return true
+        return updatesEnabled
     }
 
     fun disableTracking() {

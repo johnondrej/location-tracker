@@ -25,8 +25,8 @@ class TrackingService : Service() {
         fun getIntent(context: Context) = Intent(context, TrackingService::class.java)
     }
 
-    var wakeLock: PowerManager.WakeLock? = null
-    var locationDisposable: Disposable? = null
+    private var wakeLock: PowerManager.WakeLock? = null
+    private var locationDisposable: Disposable? = null
 
     @Inject
     lateinit var locationTracker: LocationTracker
@@ -44,14 +44,6 @@ class TrackingService : Service() {
                 notificationController.getLocationTrackingNotification())
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        locationTracker.disableTracking()
-        locationDisposable?.dispose()
-        releaseWakeLock()
-    }
-
     @SuppressLint("WakelockTimeout")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         releaseWakeLock()
@@ -67,6 +59,14 @@ class TrackingService : Service() {
         locationDisposable = locationTracker.observeLocationUpdates()
                 .subscribe { onLocationChanged(it) }
         return START_STICKY
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        locationTracker.disableTracking()
+        locationDisposable?.dispose()
+        releaseWakeLock()
     }
 
     private fun onLocationChanged(location: LocationEntry) {

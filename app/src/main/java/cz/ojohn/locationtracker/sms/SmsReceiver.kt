@@ -6,8 +6,8 @@ import android.content.Intent
 import android.os.Build
 import android.telephony.SmsMessage
 import cz.ojohn.locationtracker.App
-import cz.ojohn.locationtracker.data.LocationEntry
-import cz.ojohn.locationtracker.location.LocationTracker
+import cz.ojohn.locationtracker.location.FetchLocationService
+import cz.ojohn.locationtracker.util.startForegroundServiceCompat
 import javax.inject.Inject
 
 /**
@@ -20,6 +20,8 @@ class SmsReceiver : BroadcastReceiver() {
         private const val KEY_FORMAT = "format"
     }
 
+    @Inject
+    lateinit var appContext: Context
     @Inject
     lateinit var smsController: SmsController
 
@@ -54,15 +56,7 @@ class SmsReceiver : BroadcastReceiver() {
     private fun onActionRequired(action: SmsController.SmsAction) {
         when (action) {
             is SmsController.SmsAction.SendLocation -> {
-                // TODO send real device location
-                smsController.sendDeviceLocation(action.phone, LocationTracker.LocationResponse(
-                        LocationEntry(13.87, 50.02, 2.3, null, 50992042),
-                        "Turbo Location",
-                        "GPS",
-                        87,
-                        "Turbo WiFi",
-                        arrayOf()
-                ))
+                appContext.startForegroundServiceCompat(FetchLocationService.getIntent(appContext, action.phone))
             }
         }
     }
