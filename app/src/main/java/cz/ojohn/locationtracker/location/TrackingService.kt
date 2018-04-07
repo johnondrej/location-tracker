@@ -63,6 +63,7 @@ class TrackingService : Service() {
         locationDisposable = locationTracker.observeLocationUpdates()
                 .subscribe { onLocationChanged(it) }
         initBatteryReceiver()
+        initChargerReceiver()
         return START_STICKY
     }
 
@@ -104,6 +105,29 @@ class TrackingService : Service() {
                 addAction(Intent.ACTION_BATTERY_LOW)
             }
             applicationContext.registerReceiver(batteryBroadcastReceiver, intentFilter)
+        }
+    }
+
+    private fun initChargerReceiver() {
+        val trackingSettings = locationTracker.getSettings()
+        if (trackingSettings.chargerNotify) {
+            chargerBroadcastReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    intent?.let {
+                        val isCharging = when (it.action) {
+                            Intent.ACTION_POWER_CONNECTED -> true
+                            Intent.ACTION_POWER_DISCONNECTED -> false
+                            else -> return
+                        }
+                        smsController.sendChargerNotification(trackingSettings.phone, isCharging)
+                    }
+                }
+            }
+            val intentFilter = IntentFilter().apply {
+                addAction(Intent.ACTION_POWER_CONNECTED)
+                addAction(Intent.ACTION_POWER_DISCONNECTED)
+            }
+            applicationContext.registerReceiver(chargerBroadcastReceiver, intentFilter)
         }
     }
 

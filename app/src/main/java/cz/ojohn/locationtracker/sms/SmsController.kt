@@ -44,6 +44,14 @@ class SmsController(private val appContext: Context,
         sendSms(phone, notificationText)
     }
 
+    fun sendChargerNotification(phone: String, isConnected: Boolean) {
+        val notificationText = when (isConnected) {
+            true -> appContext.getString(R.string.sms_tracking_charger_connected)
+            false -> appContext.getString(R.string.sms_tracking_charger_disconnected)
+        }
+        sendSms(phone, notificationText)
+    }
+
     fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?) {
         if (locationResponse != null) {
             val formatLocationInfoSms = formatLocationInfoSms(locationResponse)
