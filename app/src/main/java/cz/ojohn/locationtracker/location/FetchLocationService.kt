@@ -128,7 +128,7 @@ class FetchLocationService : Service() {
         val locationName = if (smsSettings.sendLocationName) getLocationName(locationEntry) else null
         val batteryStatus = if (smsSettings.sendBattery) applicationContext.getBatteryPercentage() else null
         val wifiName = if (smsSettings.sendWiFi) getWifiName() else null
-        val wifiNearby = if (smsSettings.sendWiFiNearby) getWifiNearby() else null
+        val ipAddr = if (smsSettings.sendIpAddress) getIpAddress() else null
 
         return LocationTracker.LocationResponse(
                 locationEntry,
@@ -136,7 +136,7 @@ class FetchLocationService : Service() {
                 locationEntry.source,
                 batteryStatus,
                 wifiName,
-                wifiNearby
+                ipAddr
         )
     }
 
@@ -179,7 +179,7 @@ class FetchLocationService : Service() {
         return applicationContext.wifiManager.connectionInfo.ssid
     }
 
-    private fun getWifiNearby(): Array<String>? {
+    private fun getIpAddress(): String? {
         // TODO
         return null
     }

@@ -166,7 +166,7 @@ class LocationTracker(private val appContext: Context,
                                 val locationSource: String? = null,
                                 val batteryStatus: Int? = null,
                                 val wifiName: String? = null,
-                                val wifiNearby: Array<String>? = null)
+                                val ipAddr: String? = null)
 
     data class Settings(val latitude: Double,
                         val longitude: Double,

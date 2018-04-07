@@ -38,7 +38,7 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val KEY_SMS_LOC_SOURCE = "sms_location_src"
         const val KEY_SMS_BATTERY = "sms_battery"
         const val KEY_SMS_WIFI = "sms_wifi"
-        const val KEY_SMS_WIFI_NEARBY = "sms_wifi_nearby"
+        const val KEY_SMS_IP = "sms_ip"
     }
 
     fun getTrackingFrequency(): TrackingFrequency {
@@ -89,7 +89,7 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
                 getBoolean(KEY_SMS_LOC_SOURCE, false),
                 getBoolean(KEY_SMS_BATTERY, false),
                 getBoolean(KEY_SMS_WIFI, false),
-                getBoolean(KEY_SMS_WIFI_NEARBY, false))
+                getBoolean(KEY_SMS_IP, false))
     }
 
     fun setSmsSettings(smsSettings: SmsController.Settings) {
@@ -101,7 +101,7 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
                 .putBoolean(KEY_SMS_LOC_SOURCE, smsSettings.sendLocationSource)
                 .putBoolean(KEY_SMS_BATTERY, smsSettings.sendBattery)
                 .putBoolean(KEY_SMS_WIFI, smsSettings.sendWiFi)
-                .putBoolean(KEY_SMS_WIFI_NEARBY, smsSettings.sendWiFiNearby)
+                .putBoolean(KEY_SMS_IP, smsSettings.sendIpAddress)
                 .apply()
     }
 

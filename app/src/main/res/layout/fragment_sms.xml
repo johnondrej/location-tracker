@@ -134,7 +134,7 @@
             android:id="@+id/checkWifiNearby"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/sms_config_wifi_nearby"
+            android:text="@string/sms_config_ip"
             app:layout_constraintBottom_toBottomOf="@id/checkWifi"
             app:layout_constraintLeft_toRightOf="@id/checkWifi"
             app:layout_constraintRight_toRightOf="parent" />

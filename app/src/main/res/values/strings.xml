@@ -74,9 +74,13 @@
     <string name="sms_config_time">Location time</string>
     <string name="sms_config_source">Location source</string>
     <string name="sms_config_wifi">WiFi name</string>
-    <string name="sms_config_wifi_nearby">Networks nearby</string>
+    <string name="sms_config_ip">IP address</string>
     <string name="sms_config_loc_name">Location name</string>
     <string name="sms_config_battery">Battery status</string>
+    <string name="sms_example_lat">41.866156</string>
+    <string name="sms_example_lon">-87.608343</string>
+    <string name="sms_example_location_name">507 East Solidarity Drive, Chicago, IL</string>
+    <string name="sms_example_ip">172.217.23.238</string>
 
     <!-- Notifications -->
     <string name="channel_tracking_name">Location tracking</string>
@@ -91,11 +95,15 @@
     <string name="sms_response_accuracy_unknown">Unknown accuracy</string>
     <string name="sms_response_src_unknown">Unknown location source</string>
     <string name="sms_response_battery_unknown">Unknown battery level</string>
+    <string name="sms_response_gps_format">%1$s%2$s %3$s%4$s</string>
+    <string name="sms_response_latitude_north">N</string>
+    <string name="sms_response_latitude_south">S</string>
+    <string name="sms_response_longitude_east">E</string>
+    <string name="sms_response_longitude_west">W</string>
     <string name="sms_response_wifi_unknown">Unknown WiFi</string>
     <string name="sms_response_wifi_off">WiFi off</string>
     <string name="sms_response_wifi_disconnected">WiFi disconnected</string>
-    <string name="sms_response_wifi_nearby_unknown">Unknown WiFi nearby</string>
-    <string name="sms_response_wifi_no_nearby">No nearby WiFi networks</string>
+    <string name="sms_response_ip_unknown">Unknown IP address</string>
     <string name="sms_response_error_no_location">Unable to find device location</string>
     <string name="sms_response_location_format">%1$s, %2$s</string>
     <string name="sms_response_location_short_format">%1$s</string>

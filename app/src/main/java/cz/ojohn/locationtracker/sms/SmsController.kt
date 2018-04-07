@@ -1,6 +1,7 @@
 package cz.ojohn.locationtracker.sms
 
 import android.content.Context
+import android.location.Location
 import android.telephony.SmsManager
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.UserPreferences
@@ -19,9 +20,7 @@ class SmsController(private val appContext: Context,
         const val SMS_KEYWORD_LOCATION = "LOCATION"
 
         const val SMS_DATA_DELIMITER = ';'
-        const val SMS_WIFI_DELIMITER = ","
 
-        const val FORMAT_GPS = "%.4f N %.4f E"
         const val FORMAT_ACCURACY = "%.1f m"
         const val FORMAT_BATTERY = "%d %"
     }
@@ -74,12 +73,12 @@ class SmsController(private val appContext: Context,
         }
     }
 
-    private fun formatLocationInfoSms(locationResponse: LocationTracker.LocationResponse): String {
+    fun formatLocationInfoSms(locationResponse: LocationTracker.LocationResponse): String {
         val location = locationResponse.locationEntry
         val settings = smsSettings
         val stringBuilder = StringBuilder()
         if (settings.sendGps) {
-            stringBuilder.append(FORMAT_GPS.format(location.lat, location.lon))
+            stringBuilder.append(formatCoordinates(location.lat, location.lon))
         }
         if (settings.sendLocationName) {
             val locationName = locationResponse.locationName
@@ -113,24 +112,25 @@ class SmsController(private val appContext: Context,
                     ?: appContext.getString(R.string.sms_response_wifi_unknown)
             stringBuilder.append(SMS_DATA_DELIMITER).append(wifi)
         }
-        if (settings.sendWiFiNearby) {
+        if (settings.sendIpAddress) {
             stringBuilder.append(SMS_DATA_DELIMITER)
-            if (locationResponse.wifiNearby != null) {
-                if (locationResponse.wifiNearby.isNotEmpty()) {
-                    for (i in 0..locationResponse.wifiNearby.size) {
-                        stringBuilder.append(locationResponse.wifiNearby[i])
-                        if (i != locationResponse.wifiNearby.size - 1) {
-                            stringBuilder.append(SMS_WIFI_DELIMITER)
-                        }
-                    }
-                } else {
-                    stringBuilder.append(appContext.getString(R.string.sms_response_wifi_no_nearby))
-                }
-            } else {
-                stringBuilder.append(appContext.getString(R.string.sms_response_wifi_nearby_unknown))
-            }
+            val ip = locationResponse.ipAddr
+                    ?: appContext.getString(R.string.sms_response_ip_unknown)
+            stringBuilder.append(SMS_DATA_DELIMITER).append(ip)
         }
         return stringBuilder.toString()
+    }
+
+    private fun formatCoordinates(latitude: Double, longitude: Double): String {
+        val strLatitude = Location.convert(Math.abs(latitude), Location.FORMAT_DEGREES)
+        val strLongitude = Location.convert(Math.abs(longitude), Location.FORMAT_DEGREES)
+        val latDescription = if (latitude >= 0) appContext.getString(R.string.sms_response_latitude_north)
+        else appContext.getString(R.string.sms_response_latitude_south)
+        val lonDescription = if (longitude >= 0) appContext.getString(R.string.sms_response_longitude_east)
+        else appContext.getString(R.string.sms_response_longitude_west)
+
+        return appContext.getString(R.string.sms_response_gps_format,
+                strLatitude, latDescription, strLongitude, lonDescription)
     }
 
     private fun sendSms(phone: String, text: String) {
@@ -149,7 +149,7 @@ class SmsController(private val appContext: Context,
                         val sendLocationSource: Boolean,
                         val sendBattery: Boolean,
                         val sendWiFi: Boolean,
-                        val sendWiFiNearby: Boolean)
+                        val sendIpAddress: Boolean)
 
     sealed class SmsAction {
         class None : SmsAction()
