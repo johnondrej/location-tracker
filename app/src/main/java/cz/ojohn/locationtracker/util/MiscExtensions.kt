@@ -7,5 +7,5 @@ import cz.ojohn.locationtracker.data.LocationEntry
  * Mix of various extension functions
  */
 fun Location.toLocationEntry(): LocationEntry {
-    return LocationEntry(latitude, longitude, altitude, accuracy, time)
+    return LocationEntry(latitude, longitude, altitude, accuracy, time, provider)
 }

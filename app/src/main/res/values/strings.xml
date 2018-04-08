@@ -4,6 +4,12 @@
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
 
+    <!-- Location sources -->
+    <string name="source_gps">GPS</string>
+    <string name="source_network">Mobile network</string>
+    <string name="source_passive">Passive source</string>
+    <string name="source_unknown">Unknown source</string>
+
     <!-- Units -->
     <string name="unit_min">m</string>
     <string name="unit_hour">h</string>

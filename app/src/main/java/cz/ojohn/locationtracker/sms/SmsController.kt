@@ -2,6 +2,7 @@ package cz.ojohn.locationtracker.sms
 
 import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import android.telephony.SmsManager
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.UserPreferences
@@ -95,8 +96,12 @@ class SmsController(private val appContext: Context,
             stringBuilder.append(SMS_DATA_DELIMITER).append(accuracy)
         }
         if (settings.sendLocationSource) {
-            val source = locationResponse.locationSource
-                    ?: appContext.getString(R.string.sms_response_src_unknown)
+            val source = appContext.getString(when (locationResponse.locationSource) {
+                LocationManager.GPS_PROVIDER -> R.string.source_gps
+                LocationManager.NETWORK_PROVIDER -> R.string.source_network
+                LocationManager.PASSIVE_PROVIDER -> R.string.source_passive
+                else -> R.string.source_unknown
+            })
             stringBuilder.append(SMS_DATA_DELIMITER).append(source)
         }
         if (settings.sendBattery) {

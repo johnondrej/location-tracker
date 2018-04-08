@@ -3,6 +3,7 @@ package cz.ojohn.locationtracker.screen.sms
 import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModel
 import android.content.Context
+import android.location.LocationManager
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.location.LocationTracker
@@ -20,7 +21,7 @@ class SmsViewModel @Inject constructor(private val appContext: Context,
 
     companion object {
         const val EXAMPLE_TIME = 1509998700000
-        const val EXAMPLE_SOURCE = "GPS"
+        const val EXAMPLE_SOURCE = LocationManager.GPS_PROVIDER
         const val EXAMPLE_WIFI = "TurboWiFi"
         const val EXAMPLE_ACCURACY = 20f
         const val EXAMPLE_BATTERY = 85
