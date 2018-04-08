@@ -67,6 +67,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/medium_gap"
+            android:checked="true"
+            android:enabled="false"
             android:text="@string/sms_config_coords"
             app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
             app:layout_constraintRight_toLeftOf="@id/checkName"
@@ -127,11 +129,11 @@
             android:layout_marginTop="@dimen/small_gap"
             android:text="@string/sms_config_wifi"
             app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintRight_toLeftOf="@id/checkWifiNearby"
+            app:layout_constraintRight_toLeftOf="@id/checkIpAddress"
             app:layout_constraintTop_toBottomOf="@id/checkSource" />
 
         <CheckBox
-            android:id="@+id/checkWifiNearby"
+            android:id="@+id/checkIpAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/sms_config_ip"

@@ -19,29 +19,30 @@ class SmsViewModel @Inject constructor(private val appContext: Context,
                                        private val smsController: SmsController) : ViewModel() {
 
     companion object {
-        const val EXAMPLE_TIME = 1510002300000
+        const val EXAMPLE_TIME = 1509998700000
         const val EXAMPLE_SOURCE = "GPS"
         const val EXAMPLE_WIFI = "TurboWiFi"
+        const val EXAMPLE_ACCURACY = 20f
+        const val EXAMPLE_BATTERY = 85
     }
 
     private val exampleSmsSubject: BehaviorSubject<String> = BehaviorSubject.createDefault(getExampleMessageText())
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
-    fun onMessageSettingsChanged() {
+    fun onMessageSettingsEntryChanged(key: String, isEnabled: Boolean) {
+        smsController.updateSmsSettingsEntry(key, isEnabled)
         exampleSmsSubject.onNext(getExampleMessageText())
     }
+
+    fun getSmsSettings(): SmsController.Settings = smsController.smsSettings
 
     private fun getExampleMessageText(): String {
         val locationResponse = LocationTracker.LocationResponse(
                 LocationEntry(appContext.getString(R.string.sms_example_lat).toDouble(),
-                        appContext.getString(R.string.sms_example_lon).toDouble(), null, null,
+                        appContext.getString(R.string.sms_example_lon).toDouble(), null, EXAMPLE_ACCURACY,
                         EXAMPLE_TIME),
                 appContext.getString(R.string.sms_example_location_name),
                 EXAMPLE_SOURCE,
-                85,
+                EXAMPLE_BATTERY,
                 EXAMPLE_WIFI,
                 appContext.getString(R.string.sms_example_ip)
         )

@@ -22,7 +22,6 @@ class SmsController(private val appContext: Context,
         const val SMS_DATA_DELIMITER = ';'
 
         const val FORMAT_ACCURACY = "%.1f m"
-        const val FORMAT_BATTERY = "%d %"
     }
 
     private val smsManager: SmsManager
@@ -102,7 +101,7 @@ class SmsController(private val appContext: Context,
         }
         if (settings.sendBattery) {
             val battery = if (locationResponse.batteryStatus != null)
-                FORMAT_BATTERY.format(locationResponse.batteryStatus)
+                appContext.getString(R.string.sms_response_battery_format, locationResponse.batteryStatus)
             else appContext.getString(R.string.sms_response_battery_unknown)
 
             stringBuilder.append(SMS_DATA_DELIMITER).append(battery)
@@ -116,9 +115,15 @@ class SmsController(private val appContext: Context,
             stringBuilder.append(SMS_DATA_DELIMITER)
             val ip = locationResponse.ipAddr
                     ?: appContext.getString(R.string.sms_response_ip_unknown)
-            stringBuilder.append(SMS_DATA_DELIMITER).append(ip)
+            stringBuilder.append(ip)
         }
         return stringBuilder.toString()
+    }
+
+    fun updateSmsSettingsEntry(key: String, isEnabled: Boolean) {
+        userPreferences.edit()
+                .put(key, isEnabled)
+                .apply()
     }
 
     private fun formatCoordinates(latitude: Double, longitude: Double): String {

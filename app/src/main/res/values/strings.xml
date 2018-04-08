@@ -95,7 +95,6 @@
     <string name="sms_response_accuracy_unknown">Unknown accuracy</string>
     <string name="sms_response_src_unknown">Unknown location source</string>
     <string name="sms_response_battery_unknown">Unknown battery level</string>
-    <string name="sms_response_gps_format">%1$s%2$s %3$s%4$s</string>
     <string name="sms_response_latitude_north">N</string>
     <string name="sms_response_latitude_south">S</string>
     <string name="sms_response_longitude_east">E</string>
@@ -105,12 +104,14 @@
     <string name="sms_response_wifi_disconnected">WiFi disconnected</string>
     <string name="sms_response_ip_unknown">Unknown IP address</string>
     <string name="sms_response_error_no_location">Unable to find device location</string>
-    <string name="sms_response_location_format">%1$s, %2$s</string>
-    <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_tracking_battery_off">Device battery is low, turning off location tracking</string>
     <string name="sms_tracking_battery_low">Device battery is low</string>
     <string name="sms_tracking_charger_connected">Charger was connected</string>
     <string name="sms_tracking_charger_disconnected">Charger was disconnected</string>
+    <string name="sms_response_gps_format">%1$s%2$s %3$s%4$s</string>
+    <string name="sms_response_location_format">%1$s, %2$s</string>
+    <string name="sms_response_location_short_format">%1$s</string>
+    <string name="sms_response_battery_format">Battery: %1$d%%</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
