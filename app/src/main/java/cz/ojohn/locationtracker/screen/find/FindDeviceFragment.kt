@@ -83,7 +83,7 @@ class FindDeviceFragment : Fragment() {
         when (status) {
             is DeviceFinder.FindingStatus.Initial -> {
                 btnFind.text = context.getText(R.string.find_btn_start)
-                if (lastStatus is DeviceFinder.FindingStatus.Initial) {
+                if (lastStatus is DeviceFinder.FindingStatus.Finding) {
                     onDeviceNotFound()
                 }
             }
