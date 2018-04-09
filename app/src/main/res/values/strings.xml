@@ -68,6 +68,7 @@
     <string name="find_btn_stop">Stop finding</string>
     <string name="find_device_found">Device found!</string>
     <string name="find_device_not_found">Device was not found</string>
+    <string name="find_error_permissions_denied">Please enable permissions needed to find device</string>
 
     <!-- Location history screen -->
     <string name="history_enable">Enable history</string>

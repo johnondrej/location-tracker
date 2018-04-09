@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.location.DeviceFinder
+import cz.ojohn.locationtracker.util.areAllPermissionsGranted
+import cz.ojohn.locationtracker.util.isPermissionGranted
 import cz.ojohn.locationtracker.util.showSnackbar
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
@@ -30,6 +32,8 @@ class FindDeviceFragment : Fragment() {
 
     companion object {
         fun newInstance(): FindDeviceFragment = FindDeviceFragment()
+
+        const val REQUEST_FIND = 1
     }
 
     private var map: FindingMap? = null
@@ -71,7 +75,35 @@ class FindDeviceFragment : Fragment() {
         disposables.clear()
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_FIND -> {
+                if (grantResults.areAllPermissionsGranted()) {
+                    onStartFinding()
+                } else {
+                    showSnackbar(R.string.find_error_permissions_denied, Snackbar.LENGTH_LONG)
+                }
+            }
+        }
+    }
+
     private fun onFindingButtonSelected() {
+        val ctx = requireContext()
+        val permissionsGranted = ctx.isPermissionGranted(android.Manifest.permission.RECEIVE_SMS)
+                && ctx.isPermissionGranted(android.Manifest.permission.READ_SMS)
+                && ctx.isPermissionGranted(android.Manifest.permission.SEND_SMS)
+
+        if (permissionsGranted) {
+            onStartFinding()
+        } else {
+            requestPermissions(arrayOf(android.Manifest.permission.RECEIVE_SMS,
+                    android.Manifest.permission.READ_SMS,
+                    android.Manifest.permission.SEND_SMS), REQUEST_FIND)
+        }
+    }
+
+    private fun onStartFinding() {
         val isDataCorrect = viewModel.onStartFinding(editPhone.text.toString())
         if (!isDataCorrect) {
             showSnackbar(R.string.tracking_error_phone, Snackbar.LENGTH_LONG)
@@ -91,14 +123,15 @@ class FindDeviceFragment : Fragment() {
                 btnFind.text = context.getText(R.string.find_btn_stop)
             }
             is DeviceFinder.FindingStatus.Found -> {
+                val showMessage = lastStatus is DeviceFinder.FindingStatus.Finding
                 btnFind.text = context.getText(R.string.find_btn_start)
-                onDeviceFound(status)
+                onDeviceFound(status, showMessage)
             }
         }
         lastStatus = status
     }
 
-    private fun onDeviceFound(deviceStatus: DeviceFinder.FindingStatus.Found) {
+    private fun onDeviceFound(deviceStatus: DeviceFinder.FindingStatus.Found, showMessage: Boolean) {
         map?.let {
             val coordinates = LatLng(deviceStatus.location.lat, deviceStatus.location.lon)
             it.deviceMarker.apply {
@@ -107,7 +140,10 @@ class FindDeviceFragment : Fragment() {
             }
             it.googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 13f)))
         }
-        showSnackbar(R.string.find_device_found, Snackbar.LENGTH_LONG)
+
+        if (showMessage) {
+            showSnackbar(R.string.find_device_found, Snackbar.LENGTH_LONG)
+        }
     }
 
     private fun onDeviceNotFound() {
