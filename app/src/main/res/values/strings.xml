@@ -66,6 +66,8 @@
     <string name="find_phone">Target phone number:</string>
     <string name="find_btn_start">Find device</string>
     <string name="find_btn_stop">Stop finding</string>
+    <string name="find_device_found">Device found!</string>
+    <string name="find_device_not_found">Device was not found</string>
 
     <!-- Location history screen -->
     <string name="history_enable">Enable history</string>

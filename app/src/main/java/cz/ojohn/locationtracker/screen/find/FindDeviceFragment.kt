@@ -7,6 +7,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.location.DeviceFinder
@@ -25,6 +32,9 @@ class FindDeviceFragment : Fragment() {
         fun newInstance(): FindDeviceFragment = FindDeviceFragment()
     }
 
+    private var map: FindingMap? = null
+    private var lastStatus: DeviceFinder.FindingStatus? = null
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -41,6 +51,12 @@ class FindDeviceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.fragmentMap) as SupportMapFragment
+        mapFragment.getMapAsync {
+            it?.let {
+                map = initMap(it)
+            }
+        }
         btnFind.setOnClickListener { onFindingButtonSelected() }
     }
 
@@ -67,6 +83,9 @@ class FindDeviceFragment : Fragment() {
         when (status) {
             is DeviceFinder.FindingStatus.Initial -> {
                 btnFind.text = context.getText(R.string.find_btn_start)
+                if (lastStatus is DeviceFinder.FindingStatus.Initial) {
+                    onDeviceNotFound()
+                }
             }
             is DeviceFinder.FindingStatus.Finding -> {
                 btnFind.text = context.getText(R.string.find_btn_stop)
@@ -76,8 +95,31 @@ class FindDeviceFragment : Fragment() {
                 onDeviceFound(status)
             }
         }
+        lastStatus = status
     }
 
     private fun onDeviceFound(deviceStatus: DeviceFinder.FindingStatus.Found) {
+        map?.let {
+            val coordinates = LatLng(deviceStatus.location.lat, deviceStatus.location.lon)
+            it.deviceMarker.apply {
+                isVisible = true
+                position = coordinates
+            }
+            it.googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 13f)))
+        }
+        showSnackbar(R.string.find_device_found, Snackbar.LENGTH_LONG)
     }
+
+    private fun onDeviceNotFound() {
+        showSnackbar(R.string.find_device_not_found, Snackbar.LENGTH_LONG)
+    }
+
+    private fun initMap(googleMap: GoogleMap): FindingMap {
+        val marker = googleMap.addMarker(MarkerOptions()
+                .position(LatLng(0.0, 0.0))
+                .visible(false))
+        return FindingMap(googleMap, marker)
+    }
+
+    private class FindingMap(val googleMap: GoogleMap, val deviceMarker: Marker)
 }
