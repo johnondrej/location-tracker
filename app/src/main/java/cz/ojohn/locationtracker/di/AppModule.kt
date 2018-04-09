@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import cz.ojohn.locationtracker.Constants
 import cz.ojohn.locationtracker.data.UserPreferences
+import cz.ojohn.locationtracker.location.DeviceFinder
 import cz.ojohn.locationtracker.location.LocationController
 import cz.ojohn.locationtracker.location.LocationTracker
 import cz.ojohn.locationtracker.sms.SmsController
@@ -45,6 +46,12 @@ class AppModule {
     @Singleton
     fun provideSmsController(context: Context, userPreferences: UserPreferences): SmsController {
         return SmsController(context, userPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeviceFinder(context: Context): DeviceFinder {
+        return DeviceFinder(context)
     }
 
     @Provides

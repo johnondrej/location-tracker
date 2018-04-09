@@ -5,8 +5,11 @@ import android.location.Location
 import android.location.LocationManager
 import android.telephony.SmsManager
 import cz.ojohn.locationtracker.R
+import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import java.text.DateFormat
 import java.util.*
 
@@ -19,6 +22,8 @@ class SmsController(private val appContext: Context,
     companion object {
         const val SMS_KEYWORD = "LT"
         const val SMS_KEYWORD_LOCATION = "LOCATION"
+        const val SMS_KEYWORD_GPS = "GPS"
+        const val SMS_KEYWORD_GPS_RESPONSE = "FIND_RESPONSE"
 
         const val SMS_DATA_DELIMITER = ';'
 
@@ -27,6 +32,8 @@ class SmsController(private val appContext: Context,
 
     private val smsManager: SmsManager
         get() = SmsManager.getDefault()
+
+    private val actionSubject: PublishSubject<SmsAction> = PublishSubject.create()
 
     val smsSettings: Settings
         get() = userPreferences.getSmsSettings()
@@ -51,23 +58,30 @@ class SmsController(private val appContext: Context,
         sendSms(phone, notificationText)
     }
 
-    fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?) {
+    fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?, onlyCoords: Boolean) {
         if (locationResponse != null) {
-            val formatLocationInfoSms = formatLocationInfoSms(locationResponse)
+            val formatLocationInfoSms = if (onlyCoords) formatLocationInfoSms(locationResponse)
+            else formatOutgoingGps(locationResponse)
             sendSms(phone, formatLocationInfoSms)
         } else {
             sendSms(phone, appContext.getString(R.string.sms_response_error_no_location))
         }
     }
 
+    fun sendGpsRequest(phone: String) {
+        sendSms(phone, "$SMS_KEYWORD $SMS_KEYWORD_GPS")
+    }
+
     fun processIncomingSms(sender: String, sms: String): SmsAction {
         var input = sms.trim()
         if (input.startsWith(SMS_KEYWORD, true)) {
             input = input.substring(SMS_KEYWORD.length, input.length).trim()
-            if (input.contains(SMS_KEYWORD_LOCATION, true)) {
-                return SmsAction.SendLocation(sender)
+            return when {
+                input.contains(SMS_KEYWORD_LOCATION, true) -> SmsAction.SendLocation(sender, false)
+                input.contains(SMS_KEYWORD_GPS, true) -> SmsAction.SendLocation(sender, true)
+                input.contains(SMS_KEYWORD_GPS_RESPONSE, true) -> formatGpsResponse(sender, input)
+                else -> SmsAction.None()
             }
-            return SmsAction.None()
         } else {
             return SmsAction.None()
         }
@@ -131,6 +145,33 @@ class SmsController(private val appContext: Context,
                 .apply()
     }
 
+    fun onNewSmsAction(action: SmsAction) {
+        actionSubject.onNext(action)
+    }
+
+    fun observeSmsActions(): Observable<SmsAction> = actionSubject
+
+    private fun formatGpsResponse(phone: String, receivedInput: String): SmsAction.GpsReceived {
+        val data = receivedInput.split(';', ignoreCase = true)
+        return SmsAction.GpsReceived(phone, LocationEntry(data[1].toDouble(), data[2].toDouble(),
+                null, null, data[3].toLong(), null))
+    }
+
+    private fun formatOutgoingGps(locationResponse: LocationTracker.LocationResponse): String {
+        val stringBuilder = StringBuilder().apply {
+            append(SMS_KEYWORD)
+            append(' ')
+            append(SMS_KEYWORD_GPS_RESPONSE)
+            append(SMS_DATA_DELIMITER)
+            append(locationResponse.locationEntry.lat)
+            append(SMS_DATA_DELIMITER)
+            append(locationResponse.locationEntry.lon)
+            append(SMS_DATA_DELIMITER)
+            append(locationResponse.locationEntry.time)
+        }
+        return stringBuilder.toString()
+    }
+
     private fun formatCoordinates(latitude: Double, longitude: Double): String {
         val strLatitude = Location.convert(Math.abs(latitude), Location.FORMAT_DEGREES)
         val strLongitude = Location.convert(Math.abs(longitude), Location.FORMAT_DEGREES)
@@ -163,6 +204,7 @@ class SmsController(private val appContext: Context,
 
     sealed class SmsAction {
         class None : SmsAction()
-        class SendLocation(val phone: String) : SmsAction()
+        class SendLocation(val phone: String, val onlyCoords: Boolean) : SmsAction()
+        class GpsReceived(val phone: String, val location: LocationEntry) : SmsAction()
     }
 }

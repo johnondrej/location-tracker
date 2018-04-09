@@ -64,7 +64,8 @@
 
     <!-- Find device screen -->
     <string name="find_phone">Target phone number:</string>
-    <string name="find_btn">Find device</string>
+    <string name="find_btn_start">Find device</string>
+    <string name="find_btn_stop">Stop finding</string>
 
     <!-- Location history screen -->
     <string name="history_enable">Enable history</string>
@@ -94,6 +95,8 @@
     <string name="notification_tracking_content">Location tracking is running!</string>
     <string name="notification_location_fetching">Finding location</string>
     <string name="notification_location_fetching_content">Getting device location</string>
+    <string name="notification_finding">Finding device</string>
+    <string name="notification_finding_content">Waiting for location response from target device</string>
 
     <!-- SMS strings -->
     <string name="sms_alarm">Your device is outside of defined location!</string>

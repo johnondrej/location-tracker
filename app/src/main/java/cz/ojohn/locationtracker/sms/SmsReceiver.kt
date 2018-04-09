@@ -46,6 +46,7 @@ class SmsReceiver : BroadcastReceiver() {
             if (sender != null) {
                 val action = smsController.processIncomingSms(sender, output.toString())
                 if (action !is SmsController.SmsAction.None) {
+                    smsController.onNewSmsAction(action)
                     onActionRequired(action)
                     abortBroadcast()
                 }
@@ -56,7 +57,7 @@ class SmsReceiver : BroadcastReceiver() {
     private fun onActionRequired(action: SmsController.SmsAction) {
         when (action) {
             is SmsController.SmsAction.SendLocation -> {
-                appContext.startForegroundServiceCompat(FetchLocationService.getIntent(appContext, action.phone))
+                appContext.startForegroundServiceCompat(FetchLocationService.getIntent(appContext, action.phone, action.onlyCoords))
             }
         }
     }

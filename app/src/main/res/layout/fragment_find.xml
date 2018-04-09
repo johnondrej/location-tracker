@@ -57,7 +57,7 @@
         android:layout_marginBottom="@dimen/small_gap"
         android:layout_marginLeft="@dimen/small_gap"
         android:layout_marginRight="@dimen/small_gap"
-        android:text="@string/find_btn"
+        android:text="@string/find_btn_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

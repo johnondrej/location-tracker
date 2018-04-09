@@ -36,6 +36,9 @@
         <service
             android:name=".location.FetchLocationService"
             android:exported="false" />
+        <service
+            android:name=".screen.find.FindDeviceService"
+            android:exported="false" />
 
         <receiver android:name=".util.BootReceiver">
             <intent-filter>

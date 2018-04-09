@@ -13,6 +13,7 @@ import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.sms.SmsController
 import cz.ojohn.locationtracker.util.NotificationController
 import cz.ojohn.locationtracker.util.powerManager
+import cz.ojohn.locationtracker.util.safeRelease
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
@@ -50,7 +51,7 @@ class TrackingService : Service() {
 
     @SuppressLint("WakelockTimeout")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        releaseWakeLock()
+        wakeLock?.safeRelease()
         wakeLock = applicationContext.powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG_WAKELOCK).apply {
             acquire()
         }
@@ -74,7 +75,7 @@ class TrackingService : Service() {
         locationDisposable?.dispose()
         batteryBroadcastReceiver?.let { applicationContext.unregisterReceiver(it) }
         chargerBroadcastReceiver?.let { applicationContext.unregisterReceiver(it) }
-        releaseWakeLock()
+        wakeLock?.safeRelease()
     }
 
     private fun onLocationChanged(location: LocationEntry) {
@@ -128,12 +129,6 @@ class TrackingService : Service() {
                 addAction(Intent.ACTION_POWER_DISCONNECTED)
             }
             applicationContext.registerReceiver(chargerBroadcastReceiver, intentFilter)
-        }
-    }
-
-    private fun releaseWakeLock() {
-        if (wakeLock?.isHeld == true) {
-            wakeLock?.release()
         }
     }
 }

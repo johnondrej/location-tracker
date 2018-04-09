@@ -11,16 +11,15 @@ import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.sms.SmsController
-import cz.ojohn.locationtracker.util.NotificationController
-import cz.ojohn.locationtracker.util.getBatteryPercentage
-import cz.ojohn.locationtracker.util.powerManager
-import cz.ojohn.locationtracker.util.wifiManager
+import cz.ojohn.locationtracker.util.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
+import java.lang.Exception
+import java.net.NetworkInterface
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -33,16 +32,19 @@ class FetchLocationService : Service() {
     companion object {
         private const val TAG_WAKELOCK = "fetching_wl"
         private const val TAG_PHONE = "phone"
+        private const val TAG_ONLY_COORDS = "mode_coords"
         private const val TIMEOUT_SECONDS: Long = 180
 
-        fun getIntent(context: Context, phone: String): Intent {
+        fun getIntent(context: Context, phone: String, onlyCoords: Boolean): Intent {
             return Intent(context, FetchLocationService::class.java).apply {
                 putExtra(TAG_PHONE, phone)
+                putExtra(TAG_ONLY_COORDS, onlyCoords)
             }
         }
     }
 
     private var wakeLock: PowerManager.WakeLock? = null
+    private var onlyCoords: Boolean = false
 
     private lateinit var phone: String
     private lateinit var disposables: CompositeDisposable
@@ -66,6 +68,7 @@ class FetchLocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        onlyCoords = intent?.extras?.getBoolean(TAG_ONLY_COORDS) ?: false
         val replyPhone = intent?.extras?.getString(TAG_PHONE)
         if (replyPhone != null) {
             phone = replyPhone
@@ -74,7 +77,7 @@ class FetchLocationService : Service() {
             return START_NOT_STICKY
         }
 
-        releaseWakeLock()
+        wakeLock?.safeRelease()
         wakeLock = applicationContext.powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG_WAKELOCK).apply {
             acquire(TIMEOUT_SECONDS * 1000)
         }
@@ -98,7 +101,7 @@ class FetchLocationService : Service() {
 
         locationTracker.disableLocationUpdates()
         disposables.clear()
-        releaseWakeLock()
+        wakeLock?.safeRelease()
     }
 
     private fun onLocationChanged(locationEntry: LocationEntry) {
@@ -113,13 +116,13 @@ class FetchLocationService : Service() {
         if (lastKnownLocation != null) {
             onLocationChanged(lastKnownLocation)
         } else {
-            smsController.sendDeviceLocation(phone, null)
+            smsController.sendDeviceLocation(phone, null, onlyCoords)
             stopSelf()
         }
     }
 
     private fun onLocationResponseBuilt(locationResponse: LocationTracker.LocationResponse) {
-        smsController.sendDeviceLocation(phone, locationResponse)
+        smsController.sendDeviceLocation(phone, locationResponse, onlyCoords)
         stopSelf()
     }
 
@@ -180,13 +183,17 @@ class FetchLocationService : Service() {
     }
 
     private fun getIpAddress(): String? {
-        // TODO
-        return null
-    }
-
-    private fun releaseWakeLock() {
-        if (wakeLock?.isHeld == true) {
-            wakeLock?.release()
+        try {
+            for (netInterface in NetworkInterface.getNetworkInterfaces()) {
+                for (netAddress in netInterface.inetAddresses) {
+                    if (!netAddress.isLoopbackAddress) {
+                        return netAddress.hostAddress
+                    }
+                }
+            }
+            return null
+        } catch (ex: Exception) {
+            return null
         }
     }
 }
