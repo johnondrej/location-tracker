@@ -17,11 +17,6 @@
         android:title="@string/screen_find_short"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_screen_history"
-        android:icon="@drawable/ic_screen_history"
-        android:title="@string/screen_history_short"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_screen_sms"
         android:icon="@drawable/ic_screen_sms"
         android:title="@string/screen_sms_short"

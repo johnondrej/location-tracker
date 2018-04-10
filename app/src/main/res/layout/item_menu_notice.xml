@@ -12,11 +12,11 @@
         android:layout_marginLeft="@dimen/small_gap"
         android:layout_marginStart="@dimen/small_gap"
         android:contentDescription="@string/accessibility_notice"
+        android:tint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_status_warning"
-        tools:tint="@color/colorAccent" />
+        tools:src="@drawable/ic_status_warning" />
 
     <TextView
         android:id="@+id/txtNotice"
@@ -24,11 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/small_gap"
         android:layout_marginStart="@dimen/small_gap"
+        android:textColor="@color/colorStatusWarning"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/imgNotice"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Missing some permissions"
-        tools:textColor="@color/colorStatusWarning" />
+        tools:text="Missing some permissions" />
 
     <Button
         android:id="@+id/btnNotice"

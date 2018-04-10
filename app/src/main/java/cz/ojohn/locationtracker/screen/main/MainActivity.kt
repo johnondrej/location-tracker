@@ -10,7 +10,6 @@ import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
 import cz.ojohn.locationtracker.screen.help.HelpActivity
 import cz.ojohn.locationtracker.screen.help.HelpFragment
-import cz.ojohn.locationtracker.screen.history.LocationHistoryFragment
 import cz.ojohn.locationtracker.screen.sms.SmsFragment
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 /**
  * Main activity containing most of the app fragments
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         bottomNavigation.setOnNavigationItemSelectedListener {
-            onScreenSelected(it.itemId)
+            onScreenSelected(it.itemId, false)
             true
         }
     }
@@ -61,6 +60,20 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onScreenSelected(screenId: Int, changeSelection: Boolean) {
+        val fragment = when (screenId) {
+            R.id.action_screen_main -> MainFragment.newInstance()
+            R.id.action_screen_tracking -> TrackingFragment.newInstance()
+            R.id.action_screen_find -> FindDeviceFragment.newInstance()
+            R.id.action_screen_sms -> SmsFragment.newInstance()
+            else -> return
+        }
+        if (changeSelection) {
+            bottomNavigation.selectedItemId = screenId
+        }
+        changeScreen(fragment)
+    }
+
     private fun onSettingsSelected() {
 
     }
@@ -73,18 +86,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun onAboutAppSelected() {
 
-    }
-
-    private fun onScreenSelected(screenId: Int) {
-        val fragment = when (screenId) {
-            R.id.action_screen_main -> MainFragment.newInstance()
-            R.id.action_screen_tracking -> TrackingFragment.newInstance()
-            R.id.action_screen_find -> FindDeviceFragment.newInstance()
-            R.id.action_screen_sms -> SmsFragment.newInstance()
-            R.id.action_screen_history -> LocationHistoryFragment.newInstance()
-            else -> return
-        }
-        changeScreen(fragment)
     }
 
     private fun changeScreen(screenFragment: Fragment) {

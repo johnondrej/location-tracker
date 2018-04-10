@@ -60,7 +60,7 @@ class SmsController(private val appContext: Context,
 
     fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?, onlyCoords: Boolean) {
         if (locationResponse != null) {
-            val formatLocationInfoSms = if (onlyCoords) formatLocationInfoSms(locationResponse)
+            val formatLocationInfoSms = if (!onlyCoords) formatLocationInfoSms(locationResponse)
             else formatOutgoingGps(locationResponse)
             sendSms(phone, formatLocationInfoSms)
         } else {
