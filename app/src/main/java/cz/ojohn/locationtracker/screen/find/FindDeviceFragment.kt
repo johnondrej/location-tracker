@@ -59,6 +59,9 @@ class FindDeviceFragment : Fragment() {
         mapFragment.getMapAsync {
             it?.let {
                 map = initMap(it)
+                if (lastStatus is DeviceFinder.FindingStatus.Found) {
+                    onDeviceFound(lastStatus as DeviceFinder.FindingStatus.Found, false)
+                }
             }
         }
         btnFind.setOnClickListener { onFindingButtonSelected() }
@@ -140,6 +143,7 @@ class FindDeviceFragment : Fragment() {
             }
             it.googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 13f)))
         }
+        editPhone.setText(deviceStatus.phone)
 
         if (showMessage) {
             showSnackbar(R.string.find_device_found, Snackbar.LENGTH_LONG)

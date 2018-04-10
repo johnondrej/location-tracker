@@ -70,6 +70,7 @@ class MenuAdapter(private val appContext: Context,
 
     fun updateMenuControls(menuControls: List<ControlItem>) {
         controls = menuControls
+        notifyDataSetChanged()
     }
 
     private fun onBindPermissionViewHolder(holder: MenuViewHolder.NoticeViewHolder, position: Int) {

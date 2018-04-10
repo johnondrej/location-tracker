@@ -6,6 +6,7 @@ import cz.ojohn.locationtracker.location.FetchLocationService
 import cz.ojohn.locationtracker.location.TrackingService
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
 import cz.ojohn.locationtracker.screen.find.FindDeviceService
+import cz.ojohn.locationtracker.screen.main.MainFragment
 import cz.ojohn.locationtracker.screen.sms.SmsFragment
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
 import cz.ojohn.locationtracker.sms.SmsReceiver
@@ -25,6 +26,7 @@ interface AppComponent {
     fun inject(bootReceiver: BootReceiver)
     fun inject(smsReceiver: SmsReceiver)
 
+    fun inject(mainFragment: MainFragment)
     fun inject(trackingFragment: TrackingFragment)
     fun inject(smsFragment: SmsFragment)
     fun inject(findDeviceFragment: FindDeviceFragment)

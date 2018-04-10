@@ -3,6 +3,7 @@ package cz.ojohn.locationtracker.di
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import cz.ojohn.locationtracker.screen.find.FindDeviceViewModel
+import cz.ojohn.locationtracker.screen.main.MainViewModel
 import cz.ojohn.locationtracker.screen.sms.SmsViewModel
 import cz.ojohn.locationtracker.screen.tracking.TrackingViewModel
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
@@ -15,6 +16,11 @@ import dagger.multibindings.IntoMap
  */
 @Module
 abstract class ViewModelsModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap

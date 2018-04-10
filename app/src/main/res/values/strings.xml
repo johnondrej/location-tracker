@@ -30,6 +30,8 @@
     <string name="menu_status">Status: %1$s</string>
     <string name="menu_status_enabled">Enabled</string>
     <string name="menu_status_available">Available</string>
+    <string name="menu_status_finding">Finding</string>
+    <string name="menu_status_device_found">Device found</string>
     <string name="menu_status_not_available">Not available</string>
     <string name="menu_status_disabled">Disabled</string>
     <string name="menu_notice_permission_location">Missing GPS permission</string>
