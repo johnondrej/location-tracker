@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import cz.ojohn.locationtracker.R
+import cz.ojohn.locationtracker.screen.about.AboutFragment
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
 import cz.ojohn.locationtracker.screen.help.HelpActivity
 import cz.ojohn.locationtracker.screen.help.HelpFragment
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
     }
 
     private fun onAboutAppSelected() {
-
+        AboutFragment.newInstance().show(supportFragmentManager, "AboutFragment")
     }
 
     private fun changeScreen(screenFragment: Fragment) {

@@ -127,9 +127,15 @@
     <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_response_battery_format">Battery: %1$d%%</string>
 
+    <!-- About app dialog strings -->
+    <string name="about_app_version">version %1$s</string>
+    <string name="about_app_author">Ondřej John, 2018</string>
+    <string name="about_app_description">This app was created as a part of Bachelor\'s thesis \"Application for remote localization of mobile device\" written on FIT CTU in 2018 by Ondřej John. Application is licensed under Apache License 2.0.</string>
+
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>
     <string name="accessibility_menu_control">Control item icon</string>
     <string name="accessibility_menu_control_status">Status icon</string>
     <string name="accessibility_message_icon">Message icon</string>
+    <string name="accesibility_app_icon">Application icon</string>
 </resources>
