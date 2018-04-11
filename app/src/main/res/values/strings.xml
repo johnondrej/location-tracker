@@ -48,8 +48,6 @@
     <string name="screen_sms_short">SMS</string>
     <string name="screen_find">Find other device</string>
     <string name="screen_find_short">Localize</string>
-    <string name="screen_history">Location history</string>
-    <string name="screen_history_short">History</string>
     <string name="screen_settings">Settings</string>
     <string name="screen_help">Help</string>
     <string name="screen_about_app">About app</string>
@@ -79,12 +77,6 @@
     <string name="find_device_found">Device found!</string>
     <string name="find_device_not_found">Device was not found</string>
     <string name="find_error_permissions_denied">Please enable permissions needed to find device</string>
-
-    <!-- Location history screen -->
-    <string name="history_enable">Enable history</string>
-    <string name="history_disable">Disable history</string>
-    <string name="history_clear">Clear history</string>
-    <string name="history_item_time">Device location at %1$s</string>
 
     <!-- Message configuration screen -->
     <string name="sms_example">Alarm message example</string>

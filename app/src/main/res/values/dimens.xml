@@ -16,7 +16,4 @@
     <dimen name="sms_message_width">300dp</dimen>
     <dimen name="sms_message_height">200dp</dimen>
     <dimen name="sms_message_padding_text">32dp</dimen>
-
-    <!-- Location history list item -->
-    <dimen name="list_history_height">70dp</dimen>
 </resources>
