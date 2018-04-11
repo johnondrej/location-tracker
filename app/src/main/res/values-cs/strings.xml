@@ -1,0 +1,141 @@
+<resources>
+    <!-- System-wide strings -->
+    <string name="app_name">Location Tracker</string>
+    <string name="enabled">Zapnuto</string>
+    <string name="disabled">Vypnuto</string>
+
+    <!-- Location sources -->
+    <string name="source_gps">GPS</string>
+    <string name="source_network">Mobilní síť</string>
+    <string name="source_passive">Pasivní lokalizace</string>
+    <string name="source_unknown">Neznámý zdroj</string>
+
+    <!-- Units -->
+    <string name="unit_min">min</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_m">m</string>
+    <string name="unit_km">km</string>
+
+    <string-array name="units_time">
+        <item>@string/unit_min</item>
+        <item>@string/unit_hour</item>
+    </string-array>
+
+    <string-array name="units_distance">
+        <item>@string/unit_m</item>
+        <item>@string/unit_km</item>
+    </string-array>
+
+    <!-- Menu item strings -->
+    <string name="menu_status">Status: %1$s</string>
+    <string name="menu_status_enabled">Zapnuto</string>
+    <string name="menu_status_available">Povoleno</string>
+    <string name="menu_status_finding">Vyhledávání</string>
+    <string name="menu_status_device_found">Zařízení nalezeno</string>
+    <string name="menu_status_not_available">Nedostupné</string>
+    <string name="menu_status_disabled">Vypnuto</string>
+    <string name="menu_notice_permission_location">Chybějící GPS oprávnění</string>
+    <string name="menu_notice_permission_sms">Chybějící SMS oprávnění</string>
+    <string name="menu_notice_permission_grant">Povolit</string>
+    <string name="menu_sms_description">Nastavit zasílané informace</string>
+
+    <!-- Screen names -->
+    <string name="screen_main">Menu</string>
+    <string name="screen_main_short">@string/screen_main</string>
+    <string name="screen_tracking">Sledování polohy</string>
+    <string name="screen_tracking_short">Sledování</string>
+    <string name="screen_sms">Konfigurace SMS</string>
+    <string name="screen_sms_short">SMS</string>
+    <string name="screen_find">Najít zařízení</string>
+    <string name="screen_find_short">Najít</string>
+    <string name="screen_settings">Nasavení</string>
+    <string name="screen_help">Nápověda</string>
+    <string name="screen_about_app">O aplikaci</string>
+
+    <!-- Location tracking screen -->
+    <string name="tracking_frequency">Frekvence sledování:</string>
+    <string name="tracking_radius">Přesnost lokalizace:</string>
+    <string name="tracking_phone">Telefonní číslo:</string>
+    <string name="tracking_continuous">Sledovat nepřetržitě</string>
+    <string name="tracking_false_alarm_reduction">Omezit falešné poplachy</string>
+    <string name="tracking_low_battery_notification">Oznámit nízký stav baterie</string>
+    <string name="tracking_low_battery_auto_off">Vypnout při nízké baterii</string>
+    <string name="tracking_charger_detect">Oznámit změnu stavu nabíjení</string>
+    <string name="tracking_start">Začít sledovat</string>
+    <string name="tracking_stop">Ukončit sledování</string>
+    <string name="tracking_error_permissions_denied">Povolte prosím potřebná oprávnění</string>
+    <string name="tracking_error_not_available">Služby určování polohy nejsou dostupné</string>
+    <string name="tracking_error_frequency">Povolená frekvence: %1$d - %2$d m</string>
+    <string name="tracking_error_radius">Povolený poloměr: %1$d - %2$d m</string>
+    <string name="tracking_error_phone">Neplatné telefonní číslo</string>
+    <string name="tracking_error_location_outside">Vaše poloha je mimo stanovenou oblast!</string>
+
+    <!-- Find device screen -->
+    <string name="find_phone">Cílové telefonní číslo:</string>
+    <string name="find_btn_start">Najít zařízení</string>
+    <string name="find_btn_stop">Ukončit vyhledávání</string>
+    <string name="find_device_found">Zařízení nalezeno!</string>
+    <string name="find_device_not_found">Zařízení nebylo nalezeno</string>
+    <string name="find_error_permissions_denied">Povolte prosím potřebná oprávnění</string>
+
+    <!-- Message configuration screen -->
+    <string name="sms_example">Ukázka zprávy s polohou</string>
+    <string name="sms_config_description">Data obsažená ve zprávách:</string>
+    <string name="sms_config_coords">GPS souřadnice</string>
+    <string name="sms_config_accuracy">Přesnost polohy</string>
+    <string name="sms_config_time">Čas určení polohy</string>
+    <string name="sms_config_source">Způsob určení polohy</string>
+    <string name="sms_config_wifi">Jméno připojené WiFI</string>
+    <string name="sms_config_ip">IP adresa</string>
+    <string name="sms_config_loc_name">Název lokality</string>
+    <string name="sms_config_battery">Stav baterie</string>
+    <string name="sms_example_lat">50.1005</string>
+    <string name="sms_example_lon">14.3954</string>
+    <string name="sms_example_location_name">Vítězné náměstí 576/1, 160 00 Praha 6-Dejvice</string>
+    <string name="sms_example_ip">172.217.23.238</string>
+
+    <!-- Notifications -->
+    <string name="channel_tracking_name">Sledování polohy</string>
+    <string name="channel_tracking_description">Informace o stavu sledování polohy</string>
+    <string name="notification_tracking_content">Probíhá sledování polohy!</string>
+    <string name="notification_location_fetching">Určování polohy</string>
+    <string name="notification_location_fetching_content">Probíhá lokalizace zařízení</string>
+    <string name="notification_finding">Hledání zařízení</string>
+    <string name="notification_finding_content">Čekání na polohu hledaného zařízení</string>
+
+    <!-- SMS strings -->
+    <string name="sms_alarm">Vaše poloha je mimo nastavenou plochu!</string>
+    <string name="sms_response_name_unknown">Neznámý název polohy</string>
+    <string name="sms_response_accuracy_unknown">Neznámá přesnost</string>
+    <string name="sms_response_src_unknown">Neznámý zdroj polohy</string>
+    <string name="sms_response_battery_unknown">Neznámý stav baterie</string>
+    <string name="sms_response_latitude_north">s.š.</string>
+    <string name="sms_response_latitude_south">j.š.</string>
+    <string name="sms_response_longitude_east">v.d.</string>
+    <string name="sms_response_longitude_west">z.d.</string>
+    <string name="sms_response_wifi_unknown">Neznámá WiFi</string>
+    <string name="sms_response_wifi_off">WiFi vypnutá</string>
+    <string name="sms_response_wifi_disconnected">WiFi odpojená</string>
+    <string name="sms_response_ip_unknown">Neznámá IP adresa</string>
+    <string name="sms_response_error_no_location">Chyba při lokalizaci zařízení</string>
+    <string name="sms_tracking_battery_off">Nízký stav baterie, sledování polohy vypnuto</string>
+    <string name="sms_tracking_battery_low">Nízký stav baterie</string>
+    <string name="sms_tracking_charger_connected">Nabíječka připojena</string>
+    <string name="sms_tracking_charger_disconnected">Nabíječka odpojena</string>
+    <string name="sms_response_gps_format">%1$s°%2$s %3$s°%4$s</string>
+    <string name="sms_response_location_format">%1$s, %2$s</string>
+    <string name="sms_response_location_short_format">%1$s</string>
+    <string name="sms_response_battery_format">Baterie: %1$d%%</string>
+
+    <!-- About app dialog strings -->
+    <string name="about_app_version">verze %1$s</string>
+    <string name="about_app_author">Ondřej John, 2018</string>
+    <string name="about_app_description">Tato aplikace byla vytvořena jako součást bakalářské práce \"Aplikace pro vzdálené sledování polohy mobilního zařízení\", kterou napsal na ČVUT FIT Ondřej John v roce 2018. Dílo je zveřejněno pod licencí Apache License 2.0.</string>
+
+    <!-- Accessibility image descriptions -->
+    <string name="accessibility_notice">Ikona upozornění</string>
+    <string name="accessibility_menu_control">Ikona ovládacího prvku</string>
+    <string name="accessibility_menu_control_status">Ikona stavu komponenty</string>
+    <string name="accessibility_message_icon">Znázornění SMS</string>
+    <string name="accesibility_app_icon">Ikona aplikace</string>
+</resources>
