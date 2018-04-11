@@ -10,7 +10,6 @@ import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.about.AboutFragment
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
 import cz.ojohn.locationtracker.screen.help.HelpActivity
-import cz.ojohn.locationtracker.screen.help.HelpFragment
 import cz.ojohn.locationtracker.screen.sms.SmsFragment
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,12 +27,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
             supportFragmentManager.beginTransaction()
                     .add(R.id.fragmentContainer, MainFragment.newInstance())
                     .commit()
-
-            if (isInTabletMode()) {
-                supportFragmentManager.beginTransaction()
-                        .add(R.id.helpFragmentContainer, HelpFragment.newInstance())
-                        .commit()
-            }
         }
 
         bottomNavigation.setOnNavigationItemSelectedListener {
@@ -44,10 +37,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-
-        if (isInTabletMode()) {
-            menu.removeItem(R.id.action_help)
-        }
         return true
     }
 
@@ -94,6 +83,4 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
                 .replace(R.id.fragmentContainer, screenFragment)
                 .commit()
     }
-
-    private fun isInTabletMode(): Boolean = helpFragmentContainer != null
 }
