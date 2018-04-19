@@ -2,7 +2,8 @@ package cz.ojohn.locationtracker.screen.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v7.preference.PreferenceFragmentCompat
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
+import cz.ojohn.locationtracker.Constants
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.UserPreferences
 
@@ -11,8 +12,9 @@ import cz.ojohn.locationtracker.data.UserPreferences
  */
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.preferences)
+    override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.sharedPreferencesName = Constants.SP_NAME
+        setPreferencesFromResource(R.xml.preferences, rootKey)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
@@ -39,8 +41,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     private fun onSmsPasswordChanged(sharedPreferences: SharedPreferences) {
         val preference = findPreference(UserPreferences.KEY_SMS_PASSWORD)
-        val summary = requireContext().getString(R.string.settings_sms_password_format,
-                sharedPreferences.getString(UserPreferences.KEY_SMS_PASSWORD, UserPreferences.SMS_DEFAULT_PASSWORD))
+        val password = sharedPreferences.getString(UserPreferences.KEY_SMS_PASSWORD, UserPreferences.SMS_DEFAULT_PASSWORD).replace(Regex("\\s+"), "")
+        val summary = requireContext().getString(R.string.settings_sms_password_format, password)
         preference.summary = summary
     }
 }

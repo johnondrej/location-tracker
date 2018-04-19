@@ -3,14 +3,16 @@
 
     <PreferenceCategory android:title="@string/settings_general">
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
+            android:defaultValue="true"
             android:key="gps_enabled"
             android:summaryOff="@string/settings_use_gps_description_off"
             android:summaryOn="@string/settings_use_gps_description_on"
             android:title="@string/settings_use_gps" />
 
-        <EditTextPreference
+        <com.takisoft.fix.support.v7.preference.EditTextPreference
             android:key="sms_password"
+            android:maxLength="15"
             android:title="@string/settings_sms_password" />
     </PreferenceCategory>
 </PreferenceScreen>

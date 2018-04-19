@@ -69,18 +69,26 @@ class SmsController(private val appContext: Context,
     }
 
     fun sendGpsRequest(phone: String) {
-        sendSms(phone, "$SMS_KEYWORD $SMS_KEYWORD_GPS")
+        sendSms(phone, "$SMS_KEYWORD ${userPreferences.getSmsPassword()} $SMS_KEYWORD_GPS")
     }
 
     fun processIncomingSms(sender: String, sms: String): SmsAction {
+        val smsPassword = userPreferences.getSmsPassword()
         var input = sms.trim()
         if (input.startsWith(SMS_KEYWORD, true)) {
             input = input.substring(SMS_KEYWORD.length, input.length).trim()
-            return when {
-                input.contains(SMS_KEYWORD_LOCATION, true) -> SmsAction.SendLocation(sender, false)
-                input.contains(SMS_KEYWORD_GPS, true) -> SmsAction.SendLocation(sender, true)
-                input.contains(SMS_KEYWORD_GPS_RESPONSE, true) -> formatGpsResponse(sender, input)
-                else -> SmsAction.None()
+            if (input.contains(smsPassword)) {
+                input = input.substring(smsPassword.length, input.length).trim()
+                return when {
+                    input.contains(SMS_KEYWORD_LOCATION, true) -> SmsAction.SendLocation(sender, false)
+                    input.contains(SMS_KEYWORD_GPS, true) -> SmsAction.SendLocation(sender, true)
+                    else -> SmsAction.None()
+                }
+            } else {
+                return when {
+                    input.contains(SMS_KEYWORD_GPS_RESPONSE, true) -> formatGpsResponse(sender, input)
+                    else -> SmsAction.None()
+                }
             }
         } else {
             return SmsAction.None()

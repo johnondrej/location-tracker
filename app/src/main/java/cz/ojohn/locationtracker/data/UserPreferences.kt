@@ -19,6 +19,8 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
 
         const val SMS_DEFAULT_PASSWORD = "sms"
 
+        const val KEY_GPS_ENABLED = "gps_enabled"
+
         const val KEY_TRACKING_LAST_STATUS = "tracking_last_status"
         const val KEY_TRACKING_LATITUDE = "tracking_latitude"
         const val KEY_TRACKING_LONGITUDE = "tracking_longitude"
@@ -106,6 +108,10 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
                 .putBoolean(KEY_SMS_WIFI, smsSettings.sendWiFi)
                 .putBoolean(KEY_SMS_IP, smsSettings.sendIpAddress)
                 .apply()
+    }
+
+    fun getSmsPassword(): String {
+        return sharedPreferences.getString(KEY_SMS_PASSWORD, SMS_DEFAULT_PASSWORD).replace(Regex("\\s+"), "")
     }
 
     fun getBoolean(key: String, defaultValue: Boolean): Boolean {
