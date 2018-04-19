@@ -34,6 +34,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".screen.settings.SettingsActivity"
+            android:label="@string/screen_settings"
+            android:theme="@style/SettingsTheme" />
+        <activity
             android:name=".screen.help.HelpActivity"
             android:label="@string/screen_help" />
 

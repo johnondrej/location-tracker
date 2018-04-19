@@ -127,6 +127,14 @@
     <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_response_battery_format">Battery: %1$d%%</string>
 
+    <!-- Settings screen strings -->
+    <string name="settings_general">General settings</string>
+    <string name="settings_use_gps">Enable GPS</string>
+    <string name="settings_use_gps_description_on">Using GPS as location source</string>
+    <string name="settings_use_gps_description_off">Using mobile network for location</string>
+    <string name="settings_sms_password">SMS password</string>
+    <string name="settings_sms_password_format">Current password: %1$s</string>
+
     <!-- About app dialog strings -->
     <string name="about_app_version">version %1$s</string>
     <string name="about_app_author">Ondřej John, 2018</string>

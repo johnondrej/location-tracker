@@ -10,6 +10,7 @@ import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.about.AboutFragment
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
 import cz.ojohn.locationtracker.screen.help.HelpActivity
+import cz.ojohn.locationtracker.screen.settings.SettingsActivity
 import cz.ojohn.locationtracker.screen.sms.SmsFragment
 import cz.ojohn.locationtracker.screen.tracking.TrackingFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -65,7 +66,9 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
     }
 
     private fun onSettingsSelected() {
-
+        Intent(this, SettingsActivity::class.java).let {
+            startActivity(it)
+        }
     }
 
     private fun onHelpSelected() {

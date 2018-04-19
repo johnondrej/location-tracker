@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_general">
+
+        <CheckBoxPreference
+            android:key="gps_enabled"
+            android:summaryOff="@string/settings_use_gps_description_off"
+            android:summaryOn="@string/settings_use_gps_description_on"
+            android:title="@string/settings_use_gps" />
+
+        <EditTextPreference
+            android:key="sms_password"
+            android:title="@string/settings_sms_password" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -17,6 +17,8 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val TRACKING_MAX_RADIUS = 10000
         const val TRACKING_DEFAULT_RADIUS = 300
 
+        const val SMS_DEFAULT_PASSWORD = "sms"
+
         const val KEY_TRACKING_LAST_STATUS = "tracking_last_status"
         const val KEY_TRACKING_LATITUDE = "tracking_latitude"
         const val KEY_TRACKING_LONGITUDE = "tracking_longitude"
@@ -32,6 +34,7 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val KEY_TRACKING_CHARGER = "tracking_charger_detect"
 
         const val KEY_SMS_GPS = "sms_gps"
+        const val KEY_SMS_PASSWORD = "sms_password"
         const val KEY_SMS_LOC_NAME = "sms_location_name"
         const val KEY_SMS_LOC_TIME = "sms_location_time"
         const val KEY_SMS_LOC_ACCURACY = "sms_location_acc"

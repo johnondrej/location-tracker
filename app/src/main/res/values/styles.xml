@@ -17,4 +17,8 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="SettingsTheme" parent="AppTheme">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
 </resources>
