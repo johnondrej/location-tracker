@@ -1,5 +1,6 @@
 package cz.ojohn.locationtracker.location
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationListener
@@ -36,7 +37,6 @@ class LocationTracker(private val appContext: Context,
         if (provider == locationController.locationSource.androidProvider) {
             if (status == LocationProvider.AVAILABLE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
                 if (statusSubject.value == TrackingStatus.NOT_AVAILABLE) {
-                    startTrackingService()
                     changeStatus(TrackingStatus.RUNNING)
                 }
             } else {
@@ -108,6 +108,18 @@ class LocationTracker(private val appContext: Context,
             appContext.locationManager.removeUpdates(this)
         }
         listenerCount--
+    }
+
+    @SuppressLint("MissingPermission")
+    fun useGpsForLocation(useGps: Boolean) {
+        val isGpsEnabled = locationController.locationSource == LocationController.LocationSource.GPS
+        locationController.locationSource = if (useGps) LocationController.LocationSource.GPS else LocationController.LocationSource.NETWORK
+
+        if (listenerCount > 0 && isGpsEnabled != useGps) {
+            appContext.locationManager.removeUpdates(this)
+            appContext.locationManager.requestLocationUpdates(locationController.locationSource.androidProvider,
+                    0, 0f, this)
+        }
     }
 
     fun getSettings(): LocationTracker.Settings {

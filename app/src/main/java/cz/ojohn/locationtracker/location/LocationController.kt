@@ -39,14 +39,12 @@ class LocationController(private val appContext: Context,
         return when (androidProvider) {
             LocationManager.GPS_PROVIDER -> LocationSource.GPS
             LocationManager.NETWORK_PROVIDER -> LocationSource.NETWORK
-            LocationManager.PASSIVE_PROVIDER -> LocationSource.PASSIVE
             else -> throw InvalidParameterException("Invalid location provider")
         }
     }
 
     enum class LocationSource(val androidProvider: String) {
         GPS(LocationManager.GPS_PROVIDER),
-        NETWORK(LocationManager.NETWORK_PROVIDER),
-        PASSIVE(LocationManager.PASSIVE_PROVIDER)
+        NETWORK(LocationManager.NETWORK_PROVIDER)
     }
 }
