@@ -183,6 +183,7 @@ class TrackingFragment : Fragment() {
         val locationMarker = googleMap.addMarker(MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_position))
                 .anchor(0.5f, 0.5f)
+                .visible(false)
                 .position(LatLng(0.0, 0.0)))
         val trackingMarker = googleMap.addMarker(MarkerOptions()
                 .position(trackingPosition))
@@ -267,6 +268,7 @@ class TrackingFragment : Fragment() {
         if (mapState is TrackingViewModel.MapState.WithoutPosition) {
             map?.googleMap?.let {
                 viewModel.preserveMarkerPos = true
+                map!!.locationMarker.isVisible = true
                 it.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 14f)))
                 if (mapState.adjustTracking) {
                     viewModel.onTrackingPositionChange(coordinates)

@@ -69,6 +69,9 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
                 formStateSubject.onNext(FormState.Error(R.string.tracking_error_location_outside))
                 return
             }
+        } else {
+            formStateSubject.onNext(FormState.Error(R.string.tracking_error_location_unknown))
+            return
         }
         if (!PhoneNumberUtils.isGlobalPhoneNumber(settings.phone)) {
             formStateSubject.onNext(FormState.Error(R.string.tracking_error_phone))

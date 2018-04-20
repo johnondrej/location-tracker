@@ -69,6 +69,7 @@
     <string name="tracking_error_radius">Povolený poloměr: %1$d - %2$d m</string>
     <string name="tracking_error_phone">Neplatné telefonní číslo</string>
     <string name="tracking_error_location_outside">Vaše poloha je mimo stanovenou oblast!</string>
+    <string name="tracking_error_location_unknown">Vaše poloha je zatím neznámá!</string>
 
     <!-- Find device screen -->
     <string name="find_phone">Cílové telefonní číslo:</string>
