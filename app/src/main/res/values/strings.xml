@@ -78,6 +78,7 @@
     <string name="find_error_permissions_denied">Please enable permissions needed to find device</string>
 
     <!-- Message configuration screen -->
+    <string name="sms_commands_list">SMS commands list</string>
     <string name="sms_example">Alarm message example</string>
     <string name="sms_config_description">Info included in alarms:</string>
     <string name="sms_config_coords">GPS coordinates</string>
@@ -92,6 +93,9 @@
     <string name="sms_example_lon">-87.608343</string>
     <string name="sms_example_location_name">507 East Solidarity Drive, Chicago, IL</string>
     <string name="sms_example_ip">172.217.23.238</string>
+    <string name="sms_description_password">&lt;SMS password&gt;</string>
+    <string name="sms_description_location">Use this command, when you want to get position of target device, which has this application installed. Response will come within few minutes. You can configure data returned by this command below.</string>
+    <string name="sms_description_gps">This command will return just GPS coordinates (and time of location fix) of target device, in format &lt;latitude&gt;;&lt;longitude&gt;;&lt;time of location&gt;</string>
 
     <!-- Notifications -->
     <string name="channel_tracking_name">Location tracking</string>

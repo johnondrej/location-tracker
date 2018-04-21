@@ -5,8 +5,13 @@
     <color name="colorPrimaryDark">#006db3</color>
     <color name="colorAccent">#fb8c00</color>
 
+
     <!-- Status colors -->
     <color name="colorStatusOk">#1faa00</color>
     <color name="colorStatusWarning">#ff6d00</color>
     <color name="colorStatusError">#dd2c00</color>
+
+    <!-- Gray -->
+    <color name="colorGray">#777777</color>
+    <color name="colorLightGray">#DDDDDD</color>
 </resources>

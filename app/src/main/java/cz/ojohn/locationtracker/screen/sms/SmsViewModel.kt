@@ -36,6 +36,23 @@ class SmsViewModel @Inject constructor(private val appContext: Context,
 
     fun getSmsSettings(): SmsController.Settings = smsController.smsSettings
 
+    fun getSmsCommandsList(): Array<SmsCommand> {
+        return arrayOf(SmsCommand(SmsController.SMS_KEYWORD_LOCATION, R.string.sms_description_location, true),
+                SmsCommand(SmsController.SMS_KEYWORD_GPS, R.string.sms_description_gps, true))
+    }
+
+    fun formatCommand(command: SmsCommand): String {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append(SmsController.SMS_KEYWORD)
+                .append(' ')
+        if (command.requiresPassword) {
+            stringBuilder.append(appContext.getString(R.string.sms_description_password))
+                    .append(' ')
+        }
+        stringBuilder.append(command.command)
+        return stringBuilder.toString()
+    }
+
     private fun getExampleMessageText(): String {
         val locationResponse = LocationTracker.LocationResponse(
                 LocationEntry(appContext.getString(R.string.sms_example_lat).toDouble(),

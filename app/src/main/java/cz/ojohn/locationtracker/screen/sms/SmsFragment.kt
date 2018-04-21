@@ -13,6 +13,7 @@ import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_sms.*
+import kotlinx.android.synthetic.main.item_sms_command.view.*
 import javax.inject.Inject
 
 /**
@@ -44,6 +45,7 @@ class SmsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showCommandsDescription()
         initCheckboxes()
     }
 
@@ -56,6 +58,20 @@ class SmsFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         disposables.clear()
+    }
+
+    private fun showCommandsDescription() {
+        val ctx = requireContext()
+        val commands = viewModel.getSmsCommandsList()
+
+        layoutCommands.addView(LayoutInflater.from(ctx).inflate(R.layout.item_sms_command_divider, layoutCommands, false))
+        commands.forEach {
+            val layout = LayoutInflater.from(ctx).inflate(R.layout.item_sms_command, layoutCommands, false)
+            layout.txtCommandName.text = viewModel.formatCommand(it)
+            layout.txtCommandDescription.text = ctx.getString(it.descriptionRes)
+            layoutCommands.addView(layout)
+            layoutCommands.addView(LayoutInflater.from(ctx).inflate(R.layout.item_sms_command_divider, layoutCommands, false))
+        }
     }
 
     private fun initCheckboxes() {
