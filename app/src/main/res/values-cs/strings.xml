@@ -53,7 +53,6 @@
     <string name="screen_about_app">O aplikaci</string>
 
     <!-- Location tracking screen -->
-    <string name="tracking_frequency">Frekvence sledování:</string>
     <string name="tracking_radius">Přesnost lokalizace:</string>
     <string name="tracking_phone">Telefonní číslo:</string>
     <string name="tracking_continuous">Sledovat nepřetržitě</string>
@@ -65,7 +64,6 @@
     <string name="tracking_stop">Ukončit sledování</string>
     <string name="tracking_error_permissions_denied">Povolte prosím potřebná oprávnění</string>
     <string name="tracking_error_not_available">Služby určování polohy nejsou dostupné</string>
-    <string name="tracking_error_frequency">Povolená frekvence: %1$d - %2$d m</string>
     <string name="tracking_error_radius">Povolený poloměr: %1$d - %2$d m</string>
     <string name="tracking_error_phone">Neplatné telefonní číslo</string>
     <string name="tracking_error_location_outside">Vaše poloha je mimo stanovenou oblast!</string>

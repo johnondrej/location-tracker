@@ -7,7 +7,6 @@ import android.location.LocationListener
 import android.location.LocationProvider
 import android.os.Bundle
 import cz.ojohn.locationtracker.data.LocationEntry
-import cz.ojohn.locationtracker.data.TrackingFrequency
 import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.util.locationManager
@@ -186,10 +185,8 @@ class LocationTracker(private val appContext: Context,
 
     data class Settings(val latitude: Double,
                         val longitude: Double,
-                        val frequency: TrackingFrequency,
                         val radius: TrackingRadius,
                         val phone: String,
-                        val trackConstantly: Boolean,
                         val reduceFalseAlarms: Boolean,
                         val lowBatteryNotify: Boolean,
                         val lowBatteryTurnOff: Boolean,

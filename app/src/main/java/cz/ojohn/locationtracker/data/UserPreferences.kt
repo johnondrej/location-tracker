@@ -11,8 +11,6 @@ import cz.ojohn.locationtracker.sms.SmsController
 class UserPreferences(private val sharedPreferences: SharedPreferences) {
 
     companion object {
-        const val TRACKING_MIN_FREQUENCY = 5
-        const val TRACKING_MAX_FREQUENCY = 300
         const val TRACKING_MIN_RADIUS = 100
         const val TRACKING_MAX_RADIUS = 10000
         const val TRACKING_DEFAULT_RADIUS = 300
@@ -24,12 +22,9 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val KEY_TRACKING_LAST_STATUS = "tracking_last_status"
         const val KEY_TRACKING_LATITUDE = "tracking_latitude"
         const val KEY_TRACKING_LONGITUDE = "tracking_longitude"
-        const val KEY_TRACKING_FREQUENCY = "tracking_frequency"
-        const val KEY_TRACKING_FREQUENCY_UNIT = "tracking_frequency_unit"
         const val KEY_TRACKING_RADIUS = "tracking_radius"
         const val KEY_TRACKING_RADIUS_UNIT = "tracking_radius_unit"
         const val KEY_TRACKING_PHONE = "tracking_phone"
-        const val KEY_TRACKING_CONSTANT = "tracking_constantly"
         const val KEY_TRACKING_FALSE_ALARMS = "tracking_false_alarms"
         const val KEY_TRACKING_BATTERY_NOTIFY = "tracking_low_battery_notify"
         const val KEY_TRACKING_BATTERY_OFF = "tracking_low_battery_off"
@@ -46,11 +41,6 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         const val KEY_SMS_IP = "sms_ip"
     }
 
-    fun getTrackingFrequency(): TrackingFrequency {
-        return TrackingFrequency(sharedPreferences.getInt(KEY_TRACKING_FREQUENCY, TRACKING_MIN_FREQUENCY),
-                sharedPreferences.getString(KEY_TRACKING_FREQUENCY_UNIT, Constants.UNIT_MINUTES))
-    }
-
     fun getTrackingRadius(): TrackingRadius {
         return TrackingRadius(sharedPreferences.getInt(KEY_TRACKING_RADIUS, TRACKING_DEFAULT_RADIUS),
                 sharedPreferences.getString(KEY_TRACKING_RADIUS_UNIT, Constants.UNIT_METERS))
@@ -59,10 +49,8 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
     fun getTrackingSettings(): LocationTracker.Settings {
         return LocationTracker.Settings(getFloat(KEY_TRACKING_LATITUDE, 0f).toDouble(),
                 getFloat(KEY_TRACKING_LONGITUDE, 0f).toDouble(),
-                getTrackingFrequency(),
                 getTrackingRadius(),
                 getString(KEY_TRACKING_PHONE, ""),
-                getBoolean(KEY_TRACKING_CONSTANT, true),
                 getBoolean(KEY_TRACKING_FALSE_ALARMS, true),
                 getBoolean(KEY_TRACKING_BATTERY_NOTIFY, true),
                 getBoolean(KEY_TRACKING_BATTERY_OFF, false),
@@ -73,12 +61,9 @@ class UserPreferences(private val sharedPreferences: SharedPreferences) {
         sharedPreferences.edit()
                 .putFloat(KEY_TRACKING_LATITUDE, trackingSettings.latitude.toFloat())
                 .putFloat(KEY_TRACKING_LONGITUDE, trackingSettings.longitude.toFloat())
-                .putInt(KEY_TRACKING_FREQUENCY, trackingSettings.frequency.value)
-                .putString(KEY_TRACKING_FREQUENCY_UNIT, trackingSettings.frequency.selectedUnit)
                 .putInt(KEY_TRACKING_RADIUS, trackingSettings.radius.value)
                 .putString(KEY_TRACKING_RADIUS_UNIT, trackingSettings.radius.selectedUnit)
                 .putString(KEY_TRACKING_PHONE, trackingSettings.phone)
-                .putBoolean(KEY_TRACKING_CONSTANT, trackingSettings.trackConstantly)
                 .putBoolean(KEY_TRACKING_FALSE_ALARMS, trackingSettings.reduceFalseAlarms)
                 .putBoolean(KEY_TRACKING_BATTERY_NOTIFY, trackingSettings.lowBatteryNotify)
                 .putBoolean(KEY_TRACKING_BATTERY_OFF, trackingSettings.lowBatteryTurnOff)

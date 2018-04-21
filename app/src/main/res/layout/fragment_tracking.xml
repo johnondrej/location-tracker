@@ -15,7 +15,7 @@
             android:name="cz.ojohn.locationtracker.view.ScrollMapFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintDimensionRatio="5:4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,40 +26,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="@dimen/medium_gap" />
-
-        <TextView
-            android:id="@+id/txtFrequency"
-            style="@style/DescriptionText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tracking_frequency"
-            app:layout_constraintBaseline_toBaselineOf="@id/editFrequency"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin" />
-
-        <EditText
-            android:id="@+id/editFrequency"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/small_gap"
-            android:layout_marginStart="@dimen/small_gap"
-            android:layout_marginTop="@dimen/small_gap"
-            android:inputType="number"
-            android:maxLength="3"
-            app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
-            app:layout_constraintRight_toLeftOf="@id/spinnerFrequency"
-            app:layout_constraintTop_toBottomOf="@id/fragmentMap" />
-
-        <Spinner
-            android:id="@+id/spinnerFrequency"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/small_gap"
-            android:layout_marginLeft="@dimen/small_gap"
-            android:layout_marginStart="@dimen/small_gap"
-            android:padding="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/editFrequency"
-            app:layout_constraintLeft_toRightOf="@id/editFrequency"
-            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/txtRadius"
@@ -81,7 +47,7 @@
             android:maxLength="5"
             app:layout_constraintLeft_toRightOf="@id/barrierTextDescriptions"
             app:layout_constraintRight_toLeftOf="@id/spinnerRadius"
-            app:layout_constraintTop_toBottomOf="@id/editFrequency" />
+            app:layout_constraintTop_toBottomOf="@id/fragmentMap" />
 
         <Spinner
             android:id="@+id/spinnerRadius"
@@ -131,16 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="right"
-            app:constraint_referenced_ids="txtFrequency,txtRadius,txtPhone" />
-
-        <CheckBox
-            android:id="@+id/checkTrackConstantly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_gap"
-            android:text="@string/tracking_continuous"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintTop_toBottomOf="@id/editPhone" />
+            app:constraint_referenced_ids="txtRadius,txtPhone" />
 
         <CheckBox
             android:id="@+id/checkFalseAlarms"
@@ -149,7 +106,7 @@
             android:layout_marginTop="@dimen/small_gap"
             android:text="@string/tracking_false_alarm_reduction"
             app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintTop_toBottomOf="@id/checkTrackConstantly" />
+            app:layout_constraintTop_toBottomOf="@id/editPhone" />
 
         <CheckBox
             android:id="@+id/checkBatteryNotify"

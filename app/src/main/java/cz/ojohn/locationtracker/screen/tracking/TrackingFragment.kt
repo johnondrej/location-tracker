@@ -18,7 +18,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.R
-import cz.ojohn.locationtracker.data.TrackingFrequency
 import cz.ojohn.locationtracker.data.TrackingRadius
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
@@ -48,7 +47,6 @@ class TrackingFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var frequencySpinnerAdapter: ArrayAdapter<CharSequence>
     private lateinit var radiusSpinnerAdapter: ArrayAdapter<CharSequence>
     private lateinit var viewModel: TrackingViewModel
     private lateinit var disposables: CompositeDisposable
@@ -75,15 +73,10 @@ class TrackingFragment : Fragment() {
             }
         }
 
-        frequencySpinnerAdapter = ArrayAdapter.createFromResource(context,
-                R.array.units_time, android.R.layout.simple_spinner_item).apply {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
         radiusSpinnerAdapter = ArrayAdapter.createFromResource(context,
                 R.array.units_distance, android.R.layout.simple_spinner_item).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
-        spinnerFrequency.adapter = frequencySpinnerAdapter
         spinnerRadius.adapter = radiusSpinnerAdapter
         spinnerRadius.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -99,10 +92,6 @@ class TrackingFragment : Fragment() {
                 onTrackingRadiusChanged()
             }
         })
-        checkTrackConstantly.setOnCheckedChangeListener { _, isChecked ->
-            editFrequency.isEnabled = !isChecked
-            spinnerFrequency.isEnabled = !isChecked
-        }
 
         initForm()
         if (savedInstanceState == null) {
@@ -151,12 +140,9 @@ class TrackingFragment : Fragment() {
     private fun initForm() {
         val trackingSettings = viewModel.getTrackingSettings()
 
-        editFrequency.setText(trackingSettings.frequency.value.toString())
-        spinnerFrequency.setSelection(frequencySpinnerAdapter.getPosition(trackingSettings.frequency.selectedUnit))
         editRadius.setText(trackingSettings.radius.value.toString())
         spinnerRadius.setSelection(radiusSpinnerAdapter.getPosition(trackingSettings.radius.selectedUnit))
         editPhone.setText(trackingSettings.phone)
-        checkTrackConstantly.isChecked = trackingSettings.trackConstantly
         checkFalseAlarms.isChecked = trackingSettings.reduceFalseAlarms
         checkBatteryNotify.isChecked = trackingSettings.lowBatteryNotify
         checkBatteryAutoOff.isChecked = trackingSettings.lowBatteryTurnOff
@@ -164,13 +150,9 @@ class TrackingFragment : Fragment() {
     }
 
     private fun setFormEnabled(enabled: Boolean) {
-        val frequencyEnabled = enabled && !checkTrackConstantly.isChecked
-        editFrequency.isEnabled = frequencyEnabled
-        spinnerFrequency.isEnabled = frequencyEnabled
         editRadius.isEnabled = enabled
         spinnerRadius.isEnabled = enabled
         editPhone.isEnabled = enabled
-        checkTrackConstantly.isEnabled = enabled
         checkFalseAlarms.isEnabled = enabled
         checkBatteryNotify.isEnabled = enabled
         checkBatteryAutoOff.isEnabled = enabled
@@ -216,16 +198,13 @@ class TrackingFragment : Fragment() {
             LocationTracker.TrackingStatus.DISABLED -> {
                 val latitude = map!!.trackingMarker.position.latitude
                 val longitude = map!!.trackingMarker.position.longitude
-                val frequency = if (editFrequency.text.isNotEmpty()) editFrequency.text.toString().toInt() else 0
                 val radius = if (editRadius.text.isNotEmpty()) editRadius.text.toString().toInt() else 0
 
                 viewModel.onCheckFormValues(LocationTracker.Settings(
                         latitude,
                         longitude,
-                        TrackingFrequency(frequency, spinnerFrequency.selectedItem as String),
                         TrackingRadius(radius, spinnerRadius.selectedItem as String),
                         editPhone.text.toString(),
-                        checkTrackConstantly.isChecked,
                         checkFalseAlarms.isChecked,
                         checkBatteryNotify.isChecked,
                         checkBatteryAutoOff.isChecked,

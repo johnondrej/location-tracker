@@ -6,9 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import cz.ojohn.locationtracker.Constants
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
-import cz.ojohn.locationtracker.data.UserPreferences.Companion.TRACKING_MAX_FREQUENCY
 import cz.ojohn.locationtracker.data.UserPreferences.Companion.TRACKING_MAX_RADIUS
-import cz.ojohn.locationtracker.data.UserPreferences.Companion.TRACKING_MIN_FREQUENCY
 import cz.ojohn.locationtracker.data.UserPreferences.Companion.TRACKING_MIN_RADIUS
 import cz.ojohn.locationtracker.location.LocationTracker
 import io.reactivex.Observable
@@ -46,15 +44,9 @@ class TrackingViewModel @Inject constructor(private val locationTracker: Locatio
     }
 
     fun onCheckFormValues(settings: LocationTracker.Settings, batteryPercentage: Int, charging: Boolean) {
-        val frequencyMinutes = settings.frequency.inMinutes
         val radiusMeters = settings.radius.inMeters
         if (batteryPercentage <= Constants.BATTERY_LOW_PERCENT && !charging) {
             formStateSubject.onNext(FormState.Error(R.string.sms_tracking_battery_low))
-            return
-        }
-        if (!settings.trackConstantly && frequencyMinutes !in TRACKING_MIN_FREQUENCY..TRACKING_MAX_FREQUENCY) {
-            formStateSubject.onNext(FormState.Error(R.string.tracking_error_frequency,
-                    arrayOf(TRACKING_MIN_FREQUENCY, TRACKING_MAX_FREQUENCY)))
             return
         }
         if (radiusMeters !in TRACKING_MIN_RADIUS..TRACKING_MAX_RADIUS) {
