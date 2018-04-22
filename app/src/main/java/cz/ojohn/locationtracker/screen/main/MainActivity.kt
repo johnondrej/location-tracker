@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.about.AboutFragment
@@ -20,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 /**
  * Main activity containing most of the app fragments
  */
-class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener {
+class MainActivity : AppCompatActivity(), OnScreenSelectedListener {
 
     companion object {
         const val SCREEN_KEY = "screen_id"
@@ -53,7 +55,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
 
         bottomNavigation.setOnNavigationItemSelectedListener {
             onScreenSelected(it.itemId, false)
-            true
         }
     }
 
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
         outState.putInt(SCREEN_KEY, currentScreenId)
     }
 
-    override fun onScreenSelected(screenId: Int, changeSelection: Boolean) {
+    override fun onScreenSelected(screenId: Int, changeSelection: Boolean): Boolean {
         val id: Int
         val fragment: Fragment
         when (screenId) {
@@ -102,12 +103,26 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
                 fragment = SmsFragment.newInstance()
                 id = SCREEN_SMS
             }
-            else -> return
+            else -> return false
         }
+
+        when (id) {
+            SCREEN_TRACKING, SCREEN_FIND -> {
+                val apiAvailability = GoogleApiAvailability.getInstance()
+                val playServicesConnection = apiAvailability.isGooglePlayServicesAvailable(this)
+
+                if (playServicesConnection != ConnectionResult.SUCCESS) {
+                    apiAvailability.getErrorDialog(this, playServicesConnection, 1).show()
+                    return false
+                }
+            }
+        }
+
         if (changeSelection) {
             bottomNavigation.selectedItemId = screenId
         }
         changeScreen(fragment, id)
+        return true
     }
 
     private fun onSettingsSelected() {

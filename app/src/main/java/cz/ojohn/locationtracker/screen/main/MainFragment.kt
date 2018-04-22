@@ -169,8 +169,4 @@ class MainFragment : Fragment() {
         val activity = requireActivity() as OnScreenSelectedListener
         activity.onScreenSelected(R.id.action_screen_sms, true)
     }
-
-    interface OnScreenSelectedListener {
-        fun onScreenSelected(screenId: Int, changeSelection: Boolean)
-    }
 }
