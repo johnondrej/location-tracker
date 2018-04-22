@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/helpFragmentContainer"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_weight="2" />
 
     <FrameLayout
         android:id="@+id/helpFragmentContainer"
@@ -23,7 +24,8 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintLeft_toRightOf="@id/fragmentContainer"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_weight="1" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"
