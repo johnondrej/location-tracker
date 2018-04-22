@@ -131,6 +131,14 @@
     <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_response_battery_format">Baterie: %1$d%%</string>
 
+    <!-- Settings screen strings -->
+    <string name="settings_general">Obecná nastavení</string>
+    <string name="settings_use_gps">Používat GPS</string>
+    <string name="settings_use_gps_description_on">Poloha je určována pomocí GPS</string>
+    <string name="settings_use_gps_description_off">Poloha je určována pomocí mobilních sítí</string>
+    <string name="settings_sms_password">SMS heslo</string>
+    <string name="settings_sms_password_format">Aktuální heslo: %1$s</string>
+
     <!-- Help strings -->
     <string name="help_menu_intro">Tato aplikace slouží ke sledování polohy tohoto zařízení a k nalezení ostatních zařízení, které mají tuto aplikaci nainstalovanou.</string>
     <string name="help_menu_tracking_caption">@string/screen_tracking</string>
