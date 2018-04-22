@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.screen.about.AboutFragment
 import cz.ojohn.locationtracker.screen.find.FindDeviceFragment
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
         when (item.itemId) {
             R.id.action_settings -> onSettingsSelected()
             R.id.action_help -> onHelpSelected()
+            R.id.action_licenses -> onLicensesSelected()
             R.id.action_about_app -> onAboutAppSelected()
             else -> return false
         }
@@ -119,6 +121,11 @@ class MainActivity : AppCompatActivity(), MainFragment.OnScreenSelectedListener 
             it.putExtra(SCREEN_KEY, currentScreenId)
             startActivity(it)
         }
+    }
+
+    private fun onLicensesSelected() {
+        OssLicensesMenuActivity.setActivityTitle(getString(R.string.screen_licenses))
+        startActivity(Intent(this, OssLicensesMenuActivity::class.java))
     }
 
     private fun onAboutAppSelected() {

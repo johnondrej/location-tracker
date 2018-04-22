@@ -12,6 +12,10 @@
         android:title="@string/screen_help"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_licenses"
+        android:title="@string/screen_licenses"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_about_app"
         android:icon="@drawable/ic_info"
         android:title="@string/screen_about_app"

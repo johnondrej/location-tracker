@@ -51,6 +51,7 @@
     <string name="screen_settings">Nasavení</string>
     <string name="screen_help">Nápověda</string>
     <string name="screen_about_app">O aplikaci</string>
+    <string name="screen_licenses">Open-source licence</string>
 
     <!-- Location tracking screen -->
     <string name="tracking_radius">Poloměr oblasti:</string>
