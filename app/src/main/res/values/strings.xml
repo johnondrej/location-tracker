@@ -53,7 +53,7 @@
     <string name="screen_about_app">About app</string>
 
     <!-- Location tracking screen -->
-    <string name="tracking_radius">Location accuracy:</string>
+    <string name="tracking_radius">Area radius:</string>
     <string name="tracking_phone">Alarm phone number:</string>
     <string name="tracking_continuous">Track continuously</string>
     <string name="tracking_false_alarm_reduction">Reduce false alarms</string>
@@ -137,6 +137,36 @@
     <string name="settings_use_gps_description_off">Using mobile network for location</string>
     <string name="settings_sms_password">SMS password</string>
     <string name="settings_sms_password_format">Current password: %1$s</string>
+
+    <!-- Help strings -->
+    <string name="help_menu_intro">This application can be used to track location of this device, or you can find other devices running this app.</string>
+    <string name="help_menu_tracking_caption">@string/screen_tracking</string>
+    <string name="help_menu_tracking">This section contains configuration of automatic location tracking (geofencing). When description in the menu says it is not available, you have probably turned off location settings or GPS signal is currently unavailable.</string>
+    <string name="help_menu_find_caption">@string/screen_find</string>
+    <string name="help_menu_find">Use this option if you want to find other device that is running this app.</string>
+    <string name="help_menu_sms_caption">@string/screen_sms</string>
+    <string name="help_menu_sms">Configuration of data included in location messages can be found in this section. It also contains list of all available SMS commands.</string>
+    <string name="help_tracking_intro">You can configure geofencing in this section. That means you will receive SMS alert when this device moves away from current location.</string>
+    <string name="help_tracking_map_caption">Map</string>
+    <string name="help_tracking_map">Blue dot on the map shows your location. If your location is currently unknown, it won\'t be shown. Red marker is center of area represented by orange circle. When device moves outside the circle, alarm will be triggered and you will receive alert message. You can move the area by long press on the map.</string>
+    <string name="help_tracking_radius_caption">Area radius</string>
+    <string name="help_tracking_radius">Radius of tracking area. When you increase this value, alarm will be triggered after bigger device movement. Lower values can lead to false alarms when accuracy of location is low.</string>
+    <string name="help_tracking_phone_caption">Phone number</string>
+    <string name="help_tracking_phone">Enter phone number that will receive alert messages, for example when device leaves tracking area.</string>
+    <string name="help_tracking_false_alarms_caption">@string/tracking_false_alarm_reduction</string>
+    <string name="help_tracking_false_alarms">When enabled, alert won\'t be sent when distance between device and tracking area is smaller than location accuracy.</string>
+    <string name="help_tracking_notify_battery_caption">@string/tracking_low_battery_notification</string>
+    <string name="help_tracking_notify_battery">Send SMS notification to given number when battery of this device is almost empty.</string>
+    <string name="help_tracking_battery_auto_off_caption">@string/tracking_low_battery_auto_off</string>
+    <string name="help_tracking_battery_auto_off">Location tracking will be automatically turned off on low battery. Device will still respond to incoming SMS commands.</string>
+    <string name="help_tracking_charger_caption">@string/tracking_charger_detect</string>
+    <string name="help_tracking_charger">Send notifications when charger will be connected or disconnected.</string>
+    <string name="help_find_intro">This section is useful when you want to find other device with this app installed. Simply enter its phone number into the form and select option "Find device". Target device will then appear on the map within few minutes.</string>
+    <string name="help_sms_list_caption">@string/sms_commands_list</string>
+    <string name="help_sms_list">This is complete list of special SMS commands that can be used to control this app. When you want to use some of these commands, just send it by SMS message to the device with this app. Some commands require valid SMS password, that can be configured in the Settings.</string>
+    <string name="help_sms_example_caption">@string/sms_example</string>
+    <string name="help_sms_example">This section provides an example of what an incoming message will look like after receiving LOCATION command. GPS coordinates are always sent, other information can be configured.</string>
+    <string name="help_unknown">Error while loading help resources.</string>
 
     <!-- About app dialog strings -->
     <string name="about_app_version">version %1$s</string>

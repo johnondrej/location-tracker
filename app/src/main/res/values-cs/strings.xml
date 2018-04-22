@@ -53,7 +53,7 @@
     <string name="screen_about_app">O aplikaci</string>
 
     <!-- Location tracking screen -->
-    <string name="tracking_radius">Přesnost lokalizace:</string>
+    <string name="tracking_radius">Poloměr oblasti:</string>
     <string name="tracking_phone">Telefonní číslo:</string>
     <string name="tracking_continuous">Sledovat nepřetržitě</string>
     <string name="tracking_false_alarm_reduction">Omezit falešné poplachy</string>
@@ -129,6 +129,36 @@
     <string name="sms_response_location_format">%1$s, %2$s</string>
     <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_response_battery_format">Baterie: %1$d%%</string>
+
+    <!-- Help strings -->
+    <string name="help_menu_intro">Tato aplikace slouží ke sledování polohy tohoto zařízení a k nalezení ostatních zařízení, které mají tuto aplikaci nainstalovanou.</string>
+    <string name="help_menu_tracking_caption">@string/screen_tracking</string>
+    <string name="help_menu_tracking">Prostřednictvím této části lze konfigurovat automatické sledování polohy. Pokud popis v menu hlásí, že sledování není dostupné, pravděpodobně je v systému vypnuté sledování polohy nebo je GPS signál v současnosti nedostupný.</string>
+    <string name="help_menu_find_caption">@string/screen_find</string>
+    <string name="help_menu_find">Tato sekce poskytuje rozhraní k nalezení jiného zařízení s touto aplikací.</string>
+    <string name="help_menu_sms_caption">@string/screen_sms</string>
+    <string name="help_menu_sms">Konfigurace informací obsažených ve zprávách o poloze. Nachází se zde také seznam všech SMS příkazů.</string>
+    <string name="help_tracking_intro">Sekce s nastavením automatického sledování polohy.</string>
+    <string name="help_tracking_map_caption">Mapa</string>
+    <string name="help_tracking_map">Modrá tečka na mapě znázorňuje polohu tohoto zařízení. Pokud je poloha v současnosti neznámá, tečka nebude viditelná. Červená značka označuje střed oblastni vyznačené oranžovým kruhem. Pokud se zařízení dostane mimo zadanou oblast, automaticky se odešle varovná SMS zpráva na zadané telefonní číslo. Změnit pozici hlídané oblasti lze dlouhým stisknutím místa na mapě.</string>
+    <string name="help_tracking_radius_caption">Poloměr oblasti</string>
+    <string name="help_tracking_radius">Poloměr sledované oblasti. Vyšší hodnota znamená, že se zařízení může více pohybovat bez odeslání varovné zprávy. Malé hodnoty mohou vést k falešným poplachům, pokud je přesnost lokalizace nízká.</string>
+    <string name="help_tracking_phone_caption">Telefonní číslo</string>
+    <string name="help_tracking_phone">Telefonní číslo, které obdrží zasílané zprávy.</string>
+    <string name="help_tracking_false_alarms_caption">@string/tracking_false_alarm_reduction</string>
+    <string name="help_tracking_false_alarms">Pokud je tato možnost zapnutá, upozornění nebude zasláno v případě, že vzdálenost od sledované oblasti je menší, než přesnost určení polohy.</string>
+    <string name="help_tracking_notify_battery_caption">@string/tracking_low_battery_notification</string>
+    <string name="help_tracking_notify_battery">Zaslat SMS upozornění v případě, že je baterie zařízení téměř vybitá.</string>
+    <string name="help_tracking_battery_auto_off_caption">@string/tracking_low_battery_auto_off</string>
+    <string name="help_tracking_battery_auto_off">Sledování polohy bude automaticky vypnuto, pokud je baterie zařízení téměř vybitá.</string>
+    <string name="help_tracking_charger_caption">@string/tracking_charger_detect</string>
+    <string name="help_tracking_charger">Zaslat oznámení o připojení/odpojení nabíječky.</string>
+    <string name="help_find_intro">Tato sekce slouží k nalezení jiného zařízení s touto aplikací. Zadejte číslo cílového zařízení a po zahájení lokalizace se do pár minut pozice zařízení zobrazí na mapě.</string>
+    <string name="help_sms_list_caption">@string/sms_commands_list</string>
+    <string name="help_sms_list">Toto je kompletní seznam SMS příkazů, které mohou být použity ke vzdálenému ovládání aplikace. Pro aktivování příkazu stačí zaslat SMS v daném tvaru na zařízení s touto aplikací. Některé příkazy vyžadují SMS heslo, které je možné změnit v nastavení.</string>
+    <string name="help_sms_example_caption">@string/sms_example</string>
+    <string name="help_sms_example">Ukázka tvaru příchozí SMS zprávy od cílového zařízení, které obdrželo příkaz LOCATION. GPS souřadnice jsou vždy zaslány, zasílání ostatních informací je možné nastavit.</string>
+    <string name="help_unknown">Chyba při načítání nápovědy.</string>
 
     <!-- About app dialog strings -->
     <string name="about_app_version">verze %1$s</string>
