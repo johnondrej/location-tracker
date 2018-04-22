@@ -172,7 +172,7 @@
     <!-- About app dialog strings -->
     <string name="about_app_version">version %1$s</string>
     <string name="about_app_author">Ondřej John, 2018</string>
-    <string name="about_app_description">This app was created as a part of Bachelor\'s thesis \"Application for remote localization of mobile device\" written on FIT CTU in 2018 by Ondřej John. Application is licensed under Apache License 2.0.</string>
+    <string name="about_app_description">Application is published under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. Source code is available on <a href="https://github.com">GitHub</a>.</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Notice icon</string>

@@ -2,6 +2,7 @@ package cz.ojohn.locationtracker.screen.about
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ class AboutFragment : DialogFragment() {
         context?.let {
             txtVersion.text = it.getString(R.string.about_app_version,
                     it.packageManager.getPackageInfo(it.packageName, 0).versionName)
+            txtDescription.movementMethod = LinkMovementMethod.getInstance()
         }
     }
 }

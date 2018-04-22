@@ -164,7 +164,7 @@
     <!-- About app dialog strings -->
     <string name="about_app_version">verze %1$s</string>
     <string name="about_app_author">Ondřej John, 2018</string>
-    <string name="about_app_description">Tato aplikace byla vytvořena jako součást bakalářské práce \"Aplikace pro vzdálené sledování polohy mobilního zařízení\", kterou napsal na ČVUT FIT Ondřej John v roce 2018. Dílo je zveřejněno pod licencí Apache License 2.0.</string>
+    <string name="about_app_description">Tato aplikace je dostupná pod licencí <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>. Zdrojový kód je dostupný na <a href="https://github.com">GitHubu</a>.</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Ikona upozornění</string>
