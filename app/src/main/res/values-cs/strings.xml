@@ -86,7 +86,7 @@
     <string name="sms_config_accuracy">Přesnost polohy</string>
     <string name="sms_config_time">Čas určení polohy</string>
     <string name="sms_config_source">Způsob určení polohy</string>
-    <string name="sms_config_wifi">Jméno připojené WiFI</string>
+    <string name="sms_config_wifi">Jméno připojené WiFi</string>
     <string name="sms_config_ip">IP adresa</string>
     <string name="sms_config_loc_name">Název lokality</string>
     <string name="sms_config_battery">Stav baterie</string>
@@ -108,7 +108,7 @@
     <string name="notification_finding_content">Čekání na polohu hledaného zařízení</string>
 
     <!-- SMS strings -->
-    <string name="sms_alarm">Vaše poloha je mimo nastavenou plochu!</string>
+    <string name="sms_alarm">Zařízení opustilo stanovenou oblast!</string>
     <string name="sms_response_name_unknown">Neznámý název polohy</string>
     <string name="sms_response_accuracy_unknown">Neznámá přesnost</string>
     <string name="sms_response_src_unknown">Neznámý zdroj polohy</string>
