@@ -23,6 +23,10 @@ class LocationTracker(private val appContext: Context,
                       private val userPreferences: UserPreferences,
                       private val locationController: LocationController) : LocationListener {
 
+    companion object {
+        private const val LAST_KNOWN_TIME_THRESHOLD = 120 * 1000
+    }
+
     private var listenerCount: Int = 0
 
     private val locationSubject: PublishSubject<LocationEntry> = PublishSubject.create()
@@ -135,13 +139,19 @@ class LocationTracker(private val appContext: Context,
 
     fun getLastKnownLocation(): LocationEntry? {
         try {
-            val gpsLastPos = appContext.locationManager.getLastKnownLocation(LocationController.LocationSource.GPS.androidProvider)
-            if (gpsLastPos != null) {
-                return gpsLastPos.toLocationEntry()
-            }
-            return appContext.locationManager
+            val gpsLastPos = appContext.locationManager.
+                    getLastKnownLocation(LocationController.LocationSource.GPS.androidProvider)
+                    ?.toLocationEntry()
+            val networkLastPos = appContext.locationManager
                     .getLastKnownLocation(LocationController.LocationSource.NETWORK.androidProvider)
                     ?.toLocationEntry()
+
+            if (gpsLastPos == null) {
+                return networkLastPos
+            } else if (networkLastPos != null && networkLastPos.time - gpsLastPos.time > LAST_KNOWN_TIME_THRESHOLD) {
+                return networkLastPos
+            }
+            return gpsLastPos
         } catch (ex: SecurityException) {
             return null
         }
