@@ -172,6 +172,7 @@
     <!-- About app dialog strings -->
     <string name="about_app_version">version %1$s</string>
     <string name="about_app_author">Ondřej John, 2018</string>
+    <string name="about_app_icon_credits">Icon made by Freepik from <a href="https://www.flaticon.com">www.flaticon.com</a></string>
     <string name="about_app_description">Application is published under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. Source code is available on <a href="https://github.com">GitHub</a>.</string>
 
     <!-- Accessibility image descriptions -->

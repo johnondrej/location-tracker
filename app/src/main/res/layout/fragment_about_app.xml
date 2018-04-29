@@ -54,6 +54,16 @@
         app:layout_constraintTop_toBottomOf="@id/txtAuthor" />
 
     <TextView
+        android:id="@+id/txtIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_gap"
+        android:text="@string/about_app_icon_credits"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgAppIcon" />
+
+    <TextView
         android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,6 +73,6 @@
         android:textAlignment="gravity"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgAppIcon" />
+        app:layout_constraintTop_toBottomOf="@id/txtIcon" />
 
 </android.support.constraint.ConstraintLayout>

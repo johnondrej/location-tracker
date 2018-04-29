@@ -29,6 +29,7 @@ class AboutFragment : DialogFragment() {
         context?.let {
             txtVersion.text = it.getString(R.string.about_app_version,
                     it.packageManager.getPackageInfo(it.packageName, 0).versionName)
+            txtIcon.movementMethod = LinkMovementMethod.getInstance()
             txtDescription.movementMethod = LinkMovementMethod.getInstance()
         }
     }
