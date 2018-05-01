@@ -164,7 +164,7 @@
     <string name="help_tracking_battery_auto_off">Sledování polohy bude automaticky vypnuto, pokud je baterie zařízení téměř vybitá.</string>
     <string name="help_tracking_charger_caption">@string/tracking_charger_detect</string>
     <string name="help_tracking_charger">Zaslat oznámení o připojení/odpojení nabíječky.</string>
-    <string name="help_find_intro">Tato sekce slouží k nalezení jiného zařízení s touto aplikací. Zadejte číslo cílového zařízení a po zahájení lokalizace se do pár minut pozice zařízení zobrazí na mapě.</string>
+    <string name="help_find_intro">Tato sekce slouží k nalezení jiného zařízení s touto aplikací. Zadejte telefonní číslo a SMS heslo cílového zařízení a po zahájení lokalizace se do pár minut pozice zařízení zobrazí na mapě.</string>
     <string name="help_sms_list_caption">@string/sms_commands_list</string>
     <string name="help_sms_list">Toto je kompletní seznam SMS příkazů, které mohou být použity ke vzdálenému ovládání aplikace. Pro aktivování příkazu stačí zaslat SMS v daném tvaru na zařízení s touto aplikací. Některé příkazy vyžadují SMS heslo, které je možné změnit v nastavení.</string>
     <string name="help_sms_example_caption">@string/sms_example</string>

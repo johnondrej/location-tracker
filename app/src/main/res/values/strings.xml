@@ -164,7 +164,7 @@
     <string name="help_tracking_battery_auto_off">Location tracking will be automatically turned off on low battery. Device will still respond to incoming SMS commands.</string>
     <string name="help_tracking_charger_caption">@string/tracking_charger_detect</string>
     <string name="help_tracking_charger">Send notifications when charger will be connected or disconnected.</string>
-    <string name="help_find_intro">This section is useful when you want to find other device with this app installed. Simply enter its phone number into the form and select option "Find device". Target device will then appear on the map within few minutes.</string>
+    <string name="help_find_intro">This section is useful when you want to find other device with this app installed. Simply enter its phone number and SMS password into the form and select option "Find device". Target device will then appear on the map within few minutes.</string>
     <string name="help_sms_list_caption">@string/sms_commands_list</string>
     <string name="help_sms_list">This is complete list of special SMS commands that can be used to control this app. When you want to use some of these commands, just send it by SMS message to the device with this app. Some commands require valid SMS password, that can be configured in the Settings.</string>
     <string name="help_sms_example_caption">@string/sms_example</string>
