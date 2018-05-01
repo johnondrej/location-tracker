@@ -66,12 +66,13 @@
     <string name="tracking_error_permissions_denied">Povolte prosím potřebná oprávnění</string>
     <string name="tracking_error_not_available">Služby určování polohy nejsou dostupné</string>
     <string name="tracking_error_radius">Povolený poloměr: %1$d - %2$d m</string>
-    <string name="tracking_error_phone">Neplatné telefonní číslo</string>
+    <string name="tracking_error_data">Zkontrolujte zadané údaje</string>
     <string name="tracking_error_location_outside">Vaše poloha je mimo stanovenou oblast!</string>
     <string name="tracking_error_location_unknown">Vaše poloha je zatím neznámá!</string>
 
     <!-- Find device screen -->
     <string name="find_phone">Cílové telefonní číslo:</string>
+    <string name="find_password">Cílové SMS heslo:</string>
     <string name="find_btn_start">Najít zařízení</string>
     <string name="find_btn_stop">Ukončit vyhledávání</string>
     <string name="find_device_found">Zařízení nalezeno!</string>

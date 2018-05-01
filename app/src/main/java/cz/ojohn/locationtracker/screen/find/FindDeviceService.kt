@@ -26,11 +26,13 @@ class FindDeviceService : Service() {
     companion object {
         private const val TAG_WAKELOCK = "finding_wl"
         private const val TAG_PHONE = "phone"
+        private const val TAG_PASSWORD = "sms_pass"
         private const val TIMEOUT_SECONDS: Long = 240
 
-        fun getIntent(context: Context, phone: String): Intent {
+        fun getIntent(context: Context, phone: String, smsPassword: String): Intent {
             return Intent(context, FindDeviceService::class.java).apply {
                 putExtra(TAG_PHONE, phone)
+                putExtra(TAG_PASSWORD, smsPassword)
             }
         }
     }
@@ -70,7 +72,7 @@ class FindDeviceService : Service() {
             disposables.add(Completable.timer(TIMEOUT_SECONDS, TimeUnit.SECONDS, Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { onTimeoutPassed() })
-            smsController.sendGpsRequest(intent.getStringExtra(TAG_PHONE))
+            smsController.sendGpsRequest(intent.getStringExtra(TAG_PHONE), intent.getStringExtra(TAG_PASSWORD))
             return START_REDELIVER_INTENT
         } else {
             return START_NOT_STICKY

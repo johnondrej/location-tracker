@@ -109,9 +109,9 @@ class FindDeviceFragment : Fragment() {
     }
 
     private fun onStartFinding() {
-        val isDataCorrect = viewModel.onStartFinding(editPhone.text.toString())
+        val isDataCorrect = viewModel.onStartFinding(editPhone.text.toString(), editSmsPass.text.toString())
         if (!isDataCorrect) {
-            showSnackbar(R.string.tracking_error_phone, Snackbar.LENGTH_LONG)
+            showSnackbar(R.string.tracking_error_data, Snackbar.LENGTH_LONG)
         }
     }
 

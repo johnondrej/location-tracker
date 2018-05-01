@@ -70,8 +70,8 @@ class SmsController(private val appContext: Context,
         }
     }
 
-    fun sendGpsRequest(phone: String) {
-        sendSms(phone, "$SMS_KEYWORD ${userPreferences.getSmsPassword()} $SMS_KEYWORD_GPS")
+    fun sendGpsRequest(phone: String, smsPassword: String) {
+        sendSms(phone, "$SMS_KEYWORD $smsPassword $SMS_KEYWORD_GPS")
     }
 
     fun sendBattery(phone: String, batteryLevel: Int) {

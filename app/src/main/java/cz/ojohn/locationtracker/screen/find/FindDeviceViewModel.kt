@@ -21,13 +21,14 @@ class FindDeviceViewModel @Inject constructor(private val deviceFinder: DeviceFi
                 .subscribe { findingStateSubject.onNext(it) })
     }
 
-    fun onStartFinding(phone: String): Boolean {
+    fun onStartFinding(phone: String, smsPassword: String): Boolean {
         if (findingStateSubject.value !is DeviceFinder.FindingStatus.Finding) {
             val isPhoneValid = PhoneNumberUtils.isGlobalPhoneNumber(phone)
-            if (isPhoneValid) {
-                deviceFinder.startFinding(phone)
+            if (isPhoneValid && smsPassword.isNotBlank()) {
+                deviceFinder.startFinding(phone, smsPassword)
+                return true
             }
-            return isPhoneValid
+            return false
         } else {
             deviceFinder.stopFindingService()
             return true

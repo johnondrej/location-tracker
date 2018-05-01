@@ -16,8 +16,8 @@ class DeviceFinder(private val appContext: Context) {
 
     private var serviceIntent: Intent? = null
 
-    fun startFinding(phone: String) {
-        serviceIntent = FindDeviceService.getIntent(appContext, phone)
+    fun startFinding(phone: String, smsPassword: String) {
+        serviceIntent = FindDeviceService.getIntent(appContext, phone, smsPassword)
         appContext.startService(serviceIntent)
         statusSubject.onNext(FindingStatus.Finding(phone))
     }
