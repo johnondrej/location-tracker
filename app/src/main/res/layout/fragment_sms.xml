@@ -1,179 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/medium_gap">
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guidelineLeftMargin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/small_gap" />
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtSmsPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/small_gap"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/settings_sms_password_format" />
-
-        <TextView
-            android:id="@+id/txtCommandsList"
-            style="@style/DescriptionText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_gap"
-            android:text="@string/sms_commands_list"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtSmsPassword" />
-
-        <LinearLayout
-            android:id="@+id/layoutCommands"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_gap"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtCommandsList" />
 
         <TextView
             android:id="@+id/txtExampleDescription"
             style="@style/DescriptionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/small_gap"
-            android:text="@string/sms_example"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutCommands" />
+            android:text="@string/sms_example" />
 
-        <ImageView
-            android:id="@+id/imgMessage"
+        <FrameLayout
             android:layout_width="@dimen/sms_message_width"
             android:layout_height="@dimen/sms_message_height"
-            android:contentDescription="@string/accessibility_message_icon"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_message_bubble"
-            android:tint="@color/colorPrimary"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtExampleDescription" />
+            android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/txtExample"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:padding="@dimen/sms_message_padding_text"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/imgMessage"
-            app:layout_constraintLeft_toLeftOf="@id/imgMessage"
-            app:layout_constraintRight_toRightOf="@id/imgMessage"
-            app:layout_constraintTop_toTopOf="@id/imgMessage"
-            tools:text="50.128N;14.04E;Doksy;18.3.2018 18:10;accuracy 120m;GPS location;battery 84%;WiFi off;no WiFi nearby" />
+            <ImageView
+                android:id="@+id/imgMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/accessibility_message_icon"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_message_bubble"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/txtExample"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/sms_message_padding_text"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                tools:text="50.128N;14.04E;Doksy;18.3.2018 18:10;accuracy 120m;GPS location;battery 84%;WiFi off;no WiFi nearby" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/txtDescription"
             style="@style/DescriptionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sms_config_description"
-            app:layout_constraintLeft_toRightOf="@id/guidelineLeftMargin"
-            app:layout_constraintTop_toBottomOf="@id/imgMessage" />
+            android:layout_marginLeft="@dimen/small_gap"
+            android:layout_marginStart="@dimen/small_gap"
+            android:text="@string/sms_config_description" />
 
-        <CheckBox
-            android:id="@+id/checkGpsCoords"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_gap"
-            android:checked="true"
-            android:enabled="false"
-            android:text="@string/sms_config_coords"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintRight_toLeftOf="@id/checkName"
-            app:layout_constraintTop_toBottomOf="@id/txtDescription" />
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/checkName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/medium_gap"
-            android:text="@string/sms_config_loc_name"
-            app:layout_constraintBottom_toBottomOf="@id/checkGpsCoords"
-            app:layout_constraintLeft_toRightOf="@id/checkGpsCoords"
-            app:layout_constraintRight_toRightOf="parent" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/small_gap"
+                android:paddingStart="@dimen/small_gap">
 
-        <CheckBox
-            android:id="@+id/checkTime"
-            android:layout_width="0dp"
+                <CheckBox
+                    android:id="@+id/checkGpsCoords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_gap"
+                    android:checked="true"
+                    android:enabled="false"
+                    android:text="@string/sms_config_coords" />
+
+                <CheckBox
+                    android:id="@+id/checkTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sms_config_time" />
+
+                <CheckBox
+                    android:id="@+id/checkSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sms_config_source" />
+
+                <CheckBox
+                    android:id="@+id/checkWifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sms_config_wifi" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_gap"
+                    android:text="@string/sms_config_loc_name" />
+
+                <CheckBox
+                    android:id="@+id/checkAccuracy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sms_config_accuracy" />
+
+                <CheckBox
+                    android:id="@+id/checkBattery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sms_config_battery" />
+
+                <CheckBox
+                    android:id="@+id/checkIpAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sms_config_ip" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtCommandsList"
+            style="@style/DescriptionText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/small_gap"
-            android:text="@string/sms_config_time"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintRight_toLeftOf="@id/checkAccuracy"
-            app:layout_constraintTop_toBottomOf="@id/checkGpsCoords" />
+            android:text="@string/sms_commands_list" />
 
-        <CheckBox
-            android:id="@+id/checkAccuracy"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/layoutCommands"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sms_config_accuracy"
-            app:layout_constraintBottom_toBottomOf="@id/checkTime"
-            app:layout_constraintLeft_toRightOf="@id/checkTime"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <CheckBox
-            android:id="@+id/checkSource"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/small_gap"
-            android:text="@string/sms_config_source"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintRight_toLeftOf="@id/checkBattery"
-            app:layout_constraintTop_toBottomOf="@id/checkTime" />
+            android:orientation="vertical" />
 
-        <CheckBox
-            android:id="@+id/checkBattery"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/sms_config_battery"
-            app:layout_constraintBottom_toBottomOf="@id/checkSource"
-            app:layout_constraintLeft_toRightOf="@id/checkSource"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <CheckBox
-            android:id="@+id/checkWifi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_gap"
-            android:text="@string/sms_config_wifi"
-            app:layout_constraintLeft_toLeftOf="@id/guidelineLeftMargin"
-            app:layout_constraintRight_toLeftOf="@id/checkIpAddress"
-            app:layout_constraintTop_toBottomOf="@id/checkSource" />
-
-        <CheckBox
-            android:id="@+id/checkIpAddress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/sms_config_ip"
-            app:layout_constraintBottom_toBottomOf="@id/checkWifi"
-            app:layout_constraintLeft_toRightOf="@id/checkWifi"
-            app:layout_constraintRight_toRightOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>
