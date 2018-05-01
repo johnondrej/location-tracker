@@ -167,7 +167,6 @@ class SmsController(private val appContext: Context,
 
     private fun formatOutgoingGps(locationResponse: LocationTracker.LocationResponse): String {
         val stringBuilder = StringBuilder().apply {
-            val date = DateFormat.getDateTimeInstance().format(Date(locationResponse.locationEntry.time))
             append(SMS_KEYWORD)
             append(' ')
             append(SMS_KEYWORD_GPS_RESPONSE)
@@ -176,7 +175,7 @@ class SmsController(private val appContext: Context,
             append(SMS_DATA_DELIMITER)
             append(locationResponse.locationEntry.lon)
             append(SMS_DATA_DELIMITER)
-            append(date)
+            append(locationResponse.locationEntry.time)
         }
         return stringBuilder.toString()
     }
