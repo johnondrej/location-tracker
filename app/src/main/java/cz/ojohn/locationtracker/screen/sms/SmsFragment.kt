@@ -51,6 +51,8 @@ class SmsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        txtSmsPassword.text = requireContext().getString(R.string.settings_sms_password_format, viewModel.getSmsPassword())
+
         disposables.add(viewModel.observeExampleMessage()
                 .subscribe { txtExample.text = it })
     }

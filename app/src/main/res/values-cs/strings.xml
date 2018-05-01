@@ -139,7 +139,7 @@
     <string name="settings_use_gps_description_on">Poloha je určována pomocí GPS</string>
     <string name="settings_use_gps_description_off">Poloha je určována pomocí mobilních sítí</string>
     <string name="settings_sms_password">SMS heslo</string>
-    <string name="settings_sms_password_format">Aktuální heslo: %1$s</string>
+    <string name="settings_sms_password_format">Aktuální SMS heslo: %1$s</string>
 
     <!-- Help strings -->
     <string name="help_menu_intro">Tato aplikace slouží ke sledování polohy tohoto zařízení a k nalezení ostatních zařízení, které mají tuto aplikaci nainstalovanou.</string>

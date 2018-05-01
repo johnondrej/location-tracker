@@ -6,6 +6,7 @@ import android.content.Context
 import android.location.LocationManager
 import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
+import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
 import cz.ojohn.locationtracker.sms.SmsController
 import io.reactivex.Observable
@@ -17,6 +18,7 @@ import javax.inject.Inject
  */
 @SuppressLint("StaticFieldLeak")
 class SmsViewModel @Inject constructor(private val appContext: Context,
+                                       private val userPreferences: UserPreferences,
                                        private val smsController: SmsController) : ViewModel() {
 
     companion object {
@@ -35,6 +37,8 @@ class SmsViewModel @Inject constructor(private val appContext: Context,
     }
 
     fun getSmsSettings(): SmsController.Settings = smsController.smsSettings
+
+    fun getSmsPassword(): String = userPreferences.getSmsPassword()
 
     fun getSmsCommandsList(): Array<SmsCommand> {
         return arrayOf(SmsCommand(SmsController.SMS_KEYWORD_LOCATION, R.string.sms_description_location, true),
