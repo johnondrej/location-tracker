@@ -2,6 +2,7 @@ package cz.ojohn.locationtracker
 
 import android.app.Application
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.MapsInitializer
 import cz.ojohn.locationtracker.di.AppComponent
 import cz.ojohn.locationtracker.di.DaggerAppComponent
 import cz.ojohn.locationtracker.util.NotificationController
@@ -30,25 +31,9 @@ class App : Application() {
         appComponent.inject(this)
 
         createNotificationChannels()
-        initGoogleMapAsync()
     }
 
     private fun createNotificationChannels() {
         notificationController.createTrackingNotificationChannel()
-    }
-
-    /**
-     * Load GooglePlay services after app launch, which leads to faster loading of fragments with map
-     */
-    private fun initGoogleMapAsync() {
-        Thread({
-            try {
-                val mapView = MapView(this)
-                mapView.onCreate(null)
-                mapView.onPause()
-                mapView.onDestroy()
-            } catch (ex: Exception) {
-            }
-        }).start()
     }
 }
