@@ -8,6 +8,7 @@ import cz.ojohn.locationtracker.R
 import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
+import cz.ojohn.locationtracker.util.getBatteryPercentage
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.text.DateFormat
@@ -23,6 +24,7 @@ class SmsController(private val appContext: Context,
         const val SMS_KEYWORD = "LT"
         const val SMS_KEYWORD_LOCATION = "LOCATION"
         const val SMS_KEYWORD_GPS = "GPS"
+        const val SMS_KEYWORD_BATTERY = "BATTERY"
         const val SMS_KEYWORD_GPS_RESPONSE = "FIND_RESPONSE"
 
         const val SMS_DATA_DELIMITER = ';'
@@ -72,6 +74,10 @@ class SmsController(private val appContext: Context,
         sendSms(phone, "$SMS_KEYWORD ${userPreferences.getSmsPassword()} $SMS_KEYWORD_GPS")
     }
 
+    fun sendBattery(phone: String, batteryLevel: Int) {
+        sendSms(phone, appContext.getString(R.string.sms_response_battery_format, batteryLevel))
+    }
+
     fun processIncomingSms(sender: String, sms: String): SmsAction {
         val smsPassword = userPreferences.getSmsPassword()
         var input = sms.trim()
@@ -87,6 +93,7 @@ class SmsController(private val appContext: Context,
             } else {
                 return when {
                     input.contains(SMS_KEYWORD_GPS_RESPONSE, true) -> formatGpsResponse(sender, input)
+                    input.contains(SMS_KEYWORD_BATTERY, true) -> SmsAction.SendBattery(sender, appContext.getBatteryPercentage())
                     else -> SmsAction.None()
                 }
             }
@@ -213,6 +220,7 @@ class SmsController(private val appContext: Context,
     sealed class SmsAction {
         class None : SmsAction()
         class SendLocation(val phone: String, val onlyCoords: Boolean) : SmsAction()
+        class SendBattery(val phone: String, val batteryLevel: Int) : SmsAction()
         class GpsReceived(val phone: String, val location: LocationEntry) : SmsAction()
     }
 }

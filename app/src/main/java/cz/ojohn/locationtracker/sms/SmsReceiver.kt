@@ -7,6 +7,7 @@ import android.os.Build
 import android.telephony.SmsMessage
 import cz.ojohn.locationtracker.App
 import cz.ojohn.locationtracker.location.FetchLocationService
+import cz.ojohn.locationtracker.util.getBatteryPercentage
 import cz.ojohn.locationtracker.util.startForegroundServiceCompat
 import javax.inject.Inject
 
@@ -58,6 +59,9 @@ class SmsReceiver : BroadcastReceiver() {
         when (action) {
             is SmsController.SmsAction.SendLocation -> {
                 appContext.startForegroundServiceCompat(FetchLocationService.getIntent(appContext, action.phone, action.onlyCoords))
+            }
+            is SmsController.SmsAction.SendBattery -> {
+                smsController.sendBattery(action.phone, action.batteryLevel)
             }
         }
     }

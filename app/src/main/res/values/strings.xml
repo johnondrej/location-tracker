@@ -97,6 +97,7 @@
     <string name="sms_description_password">&lt;SMS password&gt;</string>
     <string name="sms_description_location">Use this command, when you want to get position of target device, which has this application installed. Response will come within few minutes. You can configure data returned by this command below.</string>
     <string name="sms_description_gps">This command will return just GPS coordinates (and time of location fix) of target device, in format &lt;latitude&gt;;&lt;longitude&gt;;&lt;time of location&gt;</string>
+    <string name="sms_description_battery">Command that should be used if you want to get info about current battery percentage.</string>
 
     <!-- Notifications -->
     <string name="channel_tracking_name">Location tracking</string>

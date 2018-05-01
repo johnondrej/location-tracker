@@ -38,7 +38,8 @@ class SmsViewModel @Inject constructor(private val appContext: Context,
 
     fun getSmsCommandsList(): Array<SmsCommand> {
         return arrayOf(SmsCommand(SmsController.SMS_KEYWORD_LOCATION, R.string.sms_description_location, true),
-                SmsCommand(SmsController.SMS_KEYWORD_GPS, R.string.sms_description_gps, true))
+                SmsCommand(SmsController.SMS_KEYWORD_GPS, R.string.sms_description_gps, true),
+                SmsCommand(SmsController.SMS_KEYWORD_BATTERY, R.string.sms_description_battery, false))
     }
 
     fun formatCommand(command: SmsCommand): String {
