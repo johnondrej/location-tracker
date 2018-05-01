@@ -80,12 +80,14 @@ class FindDeviceFragment : Fragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_FIND -> {
-                if (grantResults.areAllPermissionsGranted()) {
-                    onStartFinding()
-                } else {
-                    showSnackbar(R.string.find_error_permissions_denied, Snackbar.LENGTH_LONG)
+        if (grantResults.isNotEmpty()) {
+            when (requestCode) {
+                REQUEST_FIND -> {
+                    if (grantResults.areAllPermissionsGranted()) {
+                        onStartFinding()
+                    } else {
+                        showSnackbar(R.string.find_error_permissions_denied, Snackbar.LENGTH_LONG)
+                    }
                 }
             }
         }

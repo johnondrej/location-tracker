@@ -121,17 +121,19 @@ class TrackingFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         viewModel.askingForPermissions = false
 
-        when (requestCode) {
-            REQUEST_INITIAL -> {
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
+        if (grantResults.isNotEmpty()) {
+            when (requestCode) {
+                REQUEST_INITIAL -> {
+                    if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                        showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
+                    }
                 }
-            }
-            REQUEST_ENABLE_TRACKING -> {
-                if (grantResults.areAllPermissionsGranted()) {
-                    viewModel.onEnableTracking()
-                } else {
-                    showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
+                REQUEST_ENABLE_TRACKING -> {
+                    if (grantResults.areAllPermissionsGranted()) {
+                        viewModel.onEnableTracking()
+                    } else {
+                        showSnackbar(R.string.tracking_error_permissions_denied, Snackbar.LENGTH_LONG)
+                    }
                 }
             }
         }
