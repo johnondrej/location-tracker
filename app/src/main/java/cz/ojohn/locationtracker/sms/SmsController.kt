@@ -87,6 +87,10 @@ class SmsController(private val appContext: Context,
         sendSms(phone, appContext.getString(R.string.sms_response_pending))
     }
 
+    fun sendAcceptedRequestInfo(phone: String) {
+        sendSms(phone, appContext.getString(R.string.sms_response_start))
+    }
+
     fun processIncomingSms(sender: String, sms: String): SmsAction {
         val smsPassword = userPreferences.getSmsPassword()
         val smsParts = sms.trim().replace("\\s+".toRegex(), " ").split(" ")

@@ -132,6 +132,7 @@
     <string name="sms_response_location_format">%1$s, %2$s</string>
     <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_response_battery_format">Baterie: %1$d%%</string>
+    <string name="sms_response_start">Příkaz přijat, zjišťuji polohu zařízení.</string>
     <string name="sms_response_pending">Je zpracováván předchozí požadavek, zkuste to za chvíli.</string>
 
     <!-- Settings screen strings -->

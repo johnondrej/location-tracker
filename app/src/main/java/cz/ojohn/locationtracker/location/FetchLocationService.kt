@@ -94,6 +94,7 @@ class FetchLocationService : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
+        smsController.sendAcceptedRequestInfo(replyPhone)
         disposables.add(locationTracker.observeLocationUpdates()
                 .take(1)
                 .subscribe { onLocationChanged(it) })
