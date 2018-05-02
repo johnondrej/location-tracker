@@ -32,20 +32,20 @@ class FetchLocationService : Service() {
     companion object {
         private const val TAG_WAKELOCK = "fetching_wl"
         private const val TAG_PHONE = "phone"
-        private const val TAG_ONLY_COORDS = "mode_coords"
+        private const val TAG_RESPONSE_TYPE = "response_type"
         private const val TIMEOUT_SECONDS: Long = 180
 
-        fun getIntent(context: Context, phone: String, onlyCoords: Boolean): Intent {
+        fun getIntent(context: Context, phone: String, responseType: Int): Intent {
             return Intent(context, FetchLocationService::class.java).apply {
                 putExtra(TAG_PHONE, phone)
-                putExtra(TAG_ONLY_COORDS, onlyCoords)
+                putExtra(TAG_RESPONSE_TYPE, responseType)
             }
         }
     }
 
     private var wakeLock: PowerManager.WakeLock? = null
-    private var onlyCoords: Boolean = false
 
+    private lateinit var responseType: SmsController.SmsAction.SendLocation.ResponseType
     private lateinit var phone: String
     private lateinit var disposables: CompositeDisposable
 
@@ -68,7 +68,9 @@ class FetchLocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        onlyCoords = intent?.extras?.getBoolean(TAG_ONLY_COORDS) ?: false
+        val responseCode = intent?.extras?.getInt(TAG_RESPONSE_TYPE)
+                ?: SmsController.SmsAction.SendLocation.ResponseType.FULL_RESPONSE.ordinal
+        responseType = SmsController.SmsAction.SendLocation.ResponseType.values()[responseCode]
         val replyPhone = intent?.extras?.getString(TAG_PHONE)
         if (replyPhone != null) {
             phone = replyPhone
@@ -116,13 +118,13 @@ class FetchLocationService : Service() {
         if (lastKnownLocation != null) {
             onLocationChanged(lastKnownLocation)
         } else {
-            smsController.sendDeviceLocation(phone, null, onlyCoords)
+            smsController.sendDeviceLocation(phone, null, responseType)
             stopSelf()
         }
     }
 
     private fun onLocationResponseBuilt(locationResponse: LocationTracker.LocationResponse) {
-        smsController.sendDeviceLocation(phone, locationResponse, onlyCoords)
+        smsController.sendDeviceLocation(phone, locationResponse, responseType)
         stopSelf()
     }
 

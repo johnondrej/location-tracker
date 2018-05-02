@@ -9,6 +9,7 @@ import cz.ojohn.locationtracker.data.LocationEntry
 import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.location.LocationTracker
 import cz.ojohn.locationtracker.util.getBatteryPercentage
+import cz.ojohn.locationtracker.util.roundToDecimalPlaces
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import java.text.DateFormat
@@ -22,10 +23,11 @@ class SmsController(private val appContext: Context,
 
     companion object {
         const val SMS_KEYWORD = "LT"
-        const val SMS_KEYWORD_LOCATION = "LOCATION"
+        const val SMS_KEYWORD_FIND = "FIND"
+        const val SMS_KEYWORD_FINDAPP = "FINDAPP"
         const val SMS_KEYWORD_GPS = "GPS"
         const val SMS_KEYWORD_BATTERY = "BATTERY"
-        const val SMS_KEYWORD_GPS_RESPONSE = "FIND_RESPONSE"
+        const val SMS_KEYWORD_FINDAPP_RESPONSE = "FIND_RESPONSE"
 
         const val SMS_DATA_DELIMITER = ';'
 
@@ -60,18 +62,21 @@ class SmsController(private val appContext: Context,
         sendSms(phone, notificationText)
     }
 
-    fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?, onlyCoords: Boolean) {
+    fun sendDeviceLocation(phone: String, locationResponse: LocationTracker.LocationResponse?, responseType: SmsAction.SendLocation.ResponseType) {
         if (locationResponse != null) {
-            val formatLocationInfoSms = if (!onlyCoords) formatLocationInfoSms(locationResponse)
-            else formatOutgoingGps(locationResponse)
-            sendSms(phone, formatLocationInfoSms)
+            val formattedLocation = when (responseType) {
+                SmsAction.SendLocation.ResponseType.FULL_RESPONSE -> formatLocationInfoSms(locationResponse)
+                SmsAction.SendLocation.ResponseType.ONLY_GPS -> formatGpsLocationInfo(locationResponse)
+                SmsAction.SendLocation.ResponseType.FINDING_APP -> formatLocationInfoForApp(locationResponse)
+            }
+            sendSms(phone, formattedLocation)
         } else {
             sendSms(phone, appContext.getString(R.string.sms_response_error_no_location))
         }
     }
 
-    fun sendGpsRequest(phone: String, smsPassword: String) {
-        sendSms(phone, "$SMS_KEYWORD $smsPassword $SMS_KEYWORD_GPS")
+    fun sendFindFromAppRequest(phone: String, smsPassword: String) {
+        sendSms(phone, "$SMS_KEYWORD $smsPassword $SMS_KEYWORD_FINDAPP")
     }
 
     fun sendBattery(phone: String, batteryLevel: Int) {
@@ -80,26 +85,27 @@ class SmsController(private val appContext: Context,
 
     fun processIncomingSms(sender: String, sms: String): SmsAction {
         val smsPassword = userPreferences.getSmsPassword()
-        var input = sms.trim()
-        if (input.startsWith(SMS_KEYWORD, true)) {
-            input = input.substring(SMS_KEYWORD.length, input.length).trim()
-            if (input.contains(smsPassword)) {
-                input = input.substring(smsPassword.length, input.length).trim()
-                return when {
-                    input.contains(SMS_KEYWORD_LOCATION, true) -> SmsAction.SendLocation(sender, false)
-                    input.contains(SMS_KEYWORD_GPS, true) -> SmsAction.SendLocation(sender, true)
-                    else -> SmsAction.None()
+        val smsParts = sms.trim().replace("\\s+".toRegex(), " ").split(" ")
+        if (smsParts.isNotEmpty() && smsParts[0].equals(SMS_KEYWORD, true)) {
+            if (smsParts.size >= 3) {
+                if (smsParts[1] == SMS_KEYWORD_FINDAPP_RESPONSE) {
+                    return parseAppFindingResponse(sender, smsParts[2])
+                } else if (smsParts[1] == smsPassword) {
+                    return when (smsParts[2].toUpperCase()) {
+                        SMS_KEYWORD_FIND -> SmsAction.SendLocation(sender, SmsAction.SendLocation.ResponseType.FULL_RESPONSE)
+                        SMS_KEYWORD_GPS -> SmsAction.SendLocation(sender, SmsAction.SendLocation.ResponseType.ONLY_GPS)
+                        SMS_KEYWORD_FINDAPP -> SmsAction.SendLocation(sender, SmsAction.SendLocation.ResponseType.FINDING_APP)
+                        else -> SmsAction.None()
+                    }
                 }
-            } else {
-                return when {
-                    input.contains(SMS_KEYWORD_GPS_RESPONSE, true) -> formatGpsResponse(sender, input)
-                    input.contains(SMS_KEYWORD_BATTERY, true) -> SmsAction.SendBattery(sender, appContext.getBatteryPercentage())
+            } else if (smsParts.size == 2) {
+                return when (smsParts[1].toUpperCase()) {
+                    SMS_KEYWORD_BATTERY -> SmsAction.SendBattery(sender, appContext.getBatteryPercentage())
                     else -> SmsAction.None()
                 }
             }
-        } else {
-            return SmsAction.None()
         }
+        return SmsAction.None()
     }
 
     fun formatLocationInfoSms(locationResponse: LocationTracker.LocationResponse): String {
@@ -154,6 +160,29 @@ class SmsController(private val appContext: Context,
         return stringBuilder.toString()
     }
 
+    private fun formatGpsLocationInfo(locationResponse: LocationTracker.LocationResponse): String {
+        val location = locationResponse.locationEntry
+        val time = DateFormat.getDateTimeInstance().format(Date(location.time))
+        return StringBuilder().apply {
+            append(formatCoordinates(location.lat, location.lon))
+            append(SMS_DATA_DELIMITER).append(time)
+        }.toString()
+    }
+
+    private fun formatLocationInfoForApp(locationResponse: LocationTracker.LocationResponse): String {
+        return StringBuilder().apply {
+            append(SMS_KEYWORD)
+            append(' ')
+            append(SMS_KEYWORD_FINDAPP_RESPONSE)
+            append(' ')
+            append(locationResponse.locationEntry.lat.roundToDecimalPlaces(5))
+            append(SMS_DATA_DELIMITER)
+            append(locationResponse.locationEntry.lon.roundToDecimalPlaces(5))
+            append(SMS_DATA_DELIMITER)
+            append(locationResponse.locationEntry.time)
+        }.toString()
+    }
+
     fun updateSmsSettingsEntry(key: String, isEnabled: Boolean) {
         userPreferences.edit()
                 .put(key, isEnabled)
@@ -166,25 +195,10 @@ class SmsController(private val appContext: Context,
 
     fun observeSmsActions(): Observable<SmsAction> = actionSubject
 
-    private fun formatGpsResponse(phone: String, receivedInput: String): SmsAction.GpsReceived {
+    private fun parseAppFindingResponse(phone: String, receivedInput: String): SmsAction.GpsReceived {
         val data = receivedInput.split(';', ignoreCase = true)
-        return SmsAction.GpsReceived(phone, LocationEntry(data[1].toDouble(), data[2].toDouble(),
-                null, null, data[3].toLong(), null))
-    }
-
-    private fun formatOutgoingGps(locationResponse: LocationTracker.LocationResponse): String {
-        val stringBuilder = StringBuilder().apply {
-            append(SMS_KEYWORD)
-            append(' ')
-            append(SMS_KEYWORD_GPS_RESPONSE)
-            append(SMS_DATA_DELIMITER)
-            append(locationResponse.locationEntry.lat)
-            append(SMS_DATA_DELIMITER)
-            append(locationResponse.locationEntry.lon)
-            append(SMS_DATA_DELIMITER)
-            append(locationResponse.locationEntry.time)
-        }
-        return stringBuilder.toString()
+        return SmsAction.GpsReceived(phone, LocationEntry(data[0].toDouble(), data[1].toDouble(),
+                null, null, data[2].toLong(), null))
     }
 
     private fun formatCoordinates(latitude: Double, longitude: Double): String {
@@ -219,7 +233,14 @@ class SmsController(private val appContext: Context,
 
     sealed class SmsAction {
         class None : SmsAction()
-        class SendLocation(val phone: String, val onlyCoords: Boolean) : SmsAction()
+        class SendLocation(val phone: String, val responseType: ResponseType) : SmsAction() {
+            enum class ResponseType {
+                FULL_RESPONSE,
+                ONLY_GPS,
+                FINDING_APP
+            }
+        }
+
         class SendBattery(val phone: String, val batteryLevel: Int) : SmsAction()
         class GpsReceived(val phone: String, val location: LocationEntry) : SmsAction()
     }

@@ -72,7 +72,7 @@ class FindDeviceService : Service() {
             disposables.add(Completable.timer(TIMEOUT_SECONDS, TimeUnit.SECONDS, Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { onTimeoutPassed() })
-            smsController.sendGpsRequest(intent.getStringExtra(TAG_PHONE), intent.getStringExtra(TAG_PASSWORD))
+            smsController.sendFindFromAppRequest(intent.getStringExtra(TAG_PHONE), intent.getStringExtra(TAG_PASSWORD))
             return START_REDELIVER_INTENT
         } else {
             return START_NOT_STICKY

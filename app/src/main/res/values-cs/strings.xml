@@ -96,8 +96,8 @@
     <string name="sms_example_location_name">Vítězné náměstí 576/1, 160 00 Praha 6-Dejvice</string>
     <string name="sms_example_ip">172.217.23.238</string>
     <string name="sms_description_password">&lt;SMS heslo&gt;</string>
-    <string name="sms_description_location">Použijte tento příkaz, když chcete zjistit polohu cílového zařízení, které má tuto aplikaci nainstalovanou. Odpověď přijde do pár minut.</string>
-    <string name="sms_description_gps">Po použití tohoto příkazu přijde odpověď s GPS souřadnicemi (a časem určení polohy) cílového zařízení ve formátu &lt;zeměpisná šířka&gt;;&lt;zeměpisná délka&gt;;&lt;čas získání polohy&gt;</string>
+    <string name="sms_description_find">Použijte tento příkaz, když chcete zjistit polohu cílového zařízení, které má tuto aplikaci nainstalovanou. Odpověď přijde do pár minut.</string>
+    <string name="sms_description_gps">Po použití tohoto příkazu přijde odpověď s GPS souřadnicemi (a časem určení polohy) cílového zařízení ve formátu &lt;zeměpisná šířka&gt; &lt;zeměpisná délka&gt;;&lt;čas získání polohy&gt;</string>
     <string name="sms_description_battery">Příkaz sloužící k zjištění aktuálního stavu nabití baterie cílového zařízení.</string>
 
     <!-- Notifications -->
