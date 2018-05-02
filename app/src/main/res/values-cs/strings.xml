@@ -29,7 +29,7 @@
     <!-- Menu item strings -->
     <string name="menu_status">Status: %1$s</string>
     <string name="menu_status_enabled">Zapnuto</string>
-    <string name="menu_status_available">Povoleno</string>
+    <string name="menu_status_available">Dostupné</string>
     <string name="menu_status_finding">Vyhledávání</string>
     <string name="menu_status_device_found">Zařízení nalezeno</string>
     <string name="menu_status_not_available">Nedostupné</string>
@@ -177,7 +177,7 @@
     <string name="about_app_version">verze %1$s</string>
     <string name="about_app_author">Ondřej John, 2018</string>
     <string name="about_app_icon_credits">Ikonu vytvořil Freepik z <a href="https://www.flaticon.com">www.flaticon.com</a></string>
-    <string name="about_app_description">Tato aplikace je dostupná pod licencí <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>. Zdrojový kód je dostupný na <a href="https://github.com">GitHubu</a>.</string>
+    <string name="about_app_description">Tato aplikace je zveřejněná pod licencí <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>. Zdrojový kód je dostupný na <a href="https://github.com">GitHubu</a>.</string>
 
     <!-- Accessibility image descriptions -->
     <string name="accessibility_notice">Ikona upozornění</string>
