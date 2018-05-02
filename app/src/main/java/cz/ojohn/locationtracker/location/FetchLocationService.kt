@@ -68,9 +68,6 @@ class FetchLocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        val responseCode = intent?.extras?.getInt(TAG_RESPONSE_TYPE)
-                ?: SmsController.SmsAction.SendLocation.ResponseType.FULL_RESPONSE.ordinal
-        responseType = SmsController.SmsAction.SendLocation.ResponseType.values()[responseCode]
         val replyPhone = intent?.extras?.getString(TAG_PHONE)
         if (replyPhone != null) {
             phone = replyPhone
@@ -78,6 +75,14 @@ class FetchLocationService : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
+        if (wakeLock?.isHeld == true) {
+            smsController.sendPendingRequestError(replyPhone)
+            return START_STICKY
+        }
+
+        val responseCode = intent.extras?.getInt(TAG_RESPONSE_TYPE)
+                ?: SmsController.SmsAction.SendLocation.ResponseType.FULL_RESPONSE.ordinal
+        responseType = SmsController.SmsAction.SendLocation.ResponseType.values()[responseCode]
 
         wakeLock?.safeRelease()
         wakeLock = applicationContext.powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG_WAKELOCK).apply {

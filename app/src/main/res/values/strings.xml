@@ -132,6 +132,7 @@
     <string name="sms_response_location_format">%1$s, %2$s</string>
     <string name="sms_response_location_short_format">%1$s</string>
     <string name="sms_response_battery_format">Battery: %1$d%%</string>
+    <string name="sms_response_pending">There is already pending request. Try again later.</string>
 
     <!-- Settings screen strings -->
     <string name="settings_general">General settings</string>
