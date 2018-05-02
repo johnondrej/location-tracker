@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/small_gap"
-    android:layout_marginRight="@dimen/small_gap"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:orientation="vertical">
+    android:background="?android:selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingBottom="4dp"
+    android:paddingLeft="@dimen/small_gap"
+    android:paddingRight="@dimen/small_gap"
+    android:paddingTop="4dp">
 
     <TextView
         android:id="@+id/txtCommandName"

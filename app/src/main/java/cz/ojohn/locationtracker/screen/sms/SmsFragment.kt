@@ -1,8 +1,12 @@
 package cz.ojohn.locationtracker.screen.sms
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +17,6 @@ import cz.ojohn.locationtracker.data.UserPreferences
 import cz.ojohn.locationtracker.viewmodel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_sms.*
-import kotlinx.android.synthetic.main.item_sms_command.view.*
 import javax.inject.Inject
 
 /**
@@ -62,17 +65,22 @@ class SmsFragment : Fragment() {
         disposables.clear()
     }
 
-    private fun showCommandsDescription() {
-        val ctx = requireContext()
-        val commands = viewModel.getSmsCommandsList()
+    private fun onCommandSelected(formattedCommand: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("smsto:")
+            putExtra("sms_body", formattedCommand)
+        }
 
-        layoutCommands.addView(LayoutInflater.from(ctx).inflate(R.layout.item_sms_command_divider, layoutCommands, false))
-        commands.forEach {
-            val layout = LayoutInflater.from(ctx).inflate(R.layout.item_sms_command, layoutCommands, false)
-            layout.txtCommandName.text = viewModel.formatCommand(it)
-            layout.txtCommandDescription.text = ctx.getString(it.descriptionRes)
-            layoutCommands.addView(layout)
-            layoutCommands.addView(LayoutInflater.from(ctx).inflate(R.layout.item_sms_command_divider, layoutCommands, false))
+        if (intent.resolveActivity(activity?.packageManager) != null) {
+            activity?.startActivity(intent)
+        }
+    }
+
+    private fun showCommandsDescription() {
+        listCommands.apply {
+            adapter = SmsCommandsAdapter(viewModel.getSmsCommandsList(), { onCommandSelected(it) })
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         }
     }
 

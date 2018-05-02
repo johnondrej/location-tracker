@@ -150,13 +150,11 @@
             android:layout_marginTop="@dimen/small_gap"
             android:text="@string/sms_commands_list" />
 
-        <LinearLayout
-            android:id="@+id/layoutCommands"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listCommands"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/small_gap"
-            android:orientation="vertical" />
+            android:layout_marginTop="@dimen/small_gap" />
 
     </LinearLayout>
 
