@@ -1,11 +1,12 @@
 package cz.ojohn.locationtracker
 
 import android.app.Application
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.MapsInitializer
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import cz.ojohn.locationtracker.di.AppComponent
 import cz.ojohn.locationtracker.di.DaggerAppComponent
 import cz.ojohn.locationtracker.util.NotificationController
+import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
 /**
@@ -31,9 +32,17 @@ class App : Application() {
         appComponent.inject(this)
 
         createNotificationChannels()
+        initCrashReporting()
     }
 
     private fun createNotificationChannels() {
         notificationController.createTrackingNotificationChannel()
+    }
+
+    private fun initCrashReporting() {
+        val crashlyticsCore = CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build()
+        Fabric.with(this, Crashlytics.Builder().core(crashlyticsCore).build())
     }
 }
