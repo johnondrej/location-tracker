@@ -16,6 +16,7 @@
     <dimen name="sms_message_width">300dp</dimen>
     <dimen name="sms_message_height">200dp</dimen>
     <dimen name="sms_message_padding_text">32dp</dimen>
+    <dimen name="sms_data_checkbox_height">38sp</dimen>
 
     <!-- About app dialog -->
     <dimen name="about_app_name_text_margin_top">8dp</dimen>

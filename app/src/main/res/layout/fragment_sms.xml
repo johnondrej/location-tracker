@@ -80,7 +80,7 @@
                 <CheckBox
                     android:id="@+id/checkGpsCoords"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:layout_marginTop="@dimen/medium_gap"
                     android:checked="true"
                     android:enabled="false"
@@ -89,19 +89,19 @@
                 <CheckBox
                     android:id="@+id/checkTime"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:text="@string/sms_config_time" />
 
                 <CheckBox
                     android:id="@+id/checkSource"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:text="@string/sms_config_source" />
 
                 <CheckBox
                     android:id="@+id/checkWifi"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:text="@string/sms_config_wifi" />
 
             </LinearLayout>
@@ -115,26 +115,26 @@
                 <CheckBox
                     android:id="@+id/checkName"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:layout_marginTop="@dimen/medium_gap"
                     android:text="@string/sms_config_loc_name" />
 
                 <CheckBox
                     android:id="@+id/checkAccuracy"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:text="@string/sms_config_accuracy" />
 
                 <CheckBox
                     android:id="@+id/checkBattery"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:text="@string/sms_config_battery" />
 
                 <CheckBox
                     android:id="@+id/checkIpAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/sms_data_checkbox_height"
                     android:text="@string/sms_config_ip" />
 
             </LinearLayout>
