@@ -65,6 +65,7 @@ class FindDeviceService : Service() {
             wakeLock = applicationContext.powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG_WAKELOCK).apply {
                 acquire(TIMEOUT_SECONDS * 1000)
             }
+            deviceFinder.onFindingStarted(intent.getStringExtra(TAG_PHONE))
             disposables.add(smsController.observeSmsActions()
                     .filter { action -> action is SmsController.SmsAction.GpsReceived }
                     .map { action -> action as SmsController.SmsAction.GpsReceived }
@@ -89,9 +90,11 @@ class FindDeviceService : Service() {
     }
 
     private fun onGpsLocationReceived(gpsAction: SmsController.SmsAction.GpsReceived) {
-        isFound = true
-        deviceFinder.onDeviceFound(gpsAction.phone, gpsAction.location)
-        stopSelf()
+        if (deviceFinder.targetPhone == gpsAction.phone) {
+            isFound = true
+            deviceFinder.onDeviceFound(gpsAction.phone, gpsAction.location)
+            stopSelf()
+        }
     }
 
     private fun onTimeoutPassed() {

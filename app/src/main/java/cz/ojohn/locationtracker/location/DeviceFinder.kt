@@ -14,11 +14,14 @@ class DeviceFinder(private val appContext: Context) {
 
     private val statusSubject: BehaviorSubject<FindingStatus> = BehaviorSubject.createDefault(FindingStatus.Initial())
 
-    private var serviceIntent: Intent? = null
+    var targetPhone: String? = null
 
     fun startFinding(phone: String, smsPassword: String) {
-        serviceIntent = FindDeviceService.getIntent(appContext, phone, smsPassword)
-        appContext.startService(serviceIntent)
+        appContext.startService(FindDeviceService.getIntent(appContext, phone, smsPassword))
+    }
+
+    fun onFindingStarted(phone: String) {
+        targetPhone = phone
         statusSubject.onNext(FindingStatus.Finding(phone))
     }
 
@@ -31,7 +34,7 @@ class DeviceFinder(private val appContext: Context) {
     }
 
     fun stopFindingService() {
-        appContext.stopService(serviceIntent)
+        appContext.stopService(Intent(appContext, FindDeviceService::class.java))
     }
 
     fun observeFindingStatus(): Observable<FindingStatus> = statusSubject

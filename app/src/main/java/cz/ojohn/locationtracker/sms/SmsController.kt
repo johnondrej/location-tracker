@@ -199,10 +199,18 @@ class SmsController(private val appContext: Context,
 
     fun observeSmsActions(): Observable<SmsAction> = actionSubject
 
-    private fun parseAppFindingResponse(phone: String, receivedInput: String): SmsAction.GpsReceived {
+    private fun parseAppFindingResponse(phone: String, receivedInput: String): SmsAction {
         val data = receivedInput.split(';', ignoreCase = true)
-        return SmsAction.GpsReceived(phone, LocationEntry(data[0].toDouble(), data[1].toDouble(),
-                null, null, data[2].toLong(), null))
+        if (data.size == 3) {
+            try {
+                return SmsAction.GpsReceived(phone, LocationEntry(data[0].toDouble(), data[1].toDouble(),
+                        null, null, data[2].toLong(), null))
+            } catch (ex: Exception) {
+                return SmsAction.None()
+            }
+        } else {
+            return SmsAction.None()
+        }
     }
 
     private fun formatCoordinates(latitude: Double, longitude: Double): String {

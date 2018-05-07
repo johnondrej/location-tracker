@@ -126,10 +126,12 @@ class FindDeviceFragment : Fragment() {
             }
             is DeviceFinder.FindingStatus.Finding -> {
                 btnFind.text = context.getText(R.string.find_btn_stop)
+                editPhone.setText(status.phone)
             }
             is DeviceFinder.FindingStatus.Found -> {
                 val showMessage = lastStatus is DeviceFinder.FindingStatus.Finding
                 btnFind.text = context.getText(R.string.find_btn_start)
+                editPhone.setText(status.phone)
                 onDeviceFound(status, showMessage)
             }
         }
@@ -145,7 +147,6 @@ class FindDeviceFragment : Fragment() {
             }
             it.googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(coordinates, 13f)))
         }
-        editPhone.setText(deviceStatus.phone)
 
         if (showMessage) {
             showSnackbar(R.string.find_device_found, Snackbar.LENGTH_LONG)
