@@ -43,7 +43,7 @@ class SmsViewModel @Inject constructor(private val appContext: Context,
     fun getSmsCommandsList(): Array<SmsCommand> {
         return arrayOf(SmsCommand(SmsController.SMS_KEYWORD_FIND, R.string.sms_description_find, true),
                 SmsCommand(SmsController.SMS_KEYWORD_GPS, R.string.sms_description_gps, true),
-                SmsCommand(SmsController.SMS_KEYWORD_BATTERY, R.string.sms_description_battery, false))
+                SmsCommand(SmsController.SMS_KEYWORD_BATTERY, R.string.sms_description_battery, true))
     }
 
     private fun getExampleMessageText(): String {

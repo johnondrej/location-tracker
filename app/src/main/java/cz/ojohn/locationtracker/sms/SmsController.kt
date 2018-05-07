@@ -102,14 +102,10 @@ class SmsController(private val appContext: Context,
                     return when (smsParts[2].toUpperCase()) {
                         SMS_KEYWORD_FIND -> SmsAction.SendLocation(sender, SmsAction.SendLocation.ResponseType.FULL_RESPONSE)
                         SMS_KEYWORD_GPS -> SmsAction.SendLocation(sender, SmsAction.SendLocation.ResponseType.ONLY_GPS)
+                        SMS_KEYWORD_BATTERY -> SmsAction.SendBattery(sender, appContext.getBatteryPercentage())
                         SMS_KEYWORD_FINDAPP -> SmsAction.SendLocation(sender, SmsAction.SendLocation.ResponseType.FINDING_APP)
                         else -> SmsAction.None()
                     }
-                }
-            } else if (smsParts.size == 2) {
-                return when (smsParts[1].toUpperCase()) {
-                    SMS_KEYWORD_BATTERY -> SmsAction.SendBattery(sender, appContext.getBatteryPercentage())
-                    else -> SmsAction.None()
                 }
             }
         }
